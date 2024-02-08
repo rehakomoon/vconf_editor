@@ -18,5 +18,10 @@ RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTH
     update-alternatives --set python3 /usr/bin/python${PYTHON_VERSION}
 RUN pip install --upgrade pip --break-system-packages
 RUN pip install pyyaml --break-system-packages
+RUN pip install fastapi --break-system-packages
+RUN pip install "uvicorn[standard]" --break-system-packages
+RUN pip install httpx --break-system-packages
+RUN pip install pytest --break-system-packages
+
 
 WORKDIR /workdir
