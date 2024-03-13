@@ -1,0 +1,47 @@
+% made by @re_hako_moon
+% for versiton3, @Queue_sys helps a lot. Thanks for helping.
+
+% ver 1.00, 2020/09/12
+% ver 2.00, 2022/07/18
+% ver 3.00, 2023/06/26
+
+
+\usepackage[top=12.7mm, bottom=12.7mm, left=12.7mm, right=12.7mm]{geometry}
+\usepackage{float}
+\usepackage[]{multicol}
+
+\makeatletter
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}.}
+\renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.}
+\renewcommand{\section}{\@startsection{section}{1}{\z@}{0\Cvs}{0\Cvs}{\raggedright}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}{0\Cvs}{0\Cvs}{\raggedright}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}{0\Cvs}{0\Cvs}{\raggedright}}
+
+\renewenvironment{abstract}{%
+\global\setbox\@abstractbox\hbox\bgroup
+\begin{minipage}[b]{\textwidth}
+\abstractname： %
+}{
+\end{minipage}\egroup%
+}
+
+\renewcommand{\abstractname}[0]{概要}
+%\renewcommand{\abstractname}[0]{Abstract} % for English scripts
+
+\renewcommand\maketitle[0]{
+\begingroup
+\centering
+\fontsize{18pt}{18pt}\selectfont
+\@title\\\vspace*{12pt}
+\fontsize{10pt}{10pt}\selectfont
+\@author\vspace{6pt}
+\normalsize
+\vspace{6pt}
+\box\@abstractbox \\
+\vspace{12pt}
+\endgroup
+}
+\makeatother
+
+\pagestyle{empty}
