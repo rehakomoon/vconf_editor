@@ -22,6 +22,7 @@ RUN pip install fastapi --break-system-packages
 RUN pip install "uvicorn[standard]" --break-system-packages
 RUN pip install httpx --break-system-packages
 RUN pip install pytest --break-system-packages
+RUN pip install python-multipart --break-system-packages
 
 
 WORKDIR /workdir
