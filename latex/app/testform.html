@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text Form</title>
+</head>
+<body>
+    <form action="typeset" method="post" enctype="multipart/form-data">
+        <!--data: str-->
+        <label for="data">data (str):</label>
+        <textarea name="data" rows="4" cols="50">{
+    "title" : "バーチャル学会2023",
+    "author": "はこつき (Twitter: @rehakomoon)*, Lcamu (Twitter: @ogtonvr180426)",
+    "abstract": "hogehoge",
+    "body": [
+    {
+        "title": "section1",
+        "text": "このセクション1では...."
+    },
+    {
+        "title": "section2",
+        "text": "このセクション2では...."
+    }
+    ],
+    "figure": [
+            {
+                "section_index": 1,
+                "caption": "fig caption 1",
+                "position": "top"
+            },
+            {
+                "section_index": 1,
+                "caption": "fig caption 2",
+                "position": "bottom"
+            },
+            {
+                "section_index": 2,
+                "caption": "fig caption 3",
+                "position": "here"
+            },
+            {
+                "section_index": 2,
+                "caption": "fig caption 4"
+            }
+    ]
+}</textarea>
+        <br>
+        <!--files-->
+        <label for="file1">file1:</label>
+        <input type="file" name="file1">
+        <br>
+        <label for="file2">file2:</label>
+        <input type="file" name="file2">
+        <br>
+        <label for="file3">file3:</label>
+        <input type="file" name="file3">
+        <br>
+        <label for="file4">file4:</label>
+        <input type="file" name="file4">
+        <br>
+        <label for="file5">file5:</label>
+        <input type="file" name="file5">
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</html>
