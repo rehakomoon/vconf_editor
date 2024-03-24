@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "==0.109.2"
+uvicorn = "==0.28.0"
+pyyaml = "==6.0.1"
+httpx = "==0.27.0"
+python-multipart = "==0.0.9"
+
+[dev-packages]
+pytest = "*"
+black = "*"
+flake8 = "*"
+isort = "*"
+
+[requires]
+python_version = "3.11"
+python_full_version = "3.11.3"
+
+[script]
+format = "sh -c 'black . && isort .'"
+lint = "pflake8 ."
