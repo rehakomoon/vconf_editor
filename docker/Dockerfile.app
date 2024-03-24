@@ -24,6 +24,4 @@ RUN pip install httpx --break-system-packages
 RUN pip install pytest --break-system-packages
 RUN pip install python-multipart --break-system-packages
 
-COPY ./api/type_set.sh .
-
 WORKDIR /workdir
