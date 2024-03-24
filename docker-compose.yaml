@@ -1,12 +1,18 @@
 version: "3.8"
 
 services:
-  # TODO: frontend側のDockerfileを用意する
-  # frontend:
-  #   container_name: frontend
-  #   hostname: frontend
-  # depends_on:
-  #   - api
+  frontend:
+    container_name: frontend
+    hostname: frontend
+    image: node:20.11.1-alpine3.18
+    volumes: 
+      - ./frontend:/frontend
+    ports:
+      - 5173:5173
+    command: sh -c "cd frontend/app && yarn install && yarn dev -- --host"
+    depends_on:
+      - api
+    tty: true
 
   api:
     container_name: api
