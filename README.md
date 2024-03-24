@@ -8,4 +8,4 @@
 $ docker compose build
 $ docekr compose up
 ```
-1. Access to `http://localhost:8000/testform`
+2. Access to `http://localhost:8000/testform`
