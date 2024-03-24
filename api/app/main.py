@@ -1,21 +1,21 @@
-from fastapi import FastAPI
-from fastapi import Form, UploadFile, File
-from fastapi.responses import FileResponse
-from pydantic import BaseModel
-import tempfile
 import shutil
-from pathlib import Path
 import subprocess
-from fastapi.responses import FileResponse
-from starlette.background import BackgroundTasks
-import json
+import tempfile
+from pathlib import Path
 from typing import Optional
 
+from fastapi import FastAPI, Form, UploadFile
+from fastapi.responses import FileResponse
+from pydantic import BaseModel
+from starlette.background import BackgroundTasks
+
 app = FastAPI()
+
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
 
 @app.get("/testform")
 async def testform():
@@ -26,10 +26,12 @@ class Section(BaseModel):
     title: str
     text: str
 
+
 class Figure(BaseModel):
     section_index: int
     caption: str
-    position: Optional[str] = None # "top", "bottom", "here", None
+    position: Optional[str] = None  # "top", "bottom", "here", None
+
 
 class Data(BaseModel):
     title: str
@@ -38,20 +40,22 @@ class Data(BaseModel):
     body: list[Section]
     figure: list[Figure]
 
+
 @app.post("/typeset", response_class=FileResponse)
-#@app.get("/typeset")
+# @app.get("/typeset")
 async def typeset(
     data: str = Form(),
-    #files: list[UploadFile] = Form(),
+    # files: list[UploadFile] = Form(),
     file1: Optional[UploadFile] = None,
     file2: Optional[UploadFile] = None,
     file3: Optional[UploadFile] = None,
     file4: Optional[UploadFile] = None,
     file5: Optional[UploadFile] = None,
-    background_tasks: BackgroundTasks = None):
+    background_tasks: BackgroundTasks = None,
+):
 
     data = Data.parse_raw(data)
-    #print(data)
+    # print(data)
 
     def save_file(file, filename):
         with open(filename, "wb") as f:
@@ -59,7 +63,8 @@ async def typeset(
 
     num_sections = len(data.body)
     for fig in data.figure:
-        # check if the section index is valid, note that the section index is 1-indexed
+        # check if the section index is valid,
+        # note that the section index is 1-indexed
         assert fig.section_index <= num_sections
         if fig.position is None:
             fig.position = "h"
@@ -91,17 +96,17 @@ async def typeset(
         save_file(file4, working_dir / "fig3.png")
     if file5:
         save_file(file5, working_dir / "fig4.png")
-    
+
     # 本来はリストで受け取ってチェックする
     # フロントが出来てからテッドさん形式のlist[UploadFile]で受け取るように変更
 
     with open("/template/template.tpl", "r") as f:
         text = f.read()
-    #assert "title" in data
-    #assert "author" in data
-    #assert "abstract" in data
-    #assert "body" in data
-    #assert isinstance(data["body"], list)
+    # assert "title" in data
+    # assert "author" in data
+    # assert "abstract" in data
+    # assert "body" in data
+    # assert isinstance(data["body"], list)
 
     text = text.replace("<<<title>>>", data.title)
     text = text.replace("<<<author>>>", data.author)
@@ -110,14 +115,14 @@ async def typeset(
     figure_head_texts = ["" for _ in range(num_sections)]
     figure_tail_texts = ["" for _ in range(num_sections)]
     for fig_idx, fig in enumerate(data.figure):
-        section_idx = fig.section_index - 1 # 1-indexed -> 0-indexed
+        section_idx = fig.section_index - 1  # 1-indexed -> 0-indexed
         fig_filename = f"fig{fig_idx}.png"
-        #figure_text = r"\begin{figure}[" + fig.position + "]\n"
+        # figure_text = r"\begin{figure}[" + fig.position + "]\n"
         figure_text = r"\begin{figurehere}]" + "\n"
         figure_text += r"\centering" + "\n"
-        figure_text += r"\includegraphics[width=0.8\linewidth]{" + fig_filename + "}\n"
+        figure_text += r"\includegraphics[width=0.8\linewidth]{" + fig_filename + "}\n"  # E501
         figure_text += r"\caption{" + fig.caption + "}\n"
-        #figure_text += r"\end{figure}" + "\n"
+        # figure_text += r"\end{figure}" + "\n"
         figure_text += r"\end{figurehere}" + "\n"
         if fig.position == "t":
             figure_head_texts[section_idx] += figure_text
@@ -125,7 +130,7 @@ async def typeset(
             figure_tail_texts[section_idx] += figure_text
 
         # save the figure file
-        #shutil.copy(f"/template/figure{fig_idx+1}_dummy.png", working_dir / fig_filename)
+        # shutil.copy(f"/template/figure{fig_idx+1}_dummy.png", working_dir / fig_filename)
 
     body_text = ""
     for section_idx, section in enumerate(data.body):
@@ -148,8 +153,8 @@ async def typeset(
 
     # return the pdf file
     return FileResponse(working_dir / "main.pdf")
-    #return FileResponse(working_dir / "main.tex")
+    # return FileResponse(working_dir / "main.tex")
 
-    #return {"title": data.title, "author": data.author, "abstract": data.abstract, "body": data.body}
+    # return {"title": data.title, "author": data.author, "abstract": data.abstract, "body": data.body}
 
     return "None"
