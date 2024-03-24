@@ -18,3 +18,10 @@ pipenv 環境で新しいパッケージのインストールや、パッケー�
 ```sh
 pipenv run pip freeze > requirements.txt
 ```
+
+## linter, formatter のかけ方
+
+```sh
+pipenv run format
+pipenv run lint
+```
