@@ -19,4 +19,6 @@ RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTH
 RUN pip install --upgrade pip --break-system-packages
 RUN pip install pyyaml --break-system-packages
 
+COPY ./api/type_set.sh .
+
 WORKDIR /workdir
