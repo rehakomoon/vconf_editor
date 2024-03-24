@@ -9,6 +9,17 @@
 \title{<<<title>>>}
 \author{<<<author>>>}
 
+% https://puarts.com/?pid=1014
+\makeatletter
+\newenvironment{tablehere}
+  {\def\@captype{table}}
+  {}
+
+\newenvironment{figurehere}
+  {\def\@captype{figure}}
+  {}
+\makeatother
+
 \begin{document}
 \begin{abstract}
 <<<abstract>>>
