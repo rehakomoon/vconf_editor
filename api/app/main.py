@@ -56,12 +56,7 @@ class Data(BaseModel):
 #@app.get("/typeset")
 async def typeset(
     data: str = Form(),
-    #files: list[UploadFile] = Form(),
-    file1: Optional[UploadFile] = None,
-    file2: Optional[UploadFile] = None,
-    file3: Optional[UploadFile] = None,
-    file4: Optional[UploadFile] = None,
-    file5: Optional[UploadFile] = None,
+    files: list[UploadFile] = Form(),
     background_tasks: BackgroundTasks = None):
 
     data = Data.parse_raw(data)
@@ -95,19 +90,13 @@ async def typeset(
     for filepath in Path("/template").glob("*"):
         shutil.copy(filepath, working_dir)
 
-    if file1:
-        save_file(file1, working_dir / "fig0.png")
-    if file2:
-        save_file(file2, working_dir / "fig1.png")
-    if file3:
-        save_file(file3, working_dir / "fig2.png")
-    if file4:
-        save_file(file4, working_dir / "fig3.png")
-    if file5:
-        save_file(file5, working_dir / "fig4.png")
-    
-    # 本来はリストで受け取ってチェックする
-    # フロントが出来てからテッドさん形式のlist[UploadFile]で受け取るように変更
+    for i in range(5):
+        shutil.copy(Path("/template") / f"figure{i + 1}_dummy.png", working_dir / f"fig{i}.png")
+
+    for i, file in enumerate(files):
+        if file.size == 0:
+            continue
+        save_file(file, working_dir / f"fig{i}.png")
 
     with open("/template/template.tpl", "r") as f:
         text = f.read()
