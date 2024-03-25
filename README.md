@@ -19,7 +19,15 @@ pipenv 環境で新しいパッケージのインストールや、パッケー�
 pipenv run pip freeze > requirements.txt
 ```
 
-## linter, formatter のかけ方
+## 開発時の設定
+
+適宜 pyenv や pipenv を実行できるようにしたうえで、以下のコマンドを実行してください。
+
+```sh
+pipenv sync --dev
+```
+
+### linter, formatter のかけ方
 
 ```sh
 pipenv run format
