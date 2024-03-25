@@ -40,6 +40,9 @@ class Section(BaseModel):
     title: str
     text: str
 
+class Teaser(BaseModel):
+    caption: str
+
 class Figure(BaseModel):
     section_index: int
     caption: str
@@ -50,6 +53,7 @@ class Data(BaseModel):
     author: str
     abstract: str
     body: list[Section]
+    teaser: Optional[Teaser]
     figure: list[Figure]
 
 @app.post("/typeset", response_class=FileResponse)
