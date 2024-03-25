@@ -56,11 +56,14 @@ function App() {
   const [image4, setImage4] = useState<File | undefined>(undefined);
   const [image5, setImage5] = useState<File | undefined>(undefined);
   const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [abstract, setAbstract] = useState("");
   const [section1, setSection1] = useState("");
   const [section2, setSection2] = useState("");
   const [section3, setSection3] = useState("");
   const [section4, setSection4] = useState("");
   const [section5, setSection5] = useState("");
+  const [pdfUrl, setPdfUrl] = useState("");
 
   const getImage1: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (!e.target.files) return;
@@ -90,10 +93,10 @@ function App() {
 
   const Submit = async () => {
     const formdata = new FormData();
-    const json = `{
-      "title" : "バーチャル学会2023",
-      "author": "はこつき (Twitter: @rehakomoon)*, Lcamu (Twitter: @ogtonvr180426)",
-      "abstract": "hogehoge",
+    const json = {
+      "title" : `${title}`,
+      "author": `${author}`,
+      "abstract": `${abstract}`,
       "body": [
       {
           "title": "section1",
@@ -105,28 +108,29 @@ function App() {
       }
       ],
       "figure": [
-              {
-                  "section_index": 1,
-                  "caption": "fig caption 1",
-                  "position": "top"
-              },
-              {
-                  "section_index": 1,
-                  "caption": "fig caption 2",
-                  "position": "bottom"
-              },
-              {
-                  "section_index": 2,
-                  "caption": "fig caption 3",
-                  "position": "here"
-              },
-              {
-                  "section_index": 2,
-                  "caption": "fig caption 4"
-              }
+        {
+            "section_index": 1,
+            "caption": "fig caption 1",
+            "position": "top"
+        },
+        {
+            "section_index": 1,
+            "caption": "fig caption 2",
+            "position": "bottom"
+        },
+        {
+            "section_index": 2,
+            "caption": "fig caption 3",
+            "position": "here"
+        },
+        {
+            "section_index": 2,
+            "caption": "fig caption 4"
+        }
       ]
-  }`
-    formdata.append("data", json.toString());
+  }
+  const json_data = JSON.stringify(json);
+    formdata.append("data", json_data);
 
     if (image1 !== undefined) {
       formdata.append("file1", image1);
@@ -148,7 +152,16 @@ function App() {
       method: "POST",
       body: formdata,
     };
-    await fetch("http://localhost:8000/typeset", requestOptions);
+    const response = await fetch("http://localhost:8000/typeset", requestOptions);
+
+    if(response.ok) {
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      setPdfUrl(url);
+      console.log(url);
+    } else {
+      throw new Error('response was not ok');
+    }
   };
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -163,6 +176,22 @@ function App() {
           id="title"
           onChange={(e) => {
             setTitle(e.target.value);
+          }}
+        />
+        <br />
+        <TextFormSection
+          label="著者"
+          id="author"
+          onChange={(e) => {
+            setAuthor(e.target.value);
+          }}
+        />
+        <br />
+        <TextFormSection
+          label="要旨"
+          id="abstract"
+          onChange={(e) => {
+            setAbstract(e.target.value);
           }}
         />
         <br />
@@ -233,6 +262,12 @@ function App() {
           Submit
         </button>
       </form>
+      {pdfUrl && (
+        <iframe
+          src={pdfUrl}
+          style={{ width: '100%', height: '500px' }}
+        ></iframe>
+      )}
     </div>
   );
 }
