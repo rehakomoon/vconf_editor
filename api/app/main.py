@@ -5,11 +5,25 @@ from pathlib import Path
 from typing import Optional
 
 from fastapi import FastAPI, Form, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from starlette.background import BackgroundTasks
 
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
@@ -120,7 +134,9 @@ async def typeset(
         # figure_text = r"\begin{figure}[" + fig.position + "]\n"
         figure_text = r"\begin{figurehere}]" + "\n"
         figure_text += r"\centering" + "\n"
-        figure_text += r"\includegraphics[width=0.8\linewidth]{" + fig_filename + "}\n"  # E501
+        figure_text += (
+            r"\includegraphics[width=0.8\linewidth]{" + fig_filename + "}\n"
+        )  # E501
         figure_text += r"\caption{" + fig.caption + "}\n"
         # figure_text += r"\end{figure}" + "\n"
         figure_text += r"\end{figurehere}" + "\n"
