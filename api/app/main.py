@@ -90,13 +90,11 @@ async def typeset(
     for filepath in Path("/template").glob("*"):
         shutil.copy(filepath, working_dir)
 
-    for i in range(5):
-        shutil.copy(Path("/template") / f"figure{i + 1}_dummy.png", working_dir / f"fig{i}.png")
-
     for i, file in enumerate(files):
         if file.size == 0:
-            continue
-        save_file(file, working_dir / f"fig{i}.png")
+            shutil.copy(Path("/template") / f"figure{i + 1}_dummy.png", working_dir / f"fig{i}.png")
+        else:
+            save_file(file, working_dir / f"fig{i}.png")
 
     with open("/template/template.tpl", "r") as f:
         text = f.read()
