@@ -15,11 +15,12 @@ pytest = "*"
 black = "*"
 flake8 = "*"
 isort = "*"
+pyproject-flake8 = "*"
 
 [requires]
 python_version = "3.11"
 python_full_version = "3.11.3"
 
-[script]
+[scripts]
 format = "sh -c 'black . && isort .'"
 lint = "pflake8 ."
