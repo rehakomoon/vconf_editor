@@ -21,9 +21,9 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.app
     volumes:
-      - ./api/app:/workdir
+      - ./api:/workdir
       - ./api/template:/template
       - ./api/output:/output
     ports:
       - 8000:8000
-    command: uvicorn main:app --reload --host=0.0.0.0 --port=8000
+    command: uvicorn app.main:app --reload --host=0.0.0.0 --port=8000
