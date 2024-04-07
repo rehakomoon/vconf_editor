@@ -1,12 +1,12 @@
-from typing import Annotated
+import json
 import tempfile
 from pathlib import Path
-import json
 
-from fastapi import APIRouter, Form, File, UploadFile
+from fastapi import APIRouter, Form, UploadFile
 from fastapi.responses import FileResponse
 
 router = APIRouter()
+
 
 @router.post("/v1/pdf/create", response_class=FileResponse)
 async def create_pdf(
@@ -24,5 +24,3 @@ async def create_pdf(
         f.write(txt)
 
     return FileResponse(out_file)
-
-
