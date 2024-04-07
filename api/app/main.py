@@ -146,14 +146,20 @@ async def typeset(
         # shutil.copy(f"/template/figure{fig_idx+1}_dummy.png", working_dir / fig_filename)
 
     # replace teaser
-    teaser_text = r"""
+    teaser_file_name = "vconf2023.png"
+    teaser_caption = "ティザー画像を表示する場合には，ここに図として挿入してもよい．"
+    teaser_text = (r""" 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\linewidth]{vconf2023.png}
-\caption{ティザー画像を表示する場合には，ここに図として挿入してもよい．}
+\includegraphics[width=0.9\linewidth]{"""
+f"{teaser_file_name}"
+r"""}
+\caption{"""
+f"{teaser_caption}"
+r"""}
 \label{fig:topfigure}
 \end{figure}
-"""
+""")
     text = text.replace("<<<teaser>>>", teaser_text)
 
     print(text)
