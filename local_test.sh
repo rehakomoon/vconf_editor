@@ -7,4 +7,4 @@ curl -X POST \
     -F 'files=@api/template/figure4_dummy.png' \
     -F 'files=@api/template/figure5_dummy.png' \
     --output "./tmp.pdf" \
-    'http://0.0.0.0:8000/typeset'
+    'http://0.0.0.0:8000/v1/pdf/create'
