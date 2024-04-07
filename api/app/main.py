@@ -154,19 +154,19 @@ async def typeset(
         teaser_file_name = "teaser.png"
         save_file(teaser, working_dir / teaser_file_name)
 
-        teaser_caption = data.teaser.caption if data.teaser is not None else "" 
-        teaser_text = (r""" 
+        teaser_caption = data.teaser.caption if data.teaser is not None else ""
+        teaser_text = (
+            r"""
 \begin{{figure}}[h]
 \centering
 \includegraphics[width=0.9\linewidth]{{{0}}}
 \caption{{{1}}}
 \label{{fig:topfigure}}
 \end{{figure}}
-""").format(teaser_file_name, teaser_caption)
+"""
+        ).format(teaser_file_name, teaser_caption)
 
     text = text.replace("<<<teaser>>>", teaser_text)
-
-    print(text)
 
     body_text = ""
     for section_idx, section in enumerate(data.body):
