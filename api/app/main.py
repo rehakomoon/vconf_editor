@@ -149,17 +149,13 @@ async def typeset(
     teaser_file_name = "vconf2023.png"
     teaser_caption = "ティザー画像を表示する場合には，ここに図として挿入してもよい．"
     teaser_text = (r""" 
-\begin{figure}[h]
+\begin{{figure}}[h]
 \centering
-\includegraphics[width=0.9\linewidth]{"""
-f"{teaser_file_name}"
-r"""}
-\caption{"""
-f"{teaser_caption}"
-r"""}
-\label{fig:topfigure}
-\end{figure}
-""")
+\includegraphics[width=0.9\linewidth]{{{0}}}
+\caption{{{1}}}
+\label{{fig:topfigure}}
+\end{{figure}}
+""").format(teaser_file_name, teaser_caption)
     text = text.replace("<<<teaser>>>", teaser_text)
 
     print(text)
