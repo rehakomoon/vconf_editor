@@ -20,7 +20,7 @@ def main():
 
     body_text = ""
     for section in data["body"]:
-        body_text += "\section{" + section["title"] + "}\n"
+        body_text += r"\section{" + section["title"] + "}\n"
         body_text += section["content"] + "\n"
     text = text.replace("<<<body>>>", body_text)
 

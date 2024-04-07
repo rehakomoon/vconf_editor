@@ -1,0 +1,10 @@
+[tool.flake8]
+max-line-length = 88
+extend-ignore = "E501"
+max-complexity = 10
+exclude = [".venv", ".git", "__pycache__",]
+
+[tool.black]
+
+[tool.isort]
+profile = "black"
