@@ -58,7 +58,7 @@ class Data(BaseModel):
     author: str
     abstract: str
     body: list[Section]
-    teaser: Optional[Teaser]
+    teaser: Optional[Teaser] = None
     figure: list[Figure]
 
 
