@@ -66,6 +66,7 @@ class Data(BaseModel):
 # @app.get("/typeset")
 async def typeset(
     data: str = Form(),
+    teaser: UploadFile = Form(),
     files: list[UploadFile] = Form(),
     background_tasks: BackgroundTasks = None,
 ):
@@ -146,9 +147,14 @@ async def typeset(
         # shutil.copy(f"/template/figure{fig_idx+1}_dummy.png", working_dir / fig_filename)
 
     # replace teaser
-    teaser_file_name = "vconf2023.png"
-    teaser_caption = "ティザー画像を表示する場合には，ここに図として挿入してもよい．"
-    teaser_text = (r""" 
+    if teaser is None or teaser.size == 0:
+        teaser_text = ""
+    else:
+        teaser_file_name = "teaser.png"
+        save_file(teaser, working_dir / teaser_file_name)
+
+        teaser_caption = "ティザー画像を表示する場合には，ここに図として挿入してもよい．"
+        teaser_text = (r""" 
 \begin{{figure}}[h]
 \centering
 \includegraphics[width=0.9\linewidth]{{{0}}}
@@ -156,6 +162,7 @@ async def typeset(
 \label{{fig:topfigure}}
 \end{{figure}}
 """).format(teaser_file_name, teaser_caption)
+
     text = text.replace("<<<teaser>>>", teaser_text)
 
     print(text)
