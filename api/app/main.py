@@ -4,15 +4,14 @@ import tempfile
 from pathlib import Path
 from typing import Optional
 
-from fastapi import FastAPI, Form, UploadFile, Request, status
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, Form, Request, UploadFile, status
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 from starlette.background import BackgroundTasks
 
-from app.routers import root, paper
+from app.routers import paper, root
 
 app = FastAPI()
 
@@ -29,10 +28,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.exception_handler(RequestValidationError)
-async def handler(request:Request, exc:RequestValidationError):
+async def handler(request: Request, exc: RequestValidationError):
     print(exc)
     return JSONResponse(content={}, status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
 
 app.include_router(root.router)
 app.include_router(paper.router)
