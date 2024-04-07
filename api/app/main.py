@@ -153,7 +153,7 @@ async def typeset(
         teaser_file_name = "teaser.png"
         save_file(teaser, working_dir / teaser_file_name)
 
-        teaser_caption = "ティザー画像を表示する場合には，ここに図として挿入してもよい．"
+        teaser_caption = data.teaser.caption if data.teaser is not None else "" 
         teaser_text = (r""" 
 \begin{{figure}}[h]
 \centering
