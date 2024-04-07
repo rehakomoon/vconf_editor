@@ -27,12 +27,7 @@
 
 \maketitle
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.9\linewidth]{vconf2023.png}
-\caption{ティザー画像を表示する場合には，ここに図として挿入してもよい．}
-\label{fig:topfigure}
-\end{figure}
+<<<teaser>>>
 
 \begin{multicols}{2}
 
