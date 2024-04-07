@@ -1,13 +1,13 @@
 import yaml
 
+
 def main():
     with open("input_data.yaml", "r") as f:
         data = yaml.safe_load(f)
 
-    
     with open("template.tpl", "r") as f:
         text = f.read()
-    
+
     assert "title" in data
     assert "author" in data
     assert "abstract" in data
@@ -26,6 +26,7 @@ def main():
 
     with open("main.tex", "w") as f:
         f.write(text)
+
 
 if __name__ == "__main__":
     main()
