@@ -1,16 +1,20 @@
+import tempfile
 import shutil
 import subprocess
 from pathlib import Path
+from logging import getLogger
 
+from fastapi import UploadFile
 from starlette.background import BackgroundTasks
 
 from app.schemas.paper import Paper
 
+logger = getLogger(__name__)
+
 
 async def typeset(
     paper: Paper,
-    file_paths: list[str],
-    working_dir: Path,
+    files: list[UploadFile],
     background_tasks: BackgroundTasks = None,
 ) -> str:
 
@@ -28,12 +32,20 @@ async def typeset(
         elif fig.position == "here":
             fig.position = "h"
         assert fig.position in {"t", "b", "h"}
+    
+    # generate temporary working directory
+
+    # give a unique name to the working directory
+    working_dir = Path(tempfile.mkdtemp())
+    logger.info("working_dir:", working_dir)
 
     # copy files from template to working directory
     for filepath in Path("/template").glob("*"):
         shutil.copy(filepath, working_dir)
 
-    # この先未作業
+    # リクエストされたファイルを保存
+    save_files(working_dir, files)
+
     with open("/template/template.tpl", "r") as f:
         text = f.read()
     # assert "title" in data
@@ -42,13 +54,13 @@ async def typeset(
     # assert "body" in data
     # assert isinstance(data["body"], list)
 
-    text = text.replace("<<<title>>>", data.title)
-    text = text.replace("<<<author>>>", data.author)
-    text = text.replace("<<<abstract>>>", data.abstract)
+    text = text.replace("<<<title>>>", paper.title)
+    text = text.replace("<<<author>>>", paper.author)
+    text = text.replace("<<<abstract>>>", paper.abstract)
 
     figure_head_texts = ["" for _ in range(num_sections)]
     figure_tail_texts = ["" for _ in range(num_sections)]
-    for fig_idx, fig in enumerate(data.figure):
+    for fig_idx, fig in enumerate(paper.figure):
         section_idx = fig.section_index - 1  # 1-indexed -> 0-indexed
         fig_filename = f"fig{fig_idx}.png"
         # figure_text = r"\begin{figure}[" + fig.position + "]\n"
@@ -89,3 +101,20 @@ async def typeset(
 
     # return the pdf file path
     return f"{working_dir}/main.pdf"
+
+
+def save_file(file, filename):
+        with open(filename, "wb") as f:
+            shutil.copyfileobj(file.file, f)
+
+
+def save_files(working_dir: Path, files: list[UploadFile]) -> None:
+    for i, file in enumerate(files):
+        if file.size == 0:
+            shutil.copy(
+                Path("/template") / f"figure{i + 1}_dummy.png",
+                working_dir / f"fig{i}.png",
+            )
+        else:
+            save_file_path = f"{working_dir}/fig{i}.png"
+            save_file(file, save_file_path)
