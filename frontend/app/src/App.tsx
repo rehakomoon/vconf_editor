@@ -133,26 +133,31 @@ function App() {
     formdata.append("data", json_data);
 
     if (image1 !== undefined) {
-      formdata.append("file1", image1);
+      formdata.append("files", image1);
     }
     if (image2 !== undefined) {
-      formdata.append("file2", image2);
+      formdata.append("files", image2);
     }
     if (image3 !== undefined) {
-      formdata.append("file3", image3);
+      formdata.append("files", image3);
     }
     if (image4 !== undefined) {
-      formdata.append("file4", image4);
+      formdata.append("files", image4);
     }
     if (image5 !== undefined) {
-      formdata.append("file5", image5);
+      formdata.append("files", image5);
     }
+    if (formdata.get("files") === null) {
+      formdata.append("files", new Blob());
+    }
+    // todo: 後でフロント側もティザーを指定できるようにする
+    formdata.append("teaser", new Blob());
 
     const requestOptions = {
       method: "POST",
       body: formdata,
     };
-    const response = await fetch("http://localhost:8000/typeset", requestOptions);
+    const response = await fetch("http://localhost:8000/v1/pdf/create", requestOptions);
 
     if(response.ok) {
       const blob = await response.blob();
