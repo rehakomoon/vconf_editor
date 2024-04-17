@@ -132,7 +132,6 @@ function App() {
   const json_data = JSON.stringify(json);
     formdata.append("data", json_data);
 
-    formdata.append("files", new Blob());
     if (image1 !== undefined) {
       formdata.append("files", image1);
     }
@@ -147,6 +146,9 @@ function App() {
     }
     if (image5 !== undefined) {
       formdata.append("files", image5);
+    }
+    if (formdata.get("files") === null) {
+      formdata.append("files", new Blob());
     }
 
     const requestOptions = {
