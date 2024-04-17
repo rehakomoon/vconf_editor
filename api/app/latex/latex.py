@@ -49,11 +49,6 @@ async def typeset(
 
     with open("/template/template.tpl", "r") as f:
         text = f.read()
-    # assert "title" in data
-    # assert "author" in data
-    # assert "abstract" in data
-    # assert "body" in data
-    # assert isinstance(data["body"], list)
 
     text = text.replace("<<<title>>>", paper.title)
     text = text.replace("<<<author>>>", paper.author)
@@ -64,22 +59,17 @@ async def typeset(
     for fig_idx, fig in enumerate(paper.figure):
         section_idx = fig.section_index - 1  # 1-indexed -> 0-indexed
         fig_filename = f"fig{fig_idx}.png"
-        # figure_text = r"\begin{figure}[" + fig.position + "]\n"
         figure_text = r"\begin{figurehere}]" + "\n"
         figure_text += r"\centering" + "\n"
         figure_text += (
             r"\includegraphics[width=0.8\linewidth]{" + fig_filename + "}\n"
         )  # E501
         figure_text += r"\caption{" + fig.caption + "}\n"
-        # figure_text += r"\end{figure}" + "\n"
         figure_text += r"\end{figurehere}" + "\n"
         if fig.position == "t":
             figure_head_texts[section_idx] += figure_text
         else:
             figure_tail_texts[section_idx] += figure_text
-
-        # save the figure file
-        # shutil.copy(f"/template/figure{fig_idx+1}_dummy.png", working_dir / fig_filename)
 
     # replace teaser
     if teaser is None or teaser.size == 0:
