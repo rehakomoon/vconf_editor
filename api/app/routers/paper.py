@@ -1,11 +1,11 @@
 from logging import getLogger
 
-from fastapi import APIRouter, Form, UploadFile, HTTPException
+from fastapi import APIRouter, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from starlette.background import BackgroundTasks
 
-from app.schemas.paper import Paper
 from app.latex import latex
+from app.schemas.paper import Paper
 
 router = APIRouter()
 logger = getLogger(__name__)
@@ -15,6 +15,7 @@ logger = getLogger(__name__)
 async def create_pdf(
     data: str = Form(),
     files: list[UploadFile] = Form(),
+    teaser: UploadFile = Form(),
     background_tasks: BackgroundTasks = None,
 ) -> FileResponse:
     try:
@@ -25,6 +26,6 @@ async def create_pdf(
         raise http_exception
 
     # latexの処理
-    pdf_file_path = await latex.typeset(paper, files, background_tasks)
+    pdf_file_path = await latex.typeset(paper, files, teaser, background_tasks)
 
     return FileResponse(pdf_file_path)

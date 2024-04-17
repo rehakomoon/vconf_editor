@@ -44,6 +44,10 @@ class Section(BaseModel):
     text: str
 
 
+class Teaser(BaseModel):
+    caption: str
+
+
 class Figure(BaseModel):
     section_index: int
     caption: str
@@ -55,6 +59,7 @@ class Data(BaseModel):
     author: str
     abstract: str
     body: list[Section]
+    teaser: Optional[Teaser] = None
     figure: list[Figure]
 
 
@@ -62,6 +67,7 @@ class Data(BaseModel):
 # @app.get("/typeset")
 async def typeset(
     data: str = Form(),
+    teaser: UploadFile = Form(),
     files: list[UploadFile] = Form(),
     background_tasks: BackgroundTasks = None,
 ):
@@ -140,6 +146,27 @@ async def typeset(
 
         # save the figure file
         # shutil.copy(f"/template/figure{fig_idx+1}_dummy.png", working_dir / fig_filename)
+
+    # replace teaser
+    if teaser is None or teaser.size == 0:
+        teaser_text = ""
+    else:
+        teaser_file_name = "teaser.png"
+        save_file(teaser, working_dir / teaser_file_name)
+
+        teaser_caption = data.teaser.caption if data.teaser is not None else ""
+        teaser_text = (
+            r"""
+\begin{{figure}}[h]
+\centering
+\includegraphics[width=0.9\linewidth]{{{0}}}
+\caption{{{1}}}
+\label{{fig:topfigure}}
+\end{{figure}}
+"""
+        ).format(teaser_file_name, teaser_caption)
+
+    text = text.replace("<<<teaser>>>", teaser_text)
 
     body_text = ""
     for section_idx, section in enumerate(data.body):

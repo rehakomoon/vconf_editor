@@ -8,6 +8,10 @@ class Section(BaseModel):
     text: str
 
 
+class Teaser(BaseModel):
+    caption: str
+
+
 class Figure(BaseModel):
     section_index: int
     caption: str
@@ -19,4 +23,5 @@ class Paper(BaseModel):
     author: str
     abstract: str
     body: list[Section]
+    teaser: Optional[Teaser] = None
     figure: list[Figure]

@@ -1,0 +1,39 @@
+{
+    "title": "バーチャル学会2023",
+    "author": "はこつき(Twitter:@rehakomoon)*,Lcamu(Twitter:@ogtonvr180426)",
+    "abstract": "hogehoge",
+    "body": [
+        {
+            "title": "section1",
+            "text": "このセクション1では...."
+        },
+        {
+            "title": "section2",
+            "text": "このセクション2では...."
+        }
+    ],
+    "teaser": {
+        "caption": "ティザー画像を表示する場合には，ここに図として挿入してもよい．"
+    },
+    "figure": [
+        {
+            "section_index": 1,
+            "caption": "figcaption1",
+            "position": "top"
+        },
+        {
+            "section_index": 1,
+            "caption": "figcaption2",
+            "position": "bottom"
+        },
+        {
+            "section_index": 2,
+            "caption": "figcaption3",
+            "position": "here"
+        },
+        {
+            "section_index": 2,
+            "caption": "figcaption4"
+        }
+    ]
+}

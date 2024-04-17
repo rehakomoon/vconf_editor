@@ -1,8 +1,8 @@
-import tempfile
 import shutil
 import subprocess
-from pathlib import Path
+import tempfile
 from logging import getLogger
+from pathlib import Path
 
 from fastapi import UploadFile
 from starlette.background import BackgroundTasks
@@ -15,6 +15,7 @@ logger = getLogger(__name__)
 async def typeset(
     paper: Paper,
     files: list[UploadFile],
+    teaser: UploadFile,
     background_tasks: BackgroundTasks = None,
 ) -> str:
 
@@ -32,7 +33,7 @@ async def typeset(
         elif fig.position == "here":
             fig.position = "h"
         assert fig.position in {"t", "b", "h"}
-    
+
     # generate temporary working directory
 
     # give a unique name to the working directory
@@ -80,6 +81,27 @@ async def typeset(
         # save the figure file
         # shutil.copy(f"/template/figure{fig_idx+1}_dummy.png", working_dir / fig_filename)
 
+    # replace teaser
+    if teaser is None or teaser.size == 0:
+        teaser_text = ""
+    else:
+        teaser_file_name = "teaser.png"
+        save_file(teaser, working_dir / teaser_file_name)
+
+        teaser_caption = paper.teaser.caption if paper.teaser is not None else ""
+        teaser_text = (
+            r"""
+\begin{{figure}}[h]
+\centering
+\includegraphics[width=0.9\linewidth]{{{0}}}
+\caption{{{1}}}
+\label{{fig:topfigure}}
+\end{{figure}}
+"""
+        ).format(teaser_file_name, teaser_caption)
+
+    text = text.replace("<<<teaser>>>", teaser_text)
+
     body_text = ""
     for section_idx, section in enumerate(paper.body):
         body_text += r"\section{" + section.title + "}\n"
@@ -104,8 +126,8 @@ async def typeset(
 
 
 def save_file(file, filename):
-        with open(filename, "wb") as f:
-            shutil.copyfileobj(file.file, f)
+    with open(filename, "wb") as f:
+        shutil.copyfileobj(file.file, f)
 
 
 def save_files(working_dir: Path, files: list[UploadFile]) -> None:
