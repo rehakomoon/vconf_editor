@@ -55,6 +55,7 @@ function App() {
   const [image3, setImage3] = useState<File | undefined>(undefined);
   const [image4, setImage4] = useState<File | undefined>(undefined);
   const [image5, setImage5] = useState<File | undefined>(undefined);
+  const [teaser, setTeaser] = useState<File | undefined>(undefined);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [abstract, setAbstract] = useState("");
@@ -90,6 +91,11 @@ function App() {
     const img = e.target.files[0];
     setImage5(img);
   };
+  const getTeaser: ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (!e.target.files) return;
+    const img = e.target.files[0];
+    setTeaser(img);
+  }
 
   const Submit = async () => {
     const formdata = new FormData();
@@ -150,8 +156,14 @@ function App() {
     if (formdata.get("files") === null) {
       formdata.append("files", new Blob());
     }
-    // todo: 後でフロント側もティザーを指定できるようにする
-    formdata.append("teaser", new Blob());
+
+    // ティザー画像指定
+    if (teaser !== undefined) {
+      formdata.append("teaser", teaser)
+    }
+    else {
+      formdata.append("teaser", new Blob());
+    }    
 
     const requestOptions = {
       method: "POST",
@@ -261,6 +273,11 @@ function App() {
           label="画像5"
           id="img5"
           onChange={getImage5}
+        />
+        <ImageFormSection 
+          label="ティザー画像"
+          id="teaser"
+          onChange={getTeaser}
         />
         <br />
         <button className="button is-primary" type="submit">
