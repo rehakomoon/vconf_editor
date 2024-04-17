@@ -131,12 +131,13 @@ def save_file(file, filename):
 
 
 def save_files(working_dir: Path, files: list[UploadFile]) -> None:
-    for i, file in enumerate(files):
-        if file.size == 0:
+    # TODO: 今の作りだと、かならず図が5枚必要になっているのでいずれ修正する
+    for i in range(5):
+        if len(files) <= i or (len(files) > i and files[i].size == 0):
             shutil.copy(
                 Path("/template") / f"figure{i + 1}_dummy.png",
                 working_dir / f"fig{i}.png",
             )
         else:
             save_file_path = f"{working_dir}/fig{i}.png"
-            save_file(file, save_file_path)
+            save_file(files[i], save_file_path)
