@@ -47,56 +47,11 @@ async def typeset(
     # リクエストされたファイルを保存
     save_files(working_dir, teaser, files)
 
+    # テンプレートを編集する
     with open("/template/template.tpl", "r") as f:
-        text = f.read()
+        template_text = f.read()
 
-    text = text.replace("<<<title>>>", paper.title)
-    text = text.replace("<<<author>>>", paper.author)
-    text = text.replace("<<<abstract>>>", paper.abstract)
-
-    figure_head_texts = ["" for _ in range(num_sections)]
-    figure_tail_texts = ["" for _ in range(num_sections)]
-    for fig_idx, fig in enumerate(paper.figure):
-        section_idx = fig.section_index - 1  # 1-indexed -> 0-indexed
-        fig_filename = f"fig{fig_idx}.png"
-        figure_text = r"\begin{figurehere}]" + "\n"
-        figure_text += r"\centering" + "\n"
-        figure_text += (
-            r"\includegraphics[width=0.8\linewidth]{" + fig_filename + "}\n"
-        )  # E501
-        figure_text += r"\caption{" + fig.caption + "}\n"
-        figure_text += r"\end{figurehere}" + "\n"
-        if fig.position == "t":
-            figure_head_texts[section_idx] += figure_text
-        else:
-            figure_tail_texts[section_idx] += figure_text
-
-    # replace teaser
-    if teaser.size == 0:
-        teaser_text = ""
-    else:
-        teaser_file_name = "teaser.png"
-        teaser_caption = paper.teaser.caption if paper.teaser is not None else ""
-        teaser_text = (
-            r"""
-\begin{{figure}}[h]
-\centering
-\includegraphics[width=0.9\linewidth]{{{0}}}
-\caption{{{1}}}
-\label{{fig:topfigure}}
-\end{{figure}}
-"""
-        ).format(teaser_file_name, teaser_caption)
-
-    text = text.replace("<<<teaser>>>", teaser_text)
-
-    body_text = ""
-    for section_idx, section in enumerate(paper.body):
-        body_text += r"\section{" + section.title + "}\n"
-        body_text += figure_head_texts[section_idx] + "\n"
-        body_text += section.text + "\n"
-        body_text += figure_tail_texts[section_idx] + "\n\n"
-    text = text.replace("<<<body>>>", body_text)
+    text = create_latex_text(template_text, paper, teaser.size > 0)
 
     with open(working_dir / "main.tex", "w") as f:
         f.write(text)
@@ -132,3 +87,57 @@ def save_files(working_dir: Path, teaser: UploadFile, files: list[UploadFile]) -
         else:
             save_file_path = f"{working_dir}/fig{i}.png"
             save_file(file, save_file_path)
+
+
+def create_latex_text(template_text: str, paper: Paper, has_teaser: bool):
+    num_sections = len(paper.body)
+    text = template_text
+    text = text.replace("<<<title>>>", paper.title)
+    text = text.replace("<<<author>>>", paper.author)
+    text = text.replace("<<<abstract>>>", paper.abstract)
+
+    figure_head_texts = ["" for _ in range(num_sections)]
+    figure_tail_texts = ["" for _ in range(num_sections)]
+    for fig_idx, fig in enumerate(paper.figure):
+        section_idx = fig.section_index - 1  # 1-indexed -> 0-indexed
+        fig_filename = f"fig{fig_idx}.png"
+        figure_text = r"\begin{figurehere}]" + "\n"
+        figure_text += r"\centering" + "\n"
+        figure_text += (
+            r"\includegraphics[width=0.8\linewidth]{" + fig_filename + "}\n"
+        )  # E501
+        figure_text += r"\caption{" + fig.caption + "}\n"
+        figure_text += r"\end{figurehere}" + "\n"
+        if fig.position == "t":
+            figure_head_texts[section_idx] += figure_text
+        else:
+            figure_tail_texts[section_idx] += figure_text
+
+    # replace teaser
+    if not has_teaser:
+        teaser_text = ""
+    else:
+        teaser_file_name = "teaser.png"
+        teaser_caption = paper.teaser.caption if paper.teaser is not None else ""
+        teaser_text = (
+            r"""
+\begin{{figure}}[h]
+\centering
+\includegraphics[width=0.9\linewidth]{{{0}}}
+\caption{{{1}}}
+\label{{fig:topfigure}}
+\end{{figure}}
+"""
+        ).format(teaser_file_name, teaser_caption)
+
+    text = text.replace("<<<teaser>>>", teaser_text)
+
+    body_text = ""
+    for section_idx, section in enumerate(paper.body):
+        body_text += r"\section{" + section.title + "}\n"
+        body_text += figure_head_texts[section_idx] + "\n"
+        body_text += section.text + "\n"
+        body_text += figure_tail_texts[section_idx] + "\n\n"
+    text = text.replace("<<<body>>>", body_text)
+
+    return text
