@@ -45,7 +45,7 @@ async def typeset(
         shutil.copy(filepath, working_dir)
 
     # リクエストされたファイルを保存
-    save_files(working_dir, files)
+    save_files(working_dir, teaser, files)
 
     with open("/template/template.tpl", "r") as f:
         text = f.read()
@@ -72,12 +72,10 @@ async def typeset(
             figure_tail_texts[section_idx] += figure_text
 
     # replace teaser
-    if teaser is None or teaser.size == 0:
+    if teaser.size == 0:
         teaser_text = ""
     else:
         teaser_file_name = "teaser.png"
-        save_file(teaser, working_dir / teaser_file_name)
-
         teaser_caption = paper.teaser.caption if paper.teaser is not None else ""
         teaser_text = (
             r"""
@@ -120,7 +118,11 @@ def save_file(file, filename):
         shutil.copyfileobj(file.file, f)
 
 
-def save_files(working_dir: Path, files: list[UploadFile]) -> None:
+def save_files(working_dir: Path, teaser: UploadFile, files: list[UploadFile]) -> None:
+    if teaser.size != 0:
+        teaser_file_name = "teaser.png"
+        save_file(teaser, working_dir / teaser_file_name)
+
     for i, file in enumerate(files):
         if file.size == 0:
             shutil.copy(
