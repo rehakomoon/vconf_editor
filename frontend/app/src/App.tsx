@@ -150,6 +150,8 @@ function App() {
     if (formdata.get("files") === null) {
       formdata.append("files", new Blob());
     }
+    // todo: 後でフロント側もティザーを指定できるようにする
+    formdata.append("teaser", new Blob());
 
     const requestOptions = {
       method: "POST",
