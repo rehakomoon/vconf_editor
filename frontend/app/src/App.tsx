@@ -169,7 +169,7 @@ function App() {
       method: "POST",
       body: formdata,
     };
-    const response = await fetch("http://localhost:8000/v1/pdf/create", requestOptions);
+    const response = await fetch(import.meta.env.VITE_HOSTNAME + `/v1/pdf/create`, requestOptions);
 
     if(response.ok) {
       const blob = await response.blob();
