@@ -1,6 +1,7 @@
 import shutil
 import subprocess
 import tempfile
+import os
 from pathlib import Path
 from typing import Optional
 
@@ -18,6 +19,7 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:5173",
+    "http://" + os.getenv("VITE_HOSTNAME", "localhost") + ":5173",
 ]
 
 app.add_middleware(
