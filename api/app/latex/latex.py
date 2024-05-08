@@ -110,13 +110,7 @@ async def typeset(
         body_text += figure_tail_texts[section_idx] + "\n\n"
     text = text.replace("<<<body>>>", body_text)
 
-    references = [
-        'W. Rafferty, "Ground antennas in NASA’s deep space telecommunications," Proc. IEEE vol. 82, pp. 636-640, May 1994.', 
-        'バーチャル学会実行委員会, "バーチャル学会2023 Webサイト." \\url{https://vconf.org/2023/} (参照 2023-06-30).',
-        '岡谷貴之, "深層学習," 2015.',
-        'Yun He, et al. "Human Action Recognition without Human," In proceedings of the ECCV Workshop, 2016.',
-    ] 
-
+    references = [ref.value for ref in paper.reference] 
     reference_text = "".join(
         f"\\bibitem{{ref{i}}} {ref}\n" for i, ref in enumerate(references)
     )

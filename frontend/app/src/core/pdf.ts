@@ -5,6 +5,7 @@ type PdfCreateRequest = {
     body: PdfCreateRequestSection[],
     teaser?: PdfCreateRequestTeaser,
     figure: PdfCreateRequestFigure[],
+    reference: PdfCreateRequestRefarence[],
 };
 
 type PdfCreateRequestSection = {
@@ -20,4 +21,8 @@ type PdfCreateRequestFigure = {
     section_index: number,
     caption: string,
     position?: string,
+};
+
+type PdfCreateRequestRefarence = {
+    value: string,
 };
