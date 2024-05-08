@@ -55,6 +55,7 @@ function App() {
   const [image3, setImage3] = useState<File | undefined>(undefined);
   const [image4, setImage4] = useState<File | undefined>(undefined);
   const [image5, setImage5] = useState<File | undefined>(undefined);
+  const [teaser, setTeaser] = useState<File | undefined>(undefined);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [abstract, setAbstract] = useState("");
@@ -90,6 +91,11 @@ function App() {
     const img = e.target.files[0];
     setImage5(img);
   };
+  const getTeaser: ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (!e.target.files) return;
+    const img = e.target.files[0];
+    setTeaser(img);
+  }
 
   const Submit = async () => {
     const formdata = new FormData();
@@ -133,26 +139,37 @@ function App() {
     formdata.append("data", json_data);
 
     if (image1 !== undefined) {
-      formdata.append("file1", image1);
+      formdata.append("files", image1);
     }
     if (image2 !== undefined) {
-      formdata.append("file2", image2);
+      formdata.append("files", image2);
     }
     if (image3 !== undefined) {
-      formdata.append("file3", image3);
+      formdata.append("files", image3);
     }
     if (image4 !== undefined) {
-      formdata.append("file4", image4);
+      formdata.append("files", image4);
     }
     if (image5 !== undefined) {
-      formdata.append("file5", image5);
+      formdata.append("files", image5);
     }
+    if (formdata.get("files") === null) {
+      formdata.append("files", new Blob());
+    }
+
+    // ティザー画像指定
+    if (teaser !== undefined) {
+      formdata.append("teaser", teaser)
+    }
+    else {
+      formdata.append("teaser", new Blob());
+    }    
 
     const requestOptions = {
       method: "POST",
       body: formdata,
     };
-    const response = await fetch("http://localhost:8000/typeset", requestOptions);
+    const response = await fetch(`http://` + import.meta.env.VITE_HOSTNAME + `:8000/v1/pdf/create`, requestOptions);
 
     if(response.ok) {
       const blob = await response.blob();
@@ -256,6 +273,11 @@ function App() {
           label="画像5"
           id="img5"
           onChange={getImage5}
+        />
+        <ImageFormSection 
+          label="ティザー画像"
+          id="teaser"
+          onChange={getTeaser}
         />
         <br />
         <button className="button is-primary" type="submit">

@@ -18,3 +18,14 @@ pipenv 環境で新しいパッケージのインストールや、パッケー�
 ```sh
 pipenv run pip freeze > requirements.txt
 ```
+
+## 本番実行時のコマンド
+
+```sh
+docker compose -f ./docker-compose-prod.yaml build
+
+export VITE_HOSTNAME=$(\
+  TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` \
+  && curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/public-hostname); \
+docker compose -f ./docker-compose-prod.yaml up -d
+```
