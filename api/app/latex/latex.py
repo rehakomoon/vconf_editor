@@ -110,13 +110,17 @@ async def typeset(
         body_text += figure_tail_texts[section_idx] + "\n\n"
     text = text.replace("<<<body>>>", body_text)
 
-    reference_text = (
-        r"""
-\bibitem{rafferty1994} W. Rafferty, "Ground antennas in NASA’s deep space telecommunications," Proc. IEEE vol. 82, pp. 636-640, May 1994.
-\bibitem{vconf2023} バーチャル学会実行委員会, "バーチャル学会2023 Webサイト." \url{https://vconf.org/2023/} (参照 2023-06-30).
-\bibitem{okatani2015} 岡谷貴之, "深層学習," 2015.
-\bibitem{kataoka2016} Yun He, et al. "Human Action Recognition without Human," In proceedings of the ECCV Workshop, 2016.
-""")
+    references = [
+        'W. Rafferty, "Ground antennas in NASA’s deep space telecommunications," Proc. IEEE vol. 82, pp. 636-640, May 1994.', 
+        'バーチャル学会実行委員会, "バーチャル学会2023 Webサイト." \\url{https://vconf.org/2023/} (参照 2023-06-30).',
+        '岡谷貴之, "深層学習," 2015.',
+        'Yun He, et al. "Human Action Recognition without Human," In proceedings of the ECCV Workshop, 2016.',
+    ] 
+
+    reference_text = "".join(
+        f"\\bibitem{{ref{i}}} {ref}\n" for i, ref in enumerate(references)
+    )
+
     text = text.replace("<<<reference>>>", reference_text)
 
     with open(working_dir / "main.tex", "w") as f:
