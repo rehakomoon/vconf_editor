@@ -99,42 +99,45 @@ function App() {
 
   const Submit = async () => {
     const formdata = new FormData();
-    const json = {
-      "title" : `${title}`,
-      "author": `${author}`,
-      "abstract": `${abstract}`,
-      "body": [
+    const json: PdfCreateRequest = {
+      title: title,
+      author: author,
+      abstract: abstract,
+      body: [
       {
-          "title": "section1",
-          "text": "このセクション1では...."
+          title: "section1",
+          text: "このセクション1では....",
       },
       {
-          "title": "section2",
-          "text": "このセクション2では...."
-      }
+          title: "section2",
+          text: "このセクション2では....",
+        },
       ],
-      "figure": [
+      teaser: {
+        caption: "teaser キャプション",
+      },
+      figure: [
         {
-            "section_index": 1,
-            "caption": "fig caption 1",
-            "position": "top"
+          section_index: 1,
+          caption: "fig caption 1",
+          position: "top",
         },
         {
-            "section_index": 1,
-            "caption": "fig caption 2",
-            "position": "bottom"
+          section_index: 1,
+          caption: "fig caption 2",
+          position: "bottom",
         },
         {
-            "section_index": 2,
-            "caption": "fig caption 3",
-            "position": "here"
+          section_index: 2,
+          caption: "fig caption 3",
+          position: "here",
         },
         {
-            "section_index": 2,
-            "caption": "fig caption 4"
-        }
-      ]
-  }
+          section_index: 2,
+          caption: "fig caption 4",
+        },
+      ],
+    };
   const json_data = JSON.stringify(json);
     formdata.append("data", json_data);
 
