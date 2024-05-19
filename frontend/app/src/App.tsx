@@ -1,6 +1,4 @@
-import { useState,
-  ChangeEventHandler,
-  FormEventHandler, } from 'react'
+import { useState, ChangeEventHandler, FormEventHandler } from "react";
 
 function TextFormSection({
   label,
@@ -117,7 +115,7 @@ function App() {
     if (!e.target.files) return;
     const img = e.target.files[0];
     setTeaser(img);
-  }
+  };
 
   const Submit = async () => {
     const formdata = new FormData();
@@ -131,11 +129,11 @@ function App() {
       author: author,
       abstract: abstract,
       body: [
-      {
+        {
           title: "section1",
           text: "このセクション1では....",
-      },
-      {
+        },
+        {
           title: "section2",
           text: "このセクション2では....",
         },
@@ -166,7 +164,7 @@ function App() {
       ],
       reference: references,
     };
-  const json_data = JSON.stringify(json);
+    const json_data = JSON.stringify(json);
     formdata.append("data", json_data);
 
     if (image1 !== undefined) {
@@ -190,25 +188,27 @@ function App() {
 
     // ティザー画像指定
     if (teaser !== undefined) {
-      formdata.append("teaser", teaser)
-    }
-    else {
+      formdata.append("teaser", teaser);
+    } else {
       formdata.append("teaser", new Blob());
-    }    
+    }
 
     const requestOptions = {
       method: "POST",
       body: formdata,
     };
-    const response = await fetch(`http://` + import.meta.env.VITE_HOSTNAME + `:8000/v1/pdf/create`, requestOptions);
+    const response = await fetch(
+      `http://` + import.meta.env.VITE_HOSTNAME + `:8000/v1/pdf/create`,
+      requestOptions
+    );
 
-    if(response.ok) {
+    if (response.ok) {
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       setPdfUrl(url);
       console.log(url);
     } else {
-      throw new Error('response was not ok');
+      throw new Error("response was not ok");
     }
   };
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
@@ -250,11 +250,7 @@ function App() {
             setSection1(e.target.value);
           }}
         />
-        <ImageFormSection 
-          label="画像1"
-          id="img1"
-          onChange={getImage1}
-        />
+        <ImageFormSection label="画像1" id="img1" onChange={getImage1} />
         <br />
         <TextFormSection
           label="セクション2"
@@ -263,11 +259,7 @@ function App() {
             setSection2(e.target.value);
           }}
         />
-        <ImageFormSection 
-          label="画像2"
-          id="img2"
-          onChange={getImage2}
-        />
+        <ImageFormSection label="画像2" id="img2" onChange={getImage2} />
         <br />
         <TextFormSection
           label="セクション3"
@@ -276,11 +268,7 @@ function App() {
             setSection3(e.target.value);
           }}
         />
-        <ImageFormSection 
-          label="画像3"
-          id="img3"
-          onChange={getImage3}
-        />
+        <ImageFormSection label="画像3" id="img3" onChange={getImage3} />
         <TextFormSection
           label="セクション4"
           id="section4"
@@ -288,11 +276,7 @@ function App() {
             setSection4(e.target.value);
           }}
         />
-        <ImageFormSection 
-          label="画像4"
-          id="img4"
-          onChange={getImage4}
-        />
+        <ImageFormSection label="画像4" id="img4" onChange={getImage4} />
         <TextFormSection
           label="セクション5"
           id="section5"
@@ -300,12 +284,8 @@ function App() {
             setSection5(e.target.value);
           }}
         />
-        <ImageFormSection 
-          label="画像5"
-          id="img5"
-          onChange={getImage5}
-        />
-        <ImageFormSection 
+        <ImageFormSection label="画像5" id="img5" onChange={getImage5} />
+        <ImageFormSection
           label="ティザー画像"
           id="teaser"
           onChange={getTeaser}
@@ -325,11 +305,11 @@ function App() {
       {pdfUrl && (
         <iframe
           src={pdfUrl}
-          style={{ width: '100%', height: '500px' }}
+          style={{ width: "100%", height: "500px" }}
         ></iframe>
       )}
     </div>
   );
 }
 
-export default App
+export default App;
