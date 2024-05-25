@@ -74,11 +74,7 @@ function App() {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [abstract, setAbstract] = useState("");
-  const [section1, setSection1] = useState("");
-  const [section2, setSection2] = useState("");
-  const [section3, setSection3] = useState("");
-  const [section4, setSection4] = useState("");
-  const [section5, setSection5] = useState("");
+  const [sections, setSections] = useState<String[]>([]);
   const [reference, setReference] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
 
@@ -90,13 +86,24 @@ function App() {
 
     const img = e.target.files[0];
     const newImages = Array(Math.max(index + 1, images.length)).fill(undefined);
-
     images.forEach((v: File | undefined, i: number) => {
       newImages[i] = v;
     });
     newImages[index] = img;
     setImages(newImages);
   };
+
+  const onChangeSections = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newSections = Array(Math.max(index + 1, sections.length)).fill("");
+    sections.forEach((v: String, i: number) => {
+      newSections[i] = v;
+    });
+    newSections[index] = e.target.value;
+    setSections(newSections);
+  }
 
   const getTeaser: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (!e.target.files) return;
@@ -227,7 +234,7 @@ function App() {
           label="セクション1"
           id="section1"
           onChange={(e) => {
-            setSection1(e.target.value);
+            onChangeSections(0, e);
           }}
         />
         <ImageFormSection
@@ -240,7 +247,7 @@ function App() {
           label="セクション2"
           id="section2"
           onChange={(e) => {
-            setSection2(e.target.value);
+            onChangeSections(1, e);
           }}
         />
         <ImageFormSection
@@ -253,7 +260,7 @@ function App() {
           label="セクション3"
           id="section3"
           onChange={(e) => {
-            setSection3(e.target.value);
+            onChangeSections(2, e);
           }}
         />
         <ImageFormSection
@@ -265,7 +272,7 @@ function App() {
           label="セクション4"
           id="section4"
           onChange={(e) => {
-            setSection4(e.target.value);
+            onChangeSections(3, e);
           }}
         />
         <ImageFormSection
@@ -277,7 +284,7 @@ function App() {
           label="セクション5"
           id="section5"
           onChange={(e) => {
-            setSection5(e.target.value);
+            onChangeSections(4, e);
           }}
         />
         <ImageFormSection
