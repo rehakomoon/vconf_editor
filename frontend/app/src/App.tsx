@@ -1,4 +1,4 @@
-import { useState, ChangeEventHandler, FormEventHandler } from "react";
+import React, { useState, ChangeEventHandler, FormEventHandler } from "react";
 
 function TextFormSection({
   label,
@@ -69,11 +69,7 @@ function ImageFormSection({
 }
 
 function App() {
-  const [image1, setImage1] = useState<File | undefined>(undefined);
-  const [image2, setImage2] = useState<File | undefined>(undefined);
-  const [image3, setImage3] = useState<File | undefined>(undefined);
-  const [image4, setImage4] = useState<File | undefined>(undefined);
-  const [image5, setImage5] = useState<File | undefined>(undefined);
+  const [images, setImages] = useState<(File | undefined)[]>([]);
   const [teaser, setTeaser] = useState<File | undefined>(undefined);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -86,31 +82,22 @@ function App() {
   const [reference, setReference] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
 
-  const getImage1: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const onChangeImages = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (!e.target.files) return;
+
     const img = e.target.files[0];
-    setImage1(img);
+    const newImages = Array(Math.max(index + 1, images.length)).fill(undefined);
+
+    images.forEach((v: File | undefined, i: number) => {
+      newImages[i] = v;
+    });
+    newImages[index] = img;
+    setImages(newImages);
   };
-  const getImage2: ChangeEventHandler<HTMLInputElement> = (e) => {
-    if (!e.target.files) return;
-    const img = e.target.files[0];
-    setImage2(img);
-  };
-  const getImage3: ChangeEventHandler<HTMLInputElement> = (e) => {
-    if (!e.target.files) return;
-    const img = e.target.files[0];
-    setImage3(img);
-  };
-  const getImage4: ChangeEventHandler<HTMLInputElement> = (e) => {
-    if (!e.target.files) return;
-    const img = e.target.files[0];
-    setImage4(img);
-  };
-  const getImage5: ChangeEventHandler<HTMLInputElement> = (e) => {
-    if (!e.target.files) return;
-    const img = e.target.files[0];
-    setImage5(img);
-  };
+
   const getTeaser: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (!e.target.files) return;
     const img = e.target.files[0];
@@ -167,21 +154,14 @@ function App() {
     const json_data = JSON.stringify(json);
     formdata.append("data", json_data);
 
-    if (image1 !== undefined) {
-      formdata.append("files", image1);
-    }
-    if (image2 !== undefined) {
-      formdata.append("files", image2);
-    }
-    if (image3 !== undefined) {
-      formdata.append("files", image3);
-    }
-    if (image4 !== undefined) {
-      formdata.append("files", image4);
-    }
-    if (image5 !== undefined) {
-      formdata.append("files", image5);
-    }
+    images.forEach((image: File | undefined) => {
+      if (image === undefined) {
+        formdata.append("files", new Blob());
+      } else {
+        formdata.append("files", image);
+      }
+    });
+
     if (formdata.get("files") === null) {
       formdata.append("files", new Blob());
     }
@@ -250,7 +230,11 @@ function App() {
             setSection1(e.target.value);
           }}
         />
-        <ImageFormSection label="画像1" id="img1" onChange={getImage1} />
+        <ImageFormSection
+          label="画像1"
+          id="img1"
+          onChange={(e) => onChangeImages(0, e)}
+        />
         <br />
         <TextFormSection
           label="セクション2"
@@ -259,7 +243,11 @@ function App() {
             setSection2(e.target.value);
           }}
         />
-        <ImageFormSection label="画像2" id="img2" onChange={getImage2} />
+        <ImageFormSection
+          label="画像2"
+          id="img2"
+          onChange={(e) => onChangeImages(1, e)}
+        />
         <br />
         <TextFormSection
           label="セクション3"
@@ -268,7 +256,11 @@ function App() {
             setSection3(e.target.value);
           }}
         />
-        <ImageFormSection label="画像3" id="img3" onChange={getImage3} />
+        <ImageFormSection
+          label="画像3"
+          id="img3"
+          onChange={(e) => onChangeImages(2, e)}
+        />
         <TextFormSection
           label="セクション4"
           id="section4"
@@ -276,7 +268,11 @@ function App() {
             setSection4(e.target.value);
           }}
         />
-        <ImageFormSection label="画像4" id="img4" onChange={getImage4} />
+        <ImageFormSection
+          label="画像4"
+          id="img4"
+          onChange={(e) => onChangeImages(3, e)}
+        />
         <TextFormSection
           label="セクション5"
           id="section5"
@@ -284,7 +280,11 @@ function App() {
             setSection5(e.target.value);
           }}
         />
-        <ImageFormSection label="画像5" id="img5" onChange={getImage5} />
+        <ImageFormSection
+          label="画像5"
+          id="img5"
+          onChange={(e) => onChangeImages(4, e)}
+        />
         <ImageFormSection
           label="ティザー画像"
           id="teaser"
