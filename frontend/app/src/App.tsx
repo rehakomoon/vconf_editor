@@ -43,22 +43,45 @@ function MultiTextFormSection({
 }
 
 function ImageFormSection({
-  label,
   id,
   onChange,
 }: {
-  label: string;
-  id: string;
+  id: number;
+  onChange?: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
+}): JSX.Element {
+  return (
+    <>
+      <label className="label" htmlFor={`img${id}`}>
+        画像{id + 1}
+      </label>
+      <div>
+        <input
+          id={`img${id}`}
+          type="file"
+          accept="image/*,.png,.jpg,.jpeg,.gif"
+          onChange={(e) => {
+            if (onChange === undefined) return;
+            onChange(id, e);
+          }}
+        />
+      </div>
+    </>
+  );
+}
+
+function TeaserImageFormSection({
+  onChange,
+}: {
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }): JSX.Element {
   return (
     <>
-      <label className="label" htmlFor={id}>
-        {label}
+      <label className="label" htmlFor="teaser">
+        ティザー画像
       </label>
       <div>
         <input
-          id={id}
+          id="teaser"
           type="file"
           accept="image/*,.png,.jpg,.jpeg,.gif"
           onChange={onChange}
@@ -103,7 +126,7 @@ function App() {
     });
     newSections[index] = e.target.value;
     setSections(newSections);
-  }
+  };
 
   const getTeaser: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (!e.target.files) return;
@@ -237,11 +260,7 @@ function App() {
             onChangeSections(0, e);
           }}
         />
-        <ImageFormSection
-          label="画像1"
-          id="img1"
-          onChange={(e) => onChangeImages(0, e)}
-        />
+        <ImageFormSection id={0} onChange={onChangeImages} />
         <br />
         <TextFormSection
           label="セクション2"
@@ -250,11 +269,7 @@ function App() {
             onChangeSections(1, e);
           }}
         />
-        <ImageFormSection
-          label="画像2"
-          id="img2"
-          onChange={(e) => onChangeImages(1, e)}
-        />
+        <ImageFormSection id={1} onChange={onChangeImages} />
         <br />
         <TextFormSection
           label="セクション3"
@@ -263,11 +278,7 @@ function App() {
             onChangeSections(2, e);
           }}
         />
-        <ImageFormSection
-          label="画像3"
-          id="img3"
-          onChange={(e) => onChangeImages(2, e)}
-        />
+        <ImageFormSection id={2} onChange={onChangeImages} />
         <TextFormSection
           label="セクション4"
           id="section4"
@@ -275,11 +286,7 @@ function App() {
             onChangeSections(3, e);
           }}
         />
-        <ImageFormSection
-          label="画像4"
-          id="img4"
-          onChange={(e) => onChangeImages(3, e)}
-        />
+        <ImageFormSection id={3} onChange={onChangeImages} />
         <TextFormSection
           label="セクション5"
           id="section5"
@@ -287,16 +294,8 @@ function App() {
             onChangeSections(4, e);
           }}
         />
-        <ImageFormSection
-          label="画像5"
-          id="img5"
-          onChange={(e) => onChangeImages(4, e)}
-        />
-        <ImageFormSection
-          label="ティザー画像"
-          id="teaser"
-          onChange={getTeaser}
-        />
+        <ImageFormSection id={4} onChange={onChangeImages} />
+        <TeaserImageFormSection onChange={getTeaser} />
         <MultiTextFormSection
           label="リファレンス(複数行可)"
           id="reference"
