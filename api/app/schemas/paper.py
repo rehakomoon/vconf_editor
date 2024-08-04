@@ -18,6 +18,13 @@ class Figure(BaseModel):
     position: Optional[str] = None  # "top", "bottom", "here", None
 
 
+# TODO: ドメインを整理して、値を受け取るようにする？
+# - 著者名, タイトル, 出版社, ページ, 出版年
+# - 著者名, ページタイトル, URL, 参照日
+class Reference(BaseModel):
+    value: str
+
+
 class Paper(BaseModel):
     title: str
     author: str
@@ -25,3 +32,4 @@ class Paper(BaseModel):
     body: list[Section]
     teaser: Optional[Teaser] = None
     figure: list[Figure]
+    reference: list[Reference]
