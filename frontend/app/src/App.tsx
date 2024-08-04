@@ -23,6 +23,27 @@ function TextFormSection({
   );
 }
 
+function MultiTextFormSection({
+  label,
+  id,
+  onChange,
+}: {
+  label: string;
+  id: string;
+  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
+}): JSX.Element {
+  return (
+    <>
+      <label className="label" htmlFor={id}>
+        {label}
+      </label>
+      <div>
+        <textarea id={id} name={label} rows={4} cols={50} onChange={onChange} />
+      </div>
+    </>
+  );
+}
+
 function ImageFormSection({
   label,
   id,
@@ -64,6 +85,7 @@ function App() {
   const [section3, setSection3] = useState("");
   const [section4, setSection4] = useState("");
   const [section5, setSection5] = useState("");
+  const [reference, setReference] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
 
   const getImage1: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -99,42 +121,51 @@ function App() {
 
   const Submit = async () => {
     const formdata = new FormData();
-    const json = {
-      "title" : `${title}`,
-      "author": `${author}`,
-      "abstract": `${abstract}`,
-      "body": [
+    const references: PdfCreateRequestRefarence[] = reference
+      .split("\n")
+      .map((ref) => {
+        return { value: ref };
+      });
+    const json: PdfCreateRequest = {
+      title: title,
+      author: author,
+      abstract: abstract,
+      body: [
       {
-          "title": "section1",
-          "text": "このセクション1では...."
+          title: "section1",
+          text: "このセクション1では....",
       },
       {
-          "title": "section2",
-          "text": "このセクション2では...."
-      }
+          title: "section2",
+          text: "このセクション2では....",
+        },
       ],
-      "figure": [
+      teaser: {
+        caption: "teaser キャプション",
+      },
+      figure: [
         {
-            "section_index": 1,
-            "caption": "fig caption 1",
-            "position": "top"
+          section_index: 1,
+          caption: "fig caption 1",
+          position: "top",
         },
         {
-            "section_index": 1,
-            "caption": "fig caption 2",
-            "position": "bottom"
+          section_index: 1,
+          caption: "fig caption 2",
+          position: "bottom",
         },
         {
-            "section_index": 2,
-            "caption": "fig caption 3",
-            "position": "here"
+          section_index: 2,
+          caption: "fig caption 3",
+          position: "here",
         },
         {
-            "section_index": 2,
-            "caption": "fig caption 4"
-        }
-      ]
-  }
+          section_index: 2,
+          caption: "fig caption 4",
+        },
+      ],
+      reference: references,
+    };
   const json_data = JSON.stringify(json);
     formdata.append("data", json_data);
 
@@ -278,6 +309,13 @@ function App() {
           label="ティザー画像"
           id="teaser"
           onChange={getTeaser}
+        />
+        <MultiTextFormSection
+          label="リファレンス(複数行可)"
+          id="reference"
+          onChange={(e) => {
+            setReference(e.target.value);
+          }}
         />
         <br />
         <button className="button is-primary" type="submit">
