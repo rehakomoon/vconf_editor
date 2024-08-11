@@ -1,25 +1,5 @@
 import React, { useState, ChangeEventHandler, FormEventHandler } from "react";
-
-function TextFormSection({
-  label,
-  id,
-  onChange,
-}: {
-  label: string;
-  id: string;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
-}): JSX.Element {
-  return (
-    <>
-      <label className="label" htmlFor={id}>
-        {label}
-      </label>
-      <div>
-        <input id={id} type="text" required onChange={onChange} />
-      </div>
-    </>
-  );
-}
+import SingleLineTextForm from "./components/single-line-text-form";
 
 function MultiTextFormSection({
   label,
@@ -229,7 +209,7 @@ function App() {
   return (
     <div>
       <form className="box" onSubmit={handleSubmit}>
-        <TextFormSection
+        <SingleLineTextForm 
           label="タイトル"
           id="title"
           onChange={(e) => {
@@ -237,7 +217,7 @@ function App() {
           }}
         />
         <br />
-        <TextFormSection
+        <SingleLineTextForm
           label="著者"
           id="author"
           onChange={(e) => {
@@ -245,7 +225,7 @@ function App() {
           }}
         />
         <br />
-        <TextFormSection
+        <SingleLineTextForm
           label="要旨"
           id="abstract"
           onChange={(e) => {
@@ -253,7 +233,7 @@ function App() {
           }}
         />
         <br />
-        <TextFormSection
+        <SingleLineTextForm
           label="セクション1"
           id="section1"
           onChange={(e) => {
@@ -262,7 +242,7 @@ function App() {
         />
         <ImageFormSection id={0} onChange={onChangeImages} />
         <br />
-        <TextFormSection
+        <SingleLineTextForm
           label="セクション2"
           id="section2"
           onChange={(e) => {
@@ -271,7 +251,7 @@ function App() {
         />
         <ImageFormSection id={1} onChange={onChangeImages} />
         <br />
-        <TextFormSection
+        <SingleLineTextForm
           label="セクション3"
           id="section3"
           onChange={(e) => {
@@ -279,7 +259,7 @@ function App() {
           }}
         />
         <ImageFormSection id={2} onChange={onChangeImages} />
-        <TextFormSection
+        <SingleLineTextForm
           label="セクション4"
           id="section4"
           onChange={(e) => {
@@ -287,7 +267,7 @@ function App() {
           }}
         />
         <ImageFormSection id={3} onChange={onChangeImages} />
-        <TextFormSection
+        <SingleLineTextForm
           label="セクション5"
           id="section5"
           onChange={(e) => {
