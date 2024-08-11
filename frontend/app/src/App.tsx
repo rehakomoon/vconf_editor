@@ -3,6 +3,7 @@ import SingleLineTextForm from "./components/single-line-text-form";
 import MultiLineTextForm from "./components/multi-line-text-form";
 import ImageForm from "./components/image-form";
 import TeaserImageForm from "./components/teaser-image-form";
+import SectionForm from "./components/section-form";
 
 function App() {
   const [images, setImages] = useState<(File | undefined)[]>([]);
@@ -166,7 +167,7 @@ function App() {
           }}
         />
         <br />
-        <SingleLineTextForm
+        <SectionForm
           label="セクション1"
           id="section1"
           onChange={(e) => {
@@ -175,7 +176,7 @@ function App() {
         />
         <ImageForm id={0} onChange={onChangeImages} />
         <br />
-        <SingleLineTextForm
+        <SectionForm
           label="セクション2"
           id="section2"
           onChange={(e) => {
@@ -184,7 +185,7 @@ function App() {
         />
         <ImageForm id={1} onChange={onChangeImages} />
         <br />
-        <SingleLineTextForm
+        <SectionForm
           label="セクション3"
           id="section3"
           onChange={(e) => {
@@ -192,7 +193,7 @@ function App() {
           }}
         />
         <ImageForm id={2} onChange={onChangeImages} />
-        <SingleLineTextForm
+        <SectionForm
           label="セクション4"
           id="section4"
           onChange={(e) => {
@@ -200,7 +201,7 @@ function App() {
           }}
         />
         <ImageForm id={3} onChange={onChangeImages} />
-        <SingleLineTextForm
+        <SectionForm
           label="セクション5"
           id="section5"
           onChange={(e) => {
