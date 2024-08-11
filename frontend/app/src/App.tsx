@@ -1,26 +1,6 @@
 import React, { useState, ChangeEventHandler, FormEventHandler } from "react";
 import SingleLineTextForm from "./components/single-line-text-form";
-
-function MultiTextFormSection({
-  label,
-  id,
-  onChange,
-}: {
-  label: string;
-  id: string;
-  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
-}): JSX.Element {
-  return (
-    <>
-      <label className="label" htmlFor={id}>
-        {label}
-      </label>
-      <div>
-        <textarea id={id} name={label} rows={4} cols={50} onChange={onChange} />
-      </div>
-    </>
-  );
-}
+import MultiLineTextForm from "./components/multi-line-text-form";
 
 function ImageFormSection({
   id,
@@ -276,7 +256,7 @@ function App() {
         />
         <ImageFormSection id={4} onChange={onChangeImages} />
         <TeaserImageFormSection onChange={getTeaser} />
-        <MultiTextFormSection
+        <MultiLineTextForm
           label="リファレンス(複数行可)"
           id="reference"
           onChange={(e) => {
