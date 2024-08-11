@@ -2,28 +2,7 @@ import React, { useState, ChangeEventHandler, FormEventHandler } from "react";
 import SingleLineTextForm from "./components/single-line-text-form";
 import MultiLineTextForm from "./components/multi-line-text-form";
 import ImageForm from "./components/image-form";
-
-function TeaserImageFormSection({
-  onChange,
-}: {
-  onChange?: ChangeEventHandler<HTMLInputElement>;
-}): JSX.Element {
-  return (
-    <>
-      <label className="label" htmlFor="teaser">
-        ティザー画像
-      </label>
-      <div>
-        <input
-          id="teaser"
-          type="file"
-          accept="image/*,.png,.jpg,.jpeg,.gif"
-          onChange={onChange}
-        />
-      </div>
-    </>
-  );
-}
+import TeaserImageForm from "./components/teaser-image-form";
 
 function App() {
   const [images, setImages] = useState<(File | undefined)[]>([]);
@@ -229,7 +208,7 @@ function App() {
           }}
         />
         <ImageForm id={4} onChange={onChangeImages} />
-        <TeaserImageFormSection onChange={getTeaser} />
+        <TeaserImageForm onChange={getTeaser} />
         <MultiLineTextForm
           label="リファレンス(複数行可)"
           id="reference"
