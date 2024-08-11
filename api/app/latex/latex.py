@@ -110,7 +110,7 @@ async def typeset(
         body_text += figure_tail_texts[section_idx] + "\n\n"
     text = text.replace("<<<body>>>", body_text)
 
-    references = [ref.value for ref in paper.reference] 
+    references = [ref.value for ref in paper.reference]
     reference_text = "".join(
         f"\\bibitem{{ref{i}}} {ref}\n" for i, ref in enumerate(references)
     )
