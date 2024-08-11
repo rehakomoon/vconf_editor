@@ -1,33 +1,7 @@
 import React, { useState, ChangeEventHandler, FormEventHandler } from "react";
 import SingleLineTextForm from "./components/single-line-text-form";
 import MultiLineTextForm from "./components/multi-line-text-form";
-
-function ImageFormSection({
-  id,
-  onChange,
-}: {
-  id: number;
-  onChange?: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
-}): JSX.Element {
-  return (
-    <>
-      <label className="label" htmlFor={`img${id}`}>
-        画像{id + 1}
-      </label>
-      <div>
-        <input
-          id={`img${id}`}
-          type="file"
-          accept="image/*,.png,.jpg,.jpeg,.gif"
-          onChange={(e) => {
-            if (onChange === undefined) return;
-            onChange(id, e);
-          }}
-        />
-      </div>
-    </>
-  );
-}
+import ImageForm from "./components/image-form";
 
 function TeaserImageFormSection({
   onChange,
@@ -220,7 +194,7 @@ function App() {
             onChangeSections(0, e);
           }}
         />
-        <ImageFormSection id={0} onChange={onChangeImages} />
+        <ImageForm id={0} onChange={onChangeImages} />
         <br />
         <SingleLineTextForm
           label="セクション2"
@@ -229,7 +203,7 @@ function App() {
             onChangeSections(1, e);
           }}
         />
-        <ImageFormSection id={1} onChange={onChangeImages} />
+        <ImageForm id={1} onChange={onChangeImages} />
         <br />
         <SingleLineTextForm
           label="セクション3"
@@ -238,7 +212,7 @@ function App() {
             onChangeSections(2, e);
           }}
         />
-        <ImageFormSection id={2} onChange={onChangeImages} />
+        <ImageForm id={2} onChange={onChangeImages} />
         <SingleLineTextForm
           label="セクション4"
           id="section4"
@@ -246,7 +220,7 @@ function App() {
             onChangeSections(3, e);
           }}
         />
-        <ImageFormSection id={3} onChange={onChangeImages} />
+        <ImageForm id={3} onChange={onChangeImages} />
         <SingleLineTextForm
           label="セクション5"
           id="section5"
@@ -254,7 +228,7 @@ function App() {
             onChangeSections(4, e);
           }}
         />
-        <ImageFormSection id={4} onChange={onChangeImages} />
+        <ImageForm id={4} onChange={onChangeImages} />
         <TeaserImageFormSection onChange={getTeaser} />
         <MultiLineTextForm
           label="リファレンス(複数行可)"
