@@ -8,7 +8,7 @@ function TitleForm({
   onChangeTitle: (value: Title) => void;
 }): JSX.Element {
   return (
-    <>
+    <div>
       <label className="label">text</label>
       <input
         type="text"
@@ -17,7 +17,7 @@ function TitleForm({
           onChangeTitle({ text: e.target.value } as Title);
         }}
       />
-    </>
+    </div>
   );
 }
 
@@ -29,7 +29,7 @@ function AuthorForm({
   onChangeAuthor: (value: Author) => void;
 }): JSX.Element {
   return (
-    <>
+    <div>
       <label className="label">author</label>
       <input
         type="text"
@@ -38,7 +38,7 @@ function AuthorForm({
           onChangeAuthor({ text: e.target.value } as Author);
         }}
       />
-    </>
+    </div>
   );
 }
 
@@ -50,7 +50,7 @@ function TeaserForm({
   onChangeTeaser: (value: Teaser) => void;
 }): JSX.Element {
   return (
-    <>
+    <div>
       <label className="label">teaser</label>
       <input
         type="text"
@@ -59,7 +59,7 @@ function TeaserForm({
           onChangeTeaser({ caption: e.target.value } as Teaser);
         }}
       />
-    </>
+    </div>
   );
 }
 
@@ -71,7 +71,7 @@ function AbstractForm({
   onChangeAbstract: (value: Abstract) => void;
 }): JSX.Element {
   return (
-    <>
+    <div>
       <label className="label">abstract</label>
       <input
         type="text"
@@ -80,7 +80,7 @@ function AbstractForm({
           onChangeAbstract({ text: e.target.value } as Abstract);
         }}
       />
-    </>
+    </div>
   );
 }
 
@@ -175,7 +175,7 @@ function ReferenceFrom({
   onChangeReference: (value: Reference) => void;
 }): JSX.Element {
   return (
-    <>
+    <div>
       <label className="label">reference</label>
       <input
         type="text"
@@ -184,7 +184,7 @@ function ReferenceFrom({
           onChangeReference({ text: e.target.value } as Reference);
         }}
       />
-    </>
+    </div>
   );
 }
 
@@ -204,17 +204,11 @@ function App() {
   return (
     <div>
       <TitleForm title={title} onChangeTitle={setTitle} />
-      <br />
       <AuthorForm author={author} onChangeAuthor={setAuthor} />
-      <br />
       <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
-      <br />
       <AbstractForm abstract={abstract} onChangeAbstract={setAbstract} />
-      <br />
       <FiguresForm figures={figures} onChangeFigures={setFigures} />
-      <br />
       <SectionsForm sections={sections} onChangeSections={setSections} />
-      <br />
       <ReferenceFrom reference={reference} onChangeReference={setReference} />
     </div>
   );
