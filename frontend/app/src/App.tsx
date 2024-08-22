@@ -9,9 +9,12 @@ function TitleForm({
 }): JSX.Element {
   return (
     <div>
-      <label className="label">text</label>
+      <label className="label" htmlFor="title">
+        title
+      </label>
       <input
         type="text"
+        id="title"
         value={title?.text ?? ""}
         onChange={(e) => {
           onChangeTitle({ text: e.target.value } as Title);
@@ -30,9 +33,12 @@ function AuthorForm({
 }): JSX.Element {
   return (
     <div>
-      <label className="label">author</label>
+      <label className="label" htmlFor="author">
+        author
+      </label>
       <input
         type="text"
+        id="author"
         value={author?.text ?? ""}
         onChange={(e) => {
           onChangeAuthor({ text: e.target.value } as Author);
@@ -51,9 +57,12 @@ function TeaserForm({
 }): JSX.Element {
   return (
     <div>
-      <label className="label">teaser</label>
+      <label className="label" htmlFor="teaser">
+        teaser
+      </label>
       <input
         type="text"
+        id="teaser"
         value={teaser?.caption ?? ""}
         onChange={(e) => {
           onChangeTeaser({ caption: e.target.value } as Teaser);
@@ -72,9 +81,12 @@ function AbstractForm({
 }): JSX.Element {
   return (
     <div>
-      <label className="label">abstract</label>
+      <label className="label" htmlFor="abstract">
+        abstract
+      </label>
       <input
         type="text"
+        id="abstract"
         value={abstract?.text ?? ""}
         onChange={(e) => {
           onChangeAbstract({ text: e.target.value } as Abstract);
@@ -93,9 +105,12 @@ function FigureForm({
 }): JSX.Element {
   return (
     <div>
-      <label className="label">image</label>
+      <label className="label" htmlFor="figure">
+        image
+      </label>
       <input
         type="text"
+        id="figure"
         value={figure?.caption ?? ""}
         onChange={(e) => {
           onChangeFigure({
@@ -117,7 +132,9 @@ function FiguresForm({
 }): JSX.Element {
   return (
     <div>
-      <label className="label">images</label>
+      <label className="label" htmlFor="figures">
+        images
+      </label>
       <FigureForm
         figure={figures?.[0]}
         onChangeFigure={(value) => {
@@ -137,9 +154,12 @@ function SectionForm({
 }): JSX.Element {
   return (
     <div>
-      <label className="label">section</label>
+      <label className="label" htmlFor="section">
+        section
+      </label>
       <input
         type="text"
+        id="section"
         value={section?.title ?? ""}
         onChange={(e) => {
           onChangeSection({ title: e.target.value, text: "" } as Section);
@@ -158,7 +178,9 @@ function SectionsForm({
 }): JSX.Element {
   return (
     <div>
-      <label className="label">sections</label>
+      <label className="label" htmlFor="sections">
+        sections
+      </label>
       <SectionForm
         section={sections?.[0]}
         onChangeSection={(value) => onChangeSections([value])}
@@ -176,9 +198,12 @@ function ReferenceFrom({
 }): JSX.Element {
   return (
     <div>
-      <label className="label">reference</label>
+      <label className="label" htmlFor="reference">
+        reference
+      </label>
       <input
         type="text"
+        id="reference"
         value={reference?.text ?? ""}
         onChange={(e) => {
           onChangeReference({ text: e.target.value } as Reference);
@@ -203,13 +228,18 @@ function App() {
 
   return (
     <div>
-      <TitleForm title={title} onChangeTitle={setTitle} />
-      <AuthorForm author={author} onChangeAuthor={setAuthor} />
-      <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
-      <AbstractForm abstract={abstract} onChangeAbstract={setAbstract} />
-      <FiguresForm figures={figures} onChangeFigures={setFigures} />
-      <SectionsForm sections={sections} onChangeSections={setSections} />
-      <ReferenceFrom reference={reference} onChangeReference={setReference} />
+      <form className="box">
+        <TitleForm title={title} onChangeTitle={setTitle} />
+        <AuthorForm author={author} onChangeAuthor={setAuthor} />
+        <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
+        <AbstractForm abstract={abstract} onChangeAbstract={setAbstract} />
+        <FiguresForm figures={figures} onChangeFigures={setFigures} />
+        <SectionsForm sections={sections} onChangeSections={setSections} />
+        <ReferenceFrom reference={reference} onChangeReference={setReference} />
+        <button className="button is-primary" type="submit">
+          Submit
+        </button>
+      </form>
     </div>
   );
 }
