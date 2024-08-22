@@ -1,233 +1,216 @@
-import React, { useState, ChangeEventHandler, FormEventHandler } from "react";
-import SingleLineTextForm from "./components/single-line-text-form";
-import MultiLineTextForm from "./components/multi-line-text-form";
-import ImageForm from "./components/image-form";
-import TeaserImageForm from "./components/teaser-image-form";
-import SectionForm from "./components/section-form";
+import React, { useState } from "react";
+
+function TitleForm({
+  title,
+  setTitle,
+}: {
+  title?: Title;
+  setTitle: (value: React.SetStateAction<Title | undefined>) => void;
+}): JSX.Element {
+  return (
+    <>
+      <label className="label">text</label>
+      <input
+        type="text"
+        value={title?.text ?? ""}
+        onChange={(e) => {
+          setTitle({ text: e.target.value } as Title);
+        }}
+      />
+    </>
+  );
+}
+
+function AuthorForm({
+  author,
+  setAuthor,
+}: {
+  author?: Author;
+  setAuthor: (value: React.SetStateAction<Author | undefined>) => void;
+}): JSX.Element {
+  return (
+    <>
+      <label className="label">author</label>
+      <input
+        type="text"
+        value={author?.text ?? ""}
+        onChange={(e) => {
+          setAuthor({ text: e.target.value } as Author);
+        }}
+      />
+    </>
+  );
+}
+
+function TeaserForm({
+  teaser,
+  setTeaser,
+}: {
+  teaser?: Teaser;
+  setTeaser: (value: React.SetStateAction<Teaser | undefined>) => void;
+}): JSX.Element {
+  return (
+    <>
+      <label className="label">teaser</label>
+      <input
+        type="text"
+        value={teaser?.caption ?? ""}
+        onChange={(e) => {
+          setTeaser({ caption: e.target.value } as Teaser);
+        }}
+      />
+    </>
+  );
+}
+
+function AbstractForm({
+  abstract,
+  setAbstract,
+}: {
+  abstract?: Abstract;
+  setAbstract: (value: React.SetStateAction<Abstract | undefined>) => void;
+}): JSX.Element {
+  return (
+    <>
+      <label className="label">abstract</label>
+      <input
+        type="text"
+        value={abstract?.text ?? ""}
+        onChange={(e) => {
+          setAbstract({ text: e.target.value } as Abstract);
+        }}
+      />
+    </>
+  );
+}
+
+function FigureForm({
+  figure,
+  onChangeFigure,
+}: {
+  figure?: Figure;
+  onChangeFigure?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}): JSX.Element {
+  return (
+    <div>
+      <label className="label">image</label>
+      <input
+        type="text"
+        value={figure?.caption ?? ""}
+        onChange={onChangeFigure}
+      />
+    </div>
+  );
+}
+
+function FiguresForm({
+  figures,
+  setFigures,
+}: {
+  figures: (Figure | undefined)[];
+  setFigures: (value: React.SetStateAction<(Figure | undefined)[]>) => void;
+}): JSX.Element {
+  return (
+    <div>
+      <label className="label">images</label>
+      <FigureForm
+        figure={figures?.[0]}
+        onChangeFigure={(e) => {
+          setFigures([{ section_index: 0, caption: e.target.value } as Figure]);
+        }}
+      />
+    </div>
+  );
+}
+
+function SectionForm({
+  section,
+  onChangeSection,
+}: {
+  section: Section;
+  onChangeSection?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}): JSX.Element {
+  return (
+    <div>
+      <label className="label">section</label>
+      <input
+        type="text"
+        value={section?.title ?? ""}
+        onChange={onChangeSection}
+      />
+    </div>
+  );
+}
+
+function SectionsForm({
+  sections,
+  setSections,
+}: {
+  sections: Section[];
+  setSections: (value: React.SetStateAction<Section[]>) => void;
+}): JSX.Element {
+  return (
+    <div>
+      <label className="label">sections</label>
+      <SectionForm
+        section={sections?.[0]}
+        onChangeSection={(e) => {
+          setSections([{ title: e.target.value, text: "" } as Section]);
+        }}
+      />
+    </div>
+  );
+}
+
+function ReferenceFrom({
+  reference,
+  setReference,
+}: {
+  reference?: Reference;
+  setReference: (value: React.SetStateAction<Reference | undefined>) => void;
+}): JSX.Element {
+  return (
+    <>
+      <label className="label">reference</label>
+      <input
+        type="text"
+        value={reference?.text ?? ""}
+        onChange={(e) => {
+          setReference({ text: e.target.value } as Reference);
+        }}
+      />
+    </>
+  );
+}
 
 function App() {
-  const [images, setImages] = useState<(File | undefined)[]>([]);
-  const [teaser, setTeaser] = useState<File | undefined>(undefined);
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [abstract, setAbstract] = useState("");
-  const [sections, setSections] = useState<String[]>([]);
-  const [reference, setReference] = useState("");
+  // input
+  const [title, setTitle] = useState<Title | undefined>(undefined);
+  const [author, setAuthor] = useState<Author | undefined>(undefined);
+  const [teaser, setTeaser] = useState<Teaser | undefined>(undefined);
+  const [abstract, setAbstract] = useState<Abstract | undefined>(undefined);
+  const [figures, setFigures] = useState<(Figure | undefined)[]>([]);
+  const [sections, setSections] = useState<Section[]>([]);
+  const [reference, setReference] = useState<Reference | undefined>(undefined);
+
+  // output
   const [pdfUrl, setPdfUrl] = useState("");
-
-  const onChangeImages = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (!e.target.files) return;
-
-    const img = e.target.files[0];
-    const newImages = Array(Math.max(index + 1, images.length)).fill(undefined);
-    images.forEach((v: File | undefined, i: number) => {
-      newImages[i] = v;
-    });
-    newImages[index] = img;
-    setImages(newImages);
-  };
-
-  const onChangeSections = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newSections = Array(Math.max(index + 1, sections.length)).fill("");
-    sections.forEach((v: String, i: number) => {
-      newSections[i] = v;
-    });
-    newSections[index] = e.target.value;
-    setSections(newSections);
-  };
-
-  const getTeaser: ChangeEventHandler<HTMLInputElement> = (e) => {
-    if (!e.target.files) return;
-    const img = e.target.files[0];
-    setTeaser(img);
-  };
-
-  const Submit = async () => {
-    const formdata = new FormData();
-    const references: PdfCreateRequestRefarence[] = reference
-      .split("\n")
-      .map((ref) => {
-        return { value: ref };
-      });
-    const json: PdfCreateRequest = {
-      title: title,
-      author: author,
-      abstract: abstract,
-      body: [
-        {
-          title: "section1",
-          text: "このセクション1では....",
-        },
-        {
-          title: "section2",
-          text: "このセクション2では....",
-        },
-      ],
-      teaser: {
-        caption: "teaser キャプション",
-      },
-      figure: [
-        {
-          section_index: 1,
-          caption: "fig caption 1",
-          position: "top",
-        },
-        {
-          section_index: 1,
-          caption: "fig caption 2",
-          position: "bottom",
-        },
-        {
-          section_index: 2,
-          caption: "fig caption 3",
-          position: "here",
-        },
-        {
-          section_index: 2,
-          caption: "fig caption 4",
-        },
-      ],
-      reference: references,
-    };
-    const json_data = JSON.stringify(json);
-    formdata.append("data", json_data);
-
-    images.forEach((image: File | undefined) => {
-      if (image === undefined) {
-        formdata.append("files", new Blob());
-      } else {
-        formdata.append("files", image);
-      }
-    });
-
-    if (formdata.get("files") === null) {
-      formdata.append("files", new Blob());
-    }
-
-    // ティザー画像指定
-    if (teaser !== undefined) {
-      formdata.append("teaser", teaser);
-    } else {
-      formdata.append("teaser", new Blob());
-    }
-
-    const requestOptions = {
-      method: "POST",
-      body: formdata,
-    };
-    const response = await fetch(
-      `http://` + import.meta.env.VITE_HOSTNAME + `:8000/v1/pdf/create`,
-      requestOptions
-    );
-
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      setPdfUrl(url);
-      console.log(url);
-    } else {
-      throw new Error("response was not ok");
-    }
-  };
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    Submit();
-  };
 
   return (
     <div>
-      <form className="box" onSubmit={handleSubmit}>
-        <SingleLineTextForm 
-          label="タイトル"
-          id="title"
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-        />
-        <br />
-        <SingleLineTextForm
-          label="著者"
-          id="author"
-          onChange={(e) => {
-            setAuthor(e.target.value);
-          }}
-        />
-        <br />
-        <SingleLineTextForm
-          label="要旨"
-          id="abstract"
-          onChange={(e) => {
-            setAbstract(e.target.value);
-          }}
-        />
-        <br />
-        <SectionForm
-          label="セクション1"
-          id="section1"
-          onChange={(e) => {
-            onChangeSections(0, e);
-          }}
-        />
-        <ImageForm id={0} onChange={onChangeImages} />
-        <br />
-        <SectionForm
-          label="セクション2"
-          id="section2"
-          onChange={(e) => {
-            onChangeSections(1, e);
-          }}
-        />
-        <ImageForm id={1} onChange={onChangeImages} />
-        <br />
-        <SectionForm
-          label="セクション3"
-          id="section3"
-          onChange={(e) => {
-            onChangeSections(2, e);
-          }}
-        />
-        <ImageForm id={2} onChange={onChangeImages} />
-        <SectionForm
-          label="セクション4"
-          id="section4"
-          onChange={(e) => {
-            onChangeSections(3, e);
-          }}
-        />
-        <ImageForm id={3} onChange={onChangeImages} />
-        <SectionForm
-          label="セクション5"
-          id="section5"
-          onChange={(e) => {
-            onChangeSections(4, e);
-          }}
-        />
-        <ImageForm id={4} onChange={onChangeImages} />
-        <TeaserImageForm onChange={getTeaser} />
-        <MultiLineTextForm
-          label="リファレンス(複数行可)"
-          id="reference"
-          onChange={(e) => {
-            setReference(e.target.value);
-          }}
-        />
-        <br />
-        <button className="button is-primary" type="submit">
-          Submit
-        </button>
-      </form>
-      {pdfUrl && (
-        <iframe
-          src={pdfUrl}
-          style={{ width: "100%", height: "500px" }}
-        ></iframe>
-      )}
+      <TitleForm title={title} setTitle={setTitle} />
+      <br />
+      <AuthorForm author={author} setAuthor={setAuthor} />
+      <br />
+      <TeaserForm teaser={teaser} setTeaser={setTeaser} />
+      <br />
+      <AbstractForm abstract={abstract} setAbstract={setAbstract} />
+      <br />
+      <FiguresForm figures={figures} setFigures={setFigures} />
+      <br />
+      <SectionsForm sections={sections} setSections={setSections} />
+      <br />
+      <ReferenceFrom reference={reference} setReference={setReference} />
     </div>
   );
 }
