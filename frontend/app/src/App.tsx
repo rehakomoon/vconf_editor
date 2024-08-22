@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 function TitleForm({
   title,
-  setTitle,
+  onChangeTitle,
 }: {
   title?: Title;
-  setTitle: (value: React.SetStateAction<Title | undefined>) => void;
+  onChangeTitle: (value: Title) => void;
 }): JSX.Element {
   return (
     <>
@@ -14,7 +14,7 @@ function TitleForm({
         type="text"
         value={title?.text ?? ""}
         onChange={(e) => {
-          setTitle({ text: e.target.value } as Title);
+          onChangeTitle({ text: e.target.value } as Title);
         }}
       />
     </>
@@ -23,10 +23,10 @@ function TitleForm({
 
 function AuthorForm({
   author,
-  setAuthor,
+  onChangeAuthor,
 }: {
   author?: Author;
-  setAuthor: (value: React.SetStateAction<Author | undefined>) => void;
+  onChangeAuthor: (value: Author) => void;
 }): JSX.Element {
   return (
     <>
@@ -35,7 +35,7 @@ function AuthorForm({
         type="text"
         value={author?.text ?? ""}
         onChange={(e) => {
-          setAuthor({ text: e.target.value } as Author);
+          onChangeAuthor({ text: e.target.value } as Author);
         }}
       />
     </>
@@ -44,10 +44,10 @@ function AuthorForm({
 
 function TeaserForm({
   teaser,
-  setTeaser,
+  onChangeTeaser,
 }: {
   teaser?: Teaser;
-  setTeaser: (value: React.SetStateAction<Teaser | undefined>) => void;
+  onChangeTeaser: (value: Teaser) => void;
 }): JSX.Element {
   return (
     <>
@@ -56,7 +56,7 @@ function TeaserForm({
         type="text"
         value={teaser?.caption ?? ""}
         onChange={(e) => {
-          setTeaser({ caption: e.target.value } as Teaser);
+          onChangeTeaser({ caption: e.target.value } as Teaser);
         }}
       />
     </>
@@ -65,10 +65,10 @@ function TeaserForm({
 
 function AbstractForm({
   abstract,
-  setAbstract,
+  onChangeAbstract,
 }: {
   abstract?: Abstract;
-  setAbstract: (value: React.SetStateAction<Abstract | undefined>) => void;
+  onChangeAbstract: (value: Abstract) => void;
 }): JSX.Element {
   return (
     <>
@@ -77,7 +77,7 @@ function AbstractForm({
         type="text"
         value={abstract?.text ?? ""}
         onChange={(e) => {
-          setAbstract({ text: e.target.value } as Abstract);
+          onChangeAbstract({ text: e.target.value } as Abstract);
         }}
       />
     </>
@@ -89,7 +89,7 @@ function FigureForm({
   onChangeFigure,
 }: {
   figure?: Figure;
-  onChangeFigure?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeFigure: (value: Figure) => void;
 }): JSX.Element {
   return (
     <div>
@@ -97,7 +97,12 @@ function FigureForm({
       <input
         type="text"
         value={figure?.caption ?? ""}
-        onChange={onChangeFigure}
+        onChange={(e) => {
+          onChangeFigure({
+            section_index: 0,
+            caption: e.target.value,
+          } as Figure);
+        }}
       />
     </div>
   );
@@ -105,18 +110,18 @@ function FigureForm({
 
 function FiguresForm({
   figures,
-  setFigures,
+  onChangeFigures,
 }: {
   figures: (Figure | undefined)[];
-  setFigures: (value: React.SetStateAction<(Figure | undefined)[]>) => void;
+  onChangeFigures: (value: (Figure | undefined)[]) => void;
 }): JSX.Element {
   return (
     <div>
       <label className="label">images</label>
       <FigureForm
         figure={figures?.[0]}
-        onChangeFigure={(e) => {
-          setFigures([{ section_index: 0, caption: e.target.value } as Figure]);
+        onChangeFigure={(value) => {
+          onChangeFigures([value]);
         }}
       />
     </div>
@@ -128,7 +133,7 @@ function SectionForm({
   onChangeSection,
 }: {
   section: Section;
-  onChangeSection?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeSection: (value: Section) => void;
 }): JSX.Element {
   return (
     <div>
@@ -136,7 +141,9 @@ function SectionForm({
       <input
         type="text"
         value={section?.title ?? ""}
-        onChange={onChangeSection}
+        onChange={(e) => {
+          onChangeSection({ title: e.target.value, text: "" } as Section);
+        }}
       />
     </div>
   );
@@ -144,19 +151,17 @@ function SectionForm({
 
 function SectionsForm({
   sections,
-  setSections,
+  onChangeSections,
 }: {
   sections: Section[];
-  setSections: (value: React.SetStateAction<Section[]>) => void;
+  onChangeSections: (value: Section[]) => void;
 }): JSX.Element {
   return (
     <div>
       <label className="label">sections</label>
       <SectionForm
         section={sections?.[0]}
-        onChangeSection={(e) => {
-          setSections([{ title: e.target.value, text: "" } as Section]);
-        }}
+        onChangeSection={(value) => onChangeSections([value])}
       />
     </div>
   );
@@ -164,10 +169,10 @@ function SectionsForm({
 
 function ReferenceFrom({
   reference,
-  setReference,
+  onChangeReference,
 }: {
   reference?: Reference;
-  setReference: (value: React.SetStateAction<Reference | undefined>) => void;
+  onChangeReference: (value: Reference) => void;
 }): JSX.Element {
   return (
     <>
@@ -176,7 +181,7 @@ function ReferenceFrom({
         type="text"
         value={reference?.text ?? ""}
         onChange={(e) => {
-          setReference({ text: e.target.value } as Reference);
+          onChangeReference({ text: e.target.value } as Reference);
         }}
       />
     </>
@@ -198,19 +203,19 @@ function App() {
 
   return (
     <div>
-      <TitleForm title={title} setTitle={setTitle} />
+      <TitleForm title={title} onChangeTitle={setTitle} />
       <br />
-      <AuthorForm author={author} setAuthor={setAuthor} />
+      <AuthorForm author={author} onChangeAuthor={setAuthor} />
       <br />
-      <TeaserForm teaser={teaser} setTeaser={setTeaser} />
+      <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
       <br />
-      <AbstractForm abstract={abstract} setAbstract={setAbstract} />
+      <AbstractForm abstract={abstract} onChangeAbstract={setAbstract} />
       <br />
-      <FiguresForm figures={figures} setFigures={setFigures} />
+      <FiguresForm figures={figures} onChangeFigures={setFigures} />
       <br />
-      <SectionsForm sections={sections} setSections={setSections} />
+      <SectionsForm sections={sections} onChangeSections={setSections} />
       <br />
-      <ReferenceFrom reference={reference} setReference={setReference} />
+      <ReferenceFrom reference={reference} onChangeReference={setReference} />
     </div>
   );
 }
