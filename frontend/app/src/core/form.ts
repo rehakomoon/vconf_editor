@@ -1,13 +1,3 @@
-type PdfCreateRequest2 = {
-  title: string;
-  author: string;
-  abstract: string;
-  body: PdfCreateRequestSection[];
-  teaser?: PdfCreateRequestTeaser;
-  figure: PdfCreateRequestFigure[];
-  reference: PdfCreateRequestRefarence[];
-};
-
 type Title = {
   text: string;
 }
