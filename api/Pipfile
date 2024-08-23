@@ -24,3 +24,4 @@ python_full_version = "3.11.3"
 [scripts]
 format = "sh -c 'black . && isort .'"
 lint = "pflake8 ."
+test = "python -m pytest test/"

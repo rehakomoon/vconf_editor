@@ -6,6 +6,12 @@
 pipenv sync --dev
 ```
 
+### testの実行方法
+
+```sh
+pipenv run test
+```
+
 ### linter, formatter のかけ方
 
 ```sh
