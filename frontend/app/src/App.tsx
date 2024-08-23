@@ -140,7 +140,7 @@ function App() {
     } else {
       throw new Error("response was not ok");
     }
-  }
+  };
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
