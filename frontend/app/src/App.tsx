@@ -62,10 +62,21 @@ function TeaserForm({
       </label>
       <input
         type="text"
-        id="teaser"
+        id="teaser_caption"
         value={teaser?.caption ?? ""}
         onChange={(e) => {
           onChangeTeaser({ caption: e.target.value } as Teaser);
+        }}
+      />
+      <br />
+      <input
+        id="teaser_image"
+        type="file"
+        accept="image/*,.png,.jpg,.jpeg,.gif"
+        onChange={(e) => {
+          if (!e.target.files) return;
+          const img = e.target.files[0];
+          onChangeTeaser({ caption: teaser?.caption ?? "", image: img });
         }}
       />
     </div>
@@ -98,28 +109,48 @@ function AbstractForm({
 
 function FigureForm({
   figure,
+  index,
   onChangeFigure,
 }: {
   figure?: Figure;
+  index: number;
   onChangeFigure: (value: Figure) => void;
 }): JSX.Element {
-  return (
+  return figure ? (
     <div>
       <label className="label" htmlFor="figure">
-        image
+        {`figure${index + 1}`}
+      </label>
+      <br />
+      <label className="label" htmlFor="figure">
+        caption
       </label>
       <input
         type="text"
-        id="figure"
+        id={`figure${index}_text`}
         value={figure?.caption ?? ""}
         onChange={(e) => {
-          onChangeFigure({
-            section_index: 0,
-            caption: e.target.value,
-          } as Figure);
+          var newFigure = figure;
+          newFigure.caption = e.target.value;
+          onChangeFigure(newFigure);
+        }}
+      />
+      <br />
+      <input
+        id={`figure${index}_image`}
+        type="file"
+        accept="image/*,.png,.jpg,.jpeg,.gif"
+        onChange={(e) => {
+          if (figure === undefined) return;
+          if (!e.target.files) return;
+          var newFigure = figure;
+          newFigure.image = e.target.files[0];
+          onChangeFigure(newFigure);
         }}
       />
     </div>
+  ) : (
+    <></>
   );
 }
 
@@ -137,6 +168,7 @@ function FiguresForm({
       </label>
       <FigureForm
         figure={figures?.[0]}
+        index={0}
         onChangeFigure={(value) => {
           onChangeFigures([value]);
         }}
@@ -147,25 +179,45 @@ function FiguresForm({
 
 function SectionForm({
   section,
+  index,
   onChangeSection,
 }: {
   section: Section;
+  index: number;
   onChangeSection: (value: Section) => void;
 }): JSX.Element {
-  return (
+  return section ? (
     <div>
       <label className="label" htmlFor="section">
-        section
+        {`section${index + 1}`}
       </label>
       <input
         type="text"
-        id="section"
+        id={`section${index}_title`}
         value={section?.title ?? ""}
         onChange={(e) => {
-          onChangeSection({ title: e.target.value, text: "" } as Section);
+          onChangeSection({
+            title: e.target.value,
+            text: section.text,
+          } as Section);
+        }}
+      />
+      <textarea
+        id={`section${index}_text`}
+        name={`section${index}_text`}
+        rows={4}
+        cols={50}
+        value={section?.text ?? ""}
+        onChange={(e) => {
+          onChangeSection({
+            title: section.title,
+            text: e.target.value,
+          } as Section);
         }}
       />
     </div>
+  ) : (
+    <></>
   );
 }
 
@@ -183,6 +235,7 @@ function SectionsForm({
       </label>
       <SectionForm
         section={sections?.[0]}
+        index={0}
         onChangeSection={(value) => onChangeSections([value])}
       />
     </div>
@@ -201,9 +254,11 @@ function ReferenceFrom({
       <label className="label" htmlFor="reference">
         reference
       </label>
-      <input
-        type="text"
+      <textarea
         id="reference"
+        name="reference"
+        rows={4}
+        cols={50}
         value={reference?.text ?? ""}
         onChange={(e) => {
           onChangeReference({ text: e.target.value } as Reference);
