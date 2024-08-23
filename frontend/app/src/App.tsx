@@ -9,6 +9,39 @@ import {
   TitleForm,
 } from "./components/form";
 
+const ConvertReference = (
+  reference: Reference | undefined
+): PdfCreateRequestRefarence[] => {
+  if (reference === undefined) return [];
+  return reference.text.split("\n").map((ref) => {
+    return { value: ref };
+  });
+};
+
+const ConvertTeaser = (
+  teaser: Teaser | undefined
+): PdfCreateRequestTeaser | undefined => {
+  if (teaser === undefined) return undefined;
+  return {
+    caption: teaser.caption,
+  };
+};
+
+const ConvertSection = (section: Section): PdfCreateRequestSection => {
+  return {
+    title: section.title,
+    text: section.text,
+  };
+};
+
+const ConvertFigure = (figure: Figure): PdfCreateRequestFigure => {
+  return {
+    section_index: figure.section_index,
+    caption: figure.caption,
+    position: figure?.position,
+  };
+};
+
 const CreateFormData = ({
   title,
   author,
@@ -27,50 +60,14 @@ const CreateFormData = ({
   reference?: Reference;
 }): FormData => {
   const formdata = new FormData();
-  const references: PdfCreateRequestRefarence[] = reference
-    ? reference.text.split("\n").map((ref) => {
-        return { value: ref };
-      })
-    : [];
   const json: PdfCreateRequest = {
     title: title?.text ?? "",
     author: author?.text ?? "",
     abstract: abstract?.text ?? "",
-    body: [
-      {
-        title: "section1",
-        text: "このセクション1では....",
-      },
-      {
-        title: "section2",
-        text: "このセクション2では....",
-      },
-    ],
-    teaser: {
-      caption: "teaser キャプション",
-    },
-    figure: [
-      {
-        section_index: 1,
-        caption: "fig caption 1",
-        position: "top",
-      },
-      {
-        section_index: 1,
-        caption: "fig caption 2",
-        position: "bottom",
-      },
-      {
-        section_index: 2,
-        caption: "fig caption 3",
-        position: "here",
-      },
-      {
-        section_index: 2,
-        caption: "fig caption 4",
-      },
-    ],
-    reference: references,
+    body: sections.map(ConvertSection),
+    teaser: ConvertTeaser(teaser),
+    figure: figures.map(ConvertFigure),
+    reference: ConvertReference(reference),
   };
   const json_data = JSON.stringify(json);
   formdata.append("data", json_data);
