@@ -103,9 +103,11 @@ function App() {
   const [author, setAuthor] = useState<Author | undefined>(undefined);
   const [teaser, setTeaser] = useState<Teaser | undefined>(undefined);
   const [abstract, setAbstract] = useState<Abstract | undefined>(undefined);
-  const [figures, setFigures] = useState<Figure[]>(Array(5).fill({} as Figure));
+  const [figures, setFigures] = useState<Figure[]>(
+    Array(5).fill({ caption: "", section_index: 0 } as Figure)
+  );
   const [sections, setSections] = useState<Section[]>(
-    Array(5).fill({} as Section)
+    Array(5).fill({ title: "", text: "" } as Section)
   );
   const [reference, setReference] = useState<Reference | undefined>(undefined);
 
