@@ -93,9 +93,11 @@ export function AbstractForm({
       <label className="label" htmlFor="abstract">
         abstract
       </label>
-      <input
-        type="text"
+      <textarea
         id="abstract"
+        name="abstract"
+        rows={4}
+        cols={50}
         value={abstract?.text ?? ""}
         onChange={(e) => {
           onChangeAbstract({ text: e.target.value } as Abstract);
@@ -123,9 +125,10 @@ function FigureForm({
       <label className="label" htmlFor="figure">
         caption
       </label>
-      <input
-        type="text"
+      <textarea
         id={`figure${index}_text`}
+        rows={2}
+        cols={50}
         value={figure?.caption ?? ""}
         onChange={(e) => {
           onChangeFigure({
