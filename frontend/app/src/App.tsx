@@ -72,6 +72,7 @@ const CreateFormData = ({
   const json_data = JSON.stringify(json);
   formdata.append("data", json_data);
 
+  // 画像を添付
   figures.forEach((figure: Figure) => {
     if (figure.image === undefined) {
       formdata.append("files", new Blob());
@@ -80,6 +81,7 @@ const CreateFormData = ({
     }
   });
 
+  // 一枚も画像がなくても、空の画像が最低1枚必要
   if (formdata.get("files") === null) {
     formdata.append("files", new Blob());
   }
