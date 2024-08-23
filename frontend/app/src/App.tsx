@@ -112,11 +112,11 @@ function FigureForm({
   index,
   onChangeFigure,
 }: {
-  figure?: Figure;
+  figure: Figure;
   index: number;
   onChangeFigure: (value: Figure) => void;
 }): JSX.Element {
-  return figure ? (
+  return (
     <div>
       <label className="label" htmlFor="figure">
         {`figure${index + 1}`}
@@ -130,9 +130,12 @@ function FigureForm({
         id={`figure${index}_text`}
         value={figure?.caption ?? ""}
         onChange={(e) => {
-          var newFigure = figure;
-          newFigure.caption = e.target.value;
-          onChangeFigure(newFigure);
+          onChangeFigure({
+            section_index: figure.section_index,
+            caption: e.target.value,
+            position: figure.position,
+            image: figure.image,
+          } as Figure);
         }}
       />
       <br />
@@ -141,16 +144,16 @@ function FigureForm({
         type="file"
         accept="image/*,.png,.jpg,.jpeg,.gif"
         onChange={(e) => {
-          if (figure === undefined) return;
           if (!e.target.files) return;
-          var newFigure = figure;
-          newFigure.image = e.target.files[0];
-          onChangeFigure(newFigure);
+          onChangeFigure({
+            section_index: figure.section_index,
+            caption: figure.caption,
+            position: figure.position,
+            image: e.target.files[0],
+          } as Figure);
         }}
       />
     </div>
-  ) : (
-    <></>
   );
 }
 
@@ -158,21 +161,27 @@ function FiguresForm({
   figures,
   onChangeFigures,
 }: {
-  figures: (Figure | undefined)[];
-  onChangeFigures: (value: (Figure | undefined)[]) => void;
+  figures: Figure[];
+  onChangeFigures: (value: Figure[]) => void;
 }): JSX.Element {
   return (
     <div>
       <label className="label" htmlFor="figures">
         images
       </label>
-      <FigureForm
-        figure={figures?.[0]}
-        index={0}
-        onChangeFigure={(value) => {
-          onChangeFigures([value]);
-        }}
-      />
+      {figures.map((figure, index) => {
+        return (
+          <FigureForm
+            figure={figure}
+            index={index}
+            onChangeFigure={(value) => {
+              const newFigures = [...figures];
+              newFigures[index] = value;
+              onChangeFigures(newFigures);
+            }}
+          />
+        );
+      })}
     </div>
   );
 }
@@ -186,7 +195,7 @@ function SectionForm({
   index: number;
   onChangeSection: (value: Section) => void;
 }): JSX.Element {
-  return section ? (
+  return (
     <div>
       <label className="label" htmlFor="section">
         {`section${index + 1}`}
@@ -216,8 +225,6 @@ function SectionForm({
         }}
       />
     </div>
-  ) : (
-    <></>
   );
 }
 
@@ -233,11 +240,19 @@ function SectionsForm({
       <label className="label" htmlFor="sections">
         sections
       </label>
-      <SectionForm
-        section={sections?.[0]}
-        index={0}
-        onChangeSection={(value) => onChangeSections([value])}
-      />
+      {sections.map((section, index) => {
+        return (
+          <SectionForm
+            section={section}
+            index={index}
+            onChangeSection={(value) => {
+              const newSections = [...sections];
+              newSections[index] = value;
+              onChangeSections(newSections);
+            }}
+          />
+        );
+      })}
     </div>
   );
 }
@@ -274,8 +289,10 @@ function App() {
   const [author, setAuthor] = useState<Author | undefined>(undefined);
   const [teaser, setTeaser] = useState<Teaser | undefined>(undefined);
   const [abstract, setAbstract] = useState<Abstract | undefined>(undefined);
-  const [figures, setFigures] = useState<(Figure | undefined)[]>([]);
-  const [sections, setSections] = useState<Section[]>([]);
+  const [figures, setFigures] = useState<Figure[]>(Array(5).fill({} as Figure));
+  const [sections, setSections] = useState<Section[]>(
+    Array(5).fill({} as Section)
+  );
   const [reference, setReference] = useState<Reference | undefined>(undefined);
 
   // output
