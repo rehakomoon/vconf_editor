@@ -9,6 +9,94 @@ import {
   TitleForm,
 } from "./components/form";
 
+const CreateFormData = ({
+  title,
+  author,
+  abstract,
+  teaser,
+  sections,
+  figures,
+  reference,
+}: {
+  title?: Title;
+  author?: Author;
+  abstract?: Abstract;
+  teaser?: Teaser;
+  figures: Figure[];
+  sections: Section[];
+  reference?: Reference;
+}): FormData => {
+  const formdata = new FormData();
+  const references: PdfCreateRequestRefarence[] = reference
+    ? reference.text.split("\n").map((ref) => {
+        return { value: ref };
+      })
+    : [];
+  const json: PdfCreateRequest = {
+    title: title?.text ?? "",
+    author: author?.text ?? "",
+    abstract: abstract?.text ?? "",
+    body: [
+      {
+        title: "section1",
+        text: "このセクション1では....",
+      },
+      {
+        title: "section2",
+        text: "このセクション2では....",
+      },
+    ],
+    teaser: {
+      caption: "teaser キャプション",
+    },
+    figure: [
+      {
+        section_index: 1,
+        caption: "fig caption 1",
+        position: "top",
+      },
+      {
+        section_index: 1,
+        caption: "fig caption 2",
+        position: "bottom",
+      },
+      {
+        section_index: 2,
+        caption: "fig caption 3",
+        position: "here",
+      },
+      {
+        section_index: 2,
+        caption: "fig caption 4",
+      },
+    ],
+    reference: references,
+  };
+  const json_data = JSON.stringify(json);
+  formdata.append("data", json_data);
+
+  figures.forEach((figure: Figure) => {
+    if (figure.image === undefined) {
+      formdata.append("files", new Blob());
+    } else {
+      formdata.append("files", figure.image);
+    }
+  });
+
+  if (formdata.get("files") === null) {
+    formdata.append("files", new Blob());
+  }
+
+  // ティザー画像指定
+  if (teaser?.image !== undefined) {
+    formdata.append("teaser", teaser.image);
+  } else {
+    formdata.append("teaser", new Blob());
+  }
+
+  return formdata;
+};
+
 function App() {
   // input
   const [title, setTitle] = useState<Title | undefined>(undefined);
@@ -25,74 +113,15 @@ function App() {
   const [pdfUrl, setPdfUrl] = useState("");
 
   const Submit = async () => {
-    const formdata = new FormData();
-    const references: PdfCreateRequestRefarence[] = reference
-      ? reference.text.split("\n").map((ref) => {
-          return { value: ref };
-        })
-      : [];
-    const json: PdfCreateRequest = {
-      title: title?.text ?? "",
-      author: author?.text ?? "",
-      abstract: abstract?.text ?? "",
-      body: [
-        {
-          title: "section1",
-          text: "このセクション1では....",
-        },
-        {
-          title: "section2",
-          text: "このセクション2では....",
-        },
-      ],
-      teaser: {
-        caption: "teaser キャプション",
-      },
-      figure: [
-        {
-          section_index: 1,
-          caption: "fig caption 1",
-          position: "top",
-        },
-        {
-          section_index: 1,
-          caption: "fig caption 2",
-          position: "bottom",
-        },
-        {
-          section_index: 2,
-          caption: "fig caption 3",
-          position: "here",
-        },
-        {
-          section_index: 2,
-          caption: "fig caption 4",
-        },
-      ],
-      reference: references,
-    };
-    const json_data = JSON.stringify(json);
-    formdata.append("data", json_data);
-
-    figures.forEach((figure: Figure) => {
-      if (figure.image === undefined) {
-        formdata.append("files", new Blob());
-      } else {
-        formdata.append("files", figure.image);
-      }
+    const formdata = CreateFormData({
+      title,
+      author,
+      teaser,
+      abstract,
+      figures,
+      sections,
+      reference,
     });
-
-    if (formdata.get("files") === null) {
-      formdata.append("files", new Blob());
-    }
-
-    // ティザー画像指定
-    if (teaser?.image !== undefined) {
-      formdata.append("teaser", teaser.image);
-    } else {
-      formdata.append("teaser", new Blob());
-    }
-
     const requestOptions = {
       method: "POST",
       body: formdata,
@@ -110,8 +139,9 @@ function App() {
     } else {
       throw new Error("response was not ok");
     }
-  };
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  }
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     Submit();
   };
