@@ -298,9 +298,101 @@ function App() {
   // output
   const [pdfUrl, setPdfUrl] = useState("");
 
+  const Submit = async () => {
+    const formdata = new FormData();
+    const references: PdfCreateRequestRefarence[] = reference
+      ? reference.text.split("\n").map((ref) => {
+          return { value: ref };
+        })
+      : [];
+    const json: PdfCreateRequest = {
+      title: title?.text ?? "",
+      author: author?.text ?? "",
+      abstract: abstract?.text ?? "",
+      body: [
+        {
+          title: "section1",
+          text: "このセクション1では....",
+        },
+        {
+          title: "section2",
+          text: "このセクション2では....",
+        },
+      ],
+      teaser: {
+        caption: "teaser キャプション",
+      },
+      figure: [
+        {
+          section_index: 1,
+          caption: "fig caption 1",
+          position: "top",
+        },
+        {
+          section_index: 1,
+          caption: "fig caption 2",
+          position: "bottom",
+        },
+        {
+          section_index: 2,
+          caption: "fig caption 3",
+          position: "here",
+        },
+        {
+          section_index: 2,
+          caption: "fig caption 4",
+        },
+      ],
+      reference: references,
+    };
+    const json_data = JSON.stringify(json);
+    formdata.append("data", json_data);
+
+    figures.forEach((figure: Figure) => {
+      if (figure.image === undefined) {
+        formdata.append("files", new Blob());
+      } else {
+        formdata.append("files", figure.image);
+      }
+    });
+
+    if (formdata.get("files") === null) {
+      formdata.append("files", new Blob());
+    }
+
+    // ティザー画像指定
+    if (teaser?.image !== undefined) {
+      formdata.append("teaser", teaser.image);
+    } else {
+      formdata.append("teaser", new Blob());
+    }
+
+    const requestOptions = {
+      method: "POST",
+      body: formdata,
+    };
+    const response = await fetch(
+      `http://` + import.meta.env.VITE_HOSTNAME + `:8000/v1/pdf/create`,
+      requestOptions
+    );
+
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      setPdfUrl(url);
+      console.log(url);
+    } else {
+      throw new Error("response was not ok");
+    }
+  };
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    Submit();
+  };
+
   return (
     <div>
-      <form className="box">
+      <form className="box" onSubmit={handleSubmit}>
         <TitleForm title={title} onChangeTitle={setTitle} />
         <AuthorForm author={author} onChangeAuthor={setAuthor} />
         <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
@@ -312,6 +404,12 @@ function App() {
           Submit
         </button>
       </form>
+      {pdfUrl && (
+        <iframe
+          src={pdfUrl}
+          style={{ width: "100%", height: "500px" }}
+        ></iframe>
+      )}
     </div>
   );
 }
