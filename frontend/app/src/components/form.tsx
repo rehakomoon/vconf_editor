@@ -1,3 +1,5 @@
+import React from "react";
+
 export function TitleForm({
   title,
   onChangeTitle,
@@ -111,16 +113,19 @@ function FigureForm({
   figure,
   index,
   onChangeFigure,
+  onClickRemoveButton,
 }: {
   figure: Figure;
   index: number;
   onChangeFigure: (value: Figure) => void;
+  onClickRemoveButton: React.MouseEventHandler<HTMLButtonElement>;
 }): JSX.Element {
   return (
     <div>
       <label className="label" htmlFor="figure">
         {`figure${index + 1}`}
       </label>
+      <button onClick={onClickRemoveButton}>削除</button>
       <br />
       <label className="label" htmlFor="figure">
         caption
@@ -194,6 +199,14 @@ export function FiguresForm({
               newFigures[index] = value;
               onChangeFigures(newFigures);
             }}
+            onClickRemoveButton={(e) => {
+              e.preventDefault();
+              const newFigures = [
+                ...figures.slice(0, index),
+                ...figures.slice(index + 1),
+              ];
+              onChangeFigures(newFigures);
+            }}
           />
         );
       })}
@@ -205,16 +218,20 @@ function SectionForm({
   section,
   index,
   onChangeSection,
+  onClickRemoveButton,
 }: {
   section: Section;
   index: number;
   onChangeSection: (value: Section) => void;
+  onClickRemoveButton: React.MouseEventHandler<HTMLButtonElement>;
 }): JSX.Element {
   return (
     <div>
       <label className="label" htmlFor="section">
         {`section${index + 1}`}
       </label>
+      <button onClick={onClickRemoveButton}>削除</button>
+      <br />
       <input
         type="text"
         id={`section${index}_title`}
@@ -277,6 +294,14 @@ export function SectionsForm({
             onChangeSection={(value) => {
               const newSections = [...sections];
               newSections[index] = value;
+              onChangeSections(newSections);
+            }}
+            onClickRemoveButton={(e) => {
+              e.preventDefault();
+              const newSections = [
+                ...sections.slice(0, index),
+                ...sections.slice(index + 1),
+              ];
               onChangeSections(newSections);
             }}
           />
