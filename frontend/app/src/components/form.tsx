@@ -170,6 +170,16 @@ export function FiguresForm({
       <label className="label" htmlFor="figures">
         images
       </label>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          const newFigures = [...figures];
+          newFigures.push({ caption: "", section_index: 0 } as Figure);
+          onChangeFigures(newFigures);
+        }}
+      >
+        追加
+      </button>
       {figures.map((figure, index) => {
         return (
           <FigureForm
@@ -241,6 +251,16 @@ export function SectionsForm({
       <label className="label" htmlFor="sections">
         sections
       </label>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          const newSections = [...sections];
+          newSections.push({ title: "", text: "" } as Section);
+          onChangeSections(newSections);
+        }}
+      >
+        追加
+      </button>
       {sections.map((section, index) => {
         return (
           <SectionForm
