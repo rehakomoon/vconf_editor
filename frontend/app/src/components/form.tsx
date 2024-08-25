@@ -182,8 +182,10 @@ export function FiguresForm({
         }
         onClick={(e) => {
           e.preventDefault();
-          const newFigures = [...figures];
-          newFigures.push({ caption: "", section_index: 0 } as Figure);
+          const newFigures = [
+            ...figures,
+            { caption: "", section_index: 0 } as Figure,
+          ];
           onChangeFigures(newFigures);
         }}
       >
@@ -279,8 +281,7 @@ export function SectionsForm({
         }
         onClick={(e) => {
           e.preventDefault();
-          const newSections = [...sections];
-          newSections.push({ title: "", text: "" } as Section);
+          const newSections = [...sections, { title: "", text: "" } as Section];
           onChangeSections(newSections);
         }}
       >
