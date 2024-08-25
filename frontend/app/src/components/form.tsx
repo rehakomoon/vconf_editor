@@ -171,6 +171,10 @@ export function FiguresForm({
         images
       </label>
       <button
+        disabled={
+          /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
+          figures.length >= 20
+        }
         onClick={(e) => {
           e.preventDefault();
           const newFigures = [...figures];
@@ -252,6 +256,10 @@ export function SectionsForm({
         sections
       </label>
       <button
+        disabled={
+          /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
+          sections.length >= 20
+        }
         onClick={(e) => {
           e.preventDefault();
           const newSections = [...sections];
