@@ -1,3 +1,5 @@
+import React from "react";
+
 export function TitleForm({
   title,
   onChangeTitle,
@@ -111,16 +113,19 @@ function FigureForm({
   figure,
   index,
   onChangeFigure,
+  onClickRemoveButton,
 }: {
   figure: Figure;
   index: number;
   onChangeFigure: (value: Figure) => void;
+  onClickRemoveButton: React.MouseEventHandler<HTMLButtonElement>;
 }): JSX.Element {
   return (
     <div>
       <label className="label" htmlFor="figure">
         {`figure${index + 1}`}
       </label>
+      <button onClick={onClickRemoveButton}>削除</button>
       <br />
       <label className="label" htmlFor="figure">
         caption
@@ -170,6 +175,22 @@ export function FiguresForm({
       <label className="label" htmlFor="figures">
         images
       </label>
+      <button
+        disabled={
+          /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
+          figures.length >= 20
+        }
+        onClick={(e) => {
+          e.preventDefault();
+          const newFigures = [
+            ...figures,
+            { caption: "", section_index: 0 } as Figure,
+          ];
+          onChangeFigures(newFigures);
+        }}
+      >
+        追加
+      </button>
       {figures.map((figure, index) => {
         return (
           <FigureForm
@@ -178,6 +199,14 @@ export function FiguresForm({
             onChangeFigure={(value) => {
               const newFigures = [...figures];
               newFigures[index] = value;
+              onChangeFigures(newFigures);
+            }}
+            onClickRemoveButton={(e) => {
+              e.preventDefault();
+              const newFigures = [
+                ...figures.slice(0, index),
+                ...figures.slice(index + 1),
+              ];
               onChangeFigures(newFigures);
             }}
           />
@@ -191,16 +220,20 @@ function SectionForm({
   section,
   index,
   onChangeSection,
+  onClickRemoveButton,
 }: {
   section: Section;
   index: number;
   onChangeSection: (value: Section) => void;
+  onClickRemoveButton: React.MouseEventHandler<HTMLButtonElement>;
 }): JSX.Element {
   return (
     <div>
       <label className="label" htmlFor="section">
         {`section${index + 1}`}
       </label>
+      <button onClick={onClickRemoveButton}>削除</button>
+      <br />
       <input
         type="text"
         id={`section${index}_title`}
@@ -241,6 +274,19 @@ export function SectionsForm({
       <label className="label" htmlFor="sections">
         sections
       </label>
+      <button
+        disabled={
+          /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
+          sections.length >= 20
+        }
+        onClick={(e) => {
+          e.preventDefault();
+          const newSections = [...sections, { title: "", text: "" } as Section];
+          onChangeSections(newSections);
+        }}
+      >
+        追加
+      </button>
       {sections.map((section, index) => {
         return (
           <SectionForm
@@ -249,6 +295,14 @@ export function SectionsForm({
             onChangeSection={(value) => {
               const newSections = [...sections];
               newSections[index] = value;
+              onChangeSections(newSections);
+            }}
+            onClickRemoveButton={(e) => {
+              e.preventDefault();
+              const newSections = [
+                ...sections.slice(0, index),
+                ...sections.slice(index + 1),
+              ];
               onChangeSections(newSections);
             }}
           />
