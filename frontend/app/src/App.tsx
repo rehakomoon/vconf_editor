@@ -158,8 +158,8 @@ function App() {
               <AuthorForm author={author} onChangeAuthor={setAuthor} />
               <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
               <AbstractForm abstract={abstract} onChangeAbstract={setAbstract} />
-              <FiguresForm figures={figures} onChangeFigures={setFigures} />
               <SectionsForm sections={sections} onChangeSections={setSections} />
+              <FiguresForm figures={figures} onChangeFigures={setFigures} />
               <ReferenceFrom reference={reference} onChangeReference={setReference} />
               <Button className="button is-primary" color="primary" variant="contained" type="submit">
                 Submit
