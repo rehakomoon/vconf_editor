@@ -151,16 +151,16 @@ function App() {
   return (
     <div>
       <Grid2 container spacing={4} display="flex" flexDirection="row">
-        <Grid2 display="flex" flexDirection="column" container spacing={3} size={{ xs: 12, md: 6 }}>
+        <Grid2 display="flex" flexDirection="column" container size={{ xs: 12, md: 6 }}>
           <Box component="form" className="box" onSubmit={handleSubmit}>
-            <TitleForm title={title} onChangeTitle={setTitle} />
-            <AuthorForm author={author} onChangeAuthor={setAuthor} />
-            <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
-            <AbstractForm abstract={abstract} onChangeAbstract={setAbstract} />
-            <FiguresForm figures={figures} onChangeFigures={setFigures} />
-            <SectionsForm sections={sections} onChangeSections={setSections} />
-            <ReferenceFrom reference={reference} onChangeReference={setReference} />
-            <Grid2 display="flex" flexDirection="column" container size={6}>
+            <Grid2 container spacing={2}>
+              <TitleForm title={title} onChangeTitle={setTitle} />
+              <AuthorForm author={author} onChangeAuthor={setAuthor} />
+              <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
+              <AbstractForm abstract={abstract} onChangeAbstract={setAbstract} />
+              <FiguresForm figures={figures} onChangeFigures={setFigures} />
+              <SectionsForm sections={sections} onChangeSections={setSections} />
+              <ReferenceFrom reference={reference} onChangeReference={setReference} />
               <Button className="button is-primary" color="primary" variant="contained" type="submit">
                 Submit
               </Button>
