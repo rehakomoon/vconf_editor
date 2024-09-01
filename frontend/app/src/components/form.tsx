@@ -140,7 +140,7 @@ function FigureForm({
   return (
     <Grid2 container size={12}>
       <Grid2 size={12}>
-        <FormLabel className="label" htmlFor="figure" style={{ fontSize: "1.0rem" }}>
+        <FormLabel className="label" htmlFor="figure" style={{ fontSize: "1.0rem", fontWeight: 700 }}>
           {`図${index + 1}`}
         </FormLabel>
         <Button variant="contained" onClick={onClickRemoveButton}>削除</Button>
@@ -260,7 +260,7 @@ function SectionForm({
   return (
     <Grid2 container size={12}>
       <Grid2 size={12}>
-        <FormLabel className="label" htmlFor="section" style={{ fontSize: "1.0rem" }}>
+        <FormLabel className="label" htmlFor="section" style={{ fontSize: "1.0rem", fontWeight: 700 }}>
           {`セクション${index + 1}`}
         </FormLabel>
         <Button
