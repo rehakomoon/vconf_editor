@@ -1,3 +1,4 @@
+import { Button, FormLabel, Grid2, OutlinedInput } from "@mui/material";
 import React from "react";
 
 export function TitleForm({
@@ -8,19 +9,24 @@ export function TitleForm({
   onChangeTitle: (value: Title) => void;
 }): JSX.Element {
   return (
-    <div>
-      <label className="label" htmlFor="title">
+    <Grid2 size={12}>
+      <FormLabel className="label" htmlFor="title" required>
         title
-      </label>
-      <input
+      </FormLabel>
+      <OutlinedInput
         type="text"
         id="title"
         value={title?.text ?? ""}
+        autoComplete="title"
+        placeholder="title"
+        size="small"
+        required
+        fullWidth
         onChange={(e) => {
           onChangeTitle({ text: e.target.value } as Title);
         }}
       />
-    </div>
+    </Grid2>
   );
 }
 
@@ -32,19 +38,22 @@ export function AuthorForm({
   onChangeAuthor: (value: Author) => void;
 }): JSX.Element {
   return (
-    <div>
-      <label className="label" htmlFor="author">
+    <Grid2 size={12}>
+      <FormLabel className="label" htmlFor="author" required>
         author
-      </label>
-      <input
+      </FormLabel>
+      <OutlinedInput
         type="text"
         id="author"
         value={author?.text ?? ""}
+        size="small"
+        required
+        fullWidth
         onChange={(e) => {
           onChangeAuthor({ text: e.target.value } as Author);
         }}
       />
-    </div>
+    </Grid2>
   );
 }
 
@@ -56,14 +65,17 @@ export function TeaserForm({
   onChangeTeaser: (value: Teaser) => void;
 }): JSX.Element {
   return (
-    <div>
-      <label className="label" htmlFor="teaser">
+    <Grid2 size={12}>
+      <FormLabel className="label" htmlFor="teaser">
         teaser
-      </label>
-      <input
+      </FormLabel>
+      <OutlinedInput
         type="text"
         id="teaser_caption"
         value={teaser?.caption ?? ""}
+        size="small"
+        required
+        fullWidth
         onChange={(e) => {
           onChangeTeaser({ caption: e.target.value } as Teaser);
         }}
@@ -79,7 +91,7 @@ export function TeaserForm({
           onChangeTeaser({ caption: teaser?.caption ?? "", image: img });
         }}
       />
-    </div>
+    </Grid2>
   );
 }
 
@@ -91,21 +103,24 @@ export function AbstractForm({
   onChangeAbstract: (value: Abstract) => void;
 }): JSX.Element {
   return (
-    <div>
-      <label className="label" htmlFor="abstract">
+    <Grid2 size={12}>
+      <FormLabel className="label" htmlFor="abstract" required>
         abstract
-      </label>
-      <textarea
+      </FormLabel>
+      <OutlinedInput
         id="abstract"
         name="abstract"
-        rows={4}
-        cols={50}
+        rows={3}
+        multiline
+        size="small"
+        required
+        fullWidth
         value={abstract?.text ?? ""}
         onChange={(e) => {
           onChangeAbstract({ text: e.target.value } as Abstract);
         }}
       />
-    </div>
+    </Grid2>
   );
 }
 
@@ -121,45 +136,51 @@ function FigureForm({
   onClickRemoveButton: React.MouseEventHandler<HTMLButtonElement>;
 }): JSX.Element {
   return (
-    <div>
-      <label className="label" htmlFor="figure">
-        {`figure${index + 1}`}
-      </label>
-      <button onClick={onClickRemoveButton}>削除</button>
-      <br />
-      <label className="label" htmlFor="figure">
-        caption
-      </label>
-      <textarea
-        id={`figure${index}_text`}
-        rows={2}
-        cols={50}
-        value={figure?.caption ?? ""}
-        onChange={(e) => {
-          onChangeFigure({
-            section_index: figure.section_index,
-            caption: e.target.value,
-            position: figure.position,
-            image: figure.image,
-          } as Figure);
-        }}
-      />
-      <br />
-      <input
-        id={`figure${index}_image`}
-        type="file"
-        accept="image/*,.png,.jpg,.jpeg,.gif"
-        onChange={(e) => {
-          if (!e.target.files) return;
-          onChangeFigure({
-            section_index: figure.section_index,
-            caption: figure.caption,
-            position: figure.position,
-            image: e.target.files[0],
-          } as Figure);
-        }}
-      />
-    </div>
+    <Grid2 container size={12}>
+      <Grid2 size={12}>
+        <FormLabel className="label" htmlFor="figure">
+          {`figure${index + 1}`}
+        </FormLabel>
+        <Button variant="contained" onClick={onClickRemoveButton}>削除</Button>
+      </Grid2>
+      <Grid2 size={12}>
+
+        <FormLabel className="label" htmlFor="figure">
+          caption
+        </FormLabel>
+        <OutlinedInput
+          id={`figure${index}_text`}
+          rows={2}
+          multiline
+          size="small"
+          fullWidth
+          value={figure?.caption ?? ""}
+          onChange={(e) => {
+            onChangeFigure({
+              section_index: figure.section_index,
+              caption: e.target.value,
+              position: figure.position,
+              image: figure.image,
+            } as Figure);
+          }}
+        />
+        <br />
+        <input
+          id={`figure${index}_image`}
+          type="file"
+          accept="image/*,.png,.jpg,.jpeg,.gif"
+          onChange={(e) => {
+            if (!e.target.files) return;
+            onChangeFigure({
+              section_index: figure.section_index,
+              caption: figure.caption,
+              position: figure.position,
+              image: e.target.files[0],
+            } as Figure);
+          }}
+        />
+      </Grid2>
+    </Grid2>
   );
 }
 
@@ -171,11 +192,12 @@ export function FiguresForm({
   onChangeFigures: (value: Figure[]) => void;
 }): JSX.Element {
   return (
-    <div>
-      <label className="label" htmlFor="figures">
+    <Grid2 container size={12}>
+      <FormLabel className="label" htmlFor="figures">
         images
-      </label>
-      <button
+      </FormLabel>
+      <Button
+        variant="contained"
         disabled={
           /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
           figures.length >= 20
@@ -190,7 +212,7 @@ export function FiguresForm({
         }}
       >
         追加
-      </button>
+      </Button>
       {figures.map((figure, index) => {
         return (
           <FigureForm
@@ -212,7 +234,7 @@ export function FiguresForm({
           />
         );
       })}
-    </div>
+    </Grid2>
   );
 }
 
@@ -228,37 +250,53 @@ function SectionForm({
   onClickRemoveButton: React.MouseEventHandler<HTMLButtonElement>;
 }): JSX.Element {
   return (
-    <div>
-      <label className="label" htmlFor="section">
-        {`section${index + 1}`}
-      </label>
-      <button onClick={onClickRemoveButton}>削除</button>
-      <br />
-      <input
-        type="text"
-        id={`section${index}_title`}
-        value={section?.title ?? ""}
-        onChange={(e) => {
-          onChangeSection({
-            title: e.target.value,
-            text: section.text,
-          } as Section);
-        }}
-      />
-      <textarea
-        id={`section${index}_text`}
-        name={`section${index}_text`}
-        rows={4}
-        cols={50}
-        value={section?.text ?? ""}
-        onChange={(e) => {
-          onChangeSection({
-            title: section.title,
-            text: e.target.value,
-          } as Section);
-        }}
-      />
-    </div>
+    <Grid2 container size={12}>
+      <Grid2 size={12}>
+        <FormLabel className="label" htmlFor="section">
+          {`section${index + 1}`}
+        </FormLabel>
+        <Button
+          variant="contained"
+          onClick={onClickRemoveButton}>削除</Button>
+      </Grid2>
+      <Grid2 size={12}>
+        <FormLabel>
+          タイトル
+        </FormLabel>
+        <OutlinedInput
+          type="text"
+          id={`section${index}_title`}
+          value={section?.title ?? ""}
+          size="small"
+          required
+          fullWidth
+          onChange={(e) => {
+            onChangeSection({
+              title: e.target.value,
+              text: section.text,
+            } as Section);
+          }}
+        />
+        <FormLabel>
+          本文
+        </FormLabel>
+        <OutlinedInput
+          id={`section${index}_text`}
+          name={`section${index}_text`}
+          rows={3}
+          multiline
+          size="small"
+          fullWidth
+          value={section?.text ?? ""}
+          onChange={(e) => {
+            onChangeSection({
+              title: section.title,
+              text: e.target.value,
+            } as Section);
+          }}
+        />
+      </Grid2>
+    </Grid2>
   );
 }
 
@@ -270,11 +308,12 @@ export function SectionsForm({
   onChangeSections: (value: Section[]) => void;
 }): JSX.Element {
   return (
-    <div>
-      <label className="label" htmlFor="sections">
+    <Grid2 container size={12}>
+      <FormLabel className="label" htmlFor="sections">
         sections
-      </label>
-      <button
+      </FormLabel>
+      <Button
+        variant="contained"
         disabled={
           /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
           sections.length >= 20
@@ -286,7 +325,7 @@ export function SectionsForm({
         }}
       >
         追加
-      </button>
+      </Button>
       {sections.map((section, index) => {
         return (
           <SectionForm
@@ -308,7 +347,7 @@ export function SectionsForm({
           />
         );
       })}
-    </div>
+    </Grid2>
   );
 }
 
@@ -320,20 +359,22 @@ export function ReferenceFrom({
   onChangeReference: (value: Reference) => void;
 }): JSX.Element {
   return (
-    <div>
-      <label className="label" htmlFor="reference">
+    <Grid2 size={12}>
+      <FormLabel className="label" htmlFor="reference">
         reference
-      </label>
-      <textarea
+      </FormLabel>
+      <OutlinedInput
         id="reference"
         name="reference"
-        rows={4}
-        cols={50}
+        rows={3}
+        multiline
+        size="small"
+        fullWidth
         value={reference?.text ?? ""}
         onChange={(e) => {
           onChangeReference({ text: e.target.value } as Reference);
         }}
       />
-    </div>
+    </Grid2>
   );
 }

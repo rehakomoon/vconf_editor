@@ -8,6 +8,7 @@ import {
   TeaserForm,
   TitleForm,
 } from "./components/form";
+import { Box, Button, Grid2 } from "@mui/material";
 
 const ConvertReference = (
   reference: Reference | undefined
@@ -149,18 +150,22 @@ function App() {
 
   return (
     <div>
-      <form className="box" onSubmit={handleSubmit}>
-        <TitleForm title={title} onChangeTitle={setTitle} />
-        <AuthorForm author={author} onChangeAuthor={setAuthor} />
-        <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
-        <AbstractForm abstract={abstract} onChangeAbstract={setAbstract} />
-        <FiguresForm figures={figures} onChangeFigures={setFigures} />
-        <SectionsForm sections={sections} onChangeSections={setSections} />
-        <ReferenceFrom reference={reference} onChangeReference={setReference} />
-        <button className="button is-primary" type="submit">
-          Submit
-        </button>
-      </form>
+      <Box component="form" className="box" onSubmit={handleSubmit}>
+        <Grid2 display="flex" flexDirection="column" container spacing={3} size={6}>
+          <TitleForm title={title} onChangeTitle={setTitle} />
+          <AuthorForm author={author} onChangeAuthor={setAuthor} />
+          <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
+          <AbstractForm abstract={abstract} onChangeAbstract={setAbstract} />
+          <FiguresForm figures={figures} onChangeFigures={setFigures} />
+          <SectionsForm sections={sections} onChangeSections={setSections} />
+          <ReferenceFrom reference={reference} onChangeReference={setReference} />
+          <Grid2 display="flex" flexDirection="column" container size={6}>
+            <Button className="button is-primary" color="primary" variant="contained" type="submit">
+              Submit
+            </Button>
+          </Grid2>
+        </Grid2>
+      </Box>
       {pdfUrl && (
         <iframe
           src={pdfUrl}
