@@ -8,7 +8,7 @@ import {
   TeaserForm,
   TitleForm,
 } from "./components/form";
-import { Box, Button, Grid2 } from "@mui/material";
+import { Box, Button, Grid2, Typography } from "@mui/material";
 
 const ConvertReference = (
   reference: Reference | undefined
@@ -150,28 +150,39 @@ function App() {
 
   return (
     <div>
-      <Box component="form" className="box" onSubmit={handleSubmit}>
-        <Grid2 display="flex" flexDirection="column" container spacing={3} size={6}>
-          <TitleForm title={title} onChangeTitle={setTitle} />
-          <AuthorForm author={author} onChangeAuthor={setAuthor} />
-          <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
-          <AbstractForm abstract={abstract} onChangeAbstract={setAbstract} />
-          <FiguresForm figures={figures} onChangeFigures={setFigures} />
-          <SectionsForm sections={sections} onChangeSections={setSections} />
-          <ReferenceFrom reference={reference} onChangeReference={setReference} />
-          <Grid2 display="flex" flexDirection="column" container size={6}>
-            <Button className="button is-primary" color="primary" variant="contained" type="submit">
-              Submit
-            </Button>
+      <Grid2 container spacing={4} display="flex" flexDirection="row">
+        <Grid2 display="flex" flexDirection="column" container spacing={3} size={{ xs: 12, md: 6 }}>
+          <Box component="form" className="box" onSubmit={handleSubmit}>
+            <TitleForm title={title} onChangeTitle={setTitle} />
+            <AuthorForm author={author} onChangeAuthor={setAuthor} />
+            <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
+            <AbstractForm abstract={abstract} onChangeAbstract={setAbstract} />
+            <FiguresForm figures={figures} onChangeFigures={setFigures} />
+            <SectionsForm sections={sections} onChangeSections={setSections} />
+            <ReferenceFrom reference={reference} onChangeReference={setReference} />
+            <Grid2 display="flex" flexDirection="column" container size={6}>
+              <Button className="button is-primary" color="primary" variant="contained" type="submit">
+                Submit
+              </Button>
+            </Grid2>
+          </Box>
+        </Grid2>
+        <Grid2 container size={{ xs: 12, md: 6 }} display="flex" flexDirection="column">
+          <Grid2 size={12}>
+            <Typography>
+              pdf出力結果
+            </Typography>
+          </Grid2>
+          <Grid2 size={12}>
+            {pdfUrl ? (
+              <iframe
+                src={pdfUrl}
+                style={{ width: "100%", height: "500px" }}
+              ></iframe>
+            ) : <Typography color="info">出力結果がありません</Typography>}
           </Grid2>
         </Grid2>
-      </Box>
-      {pdfUrl && (
-        <iframe
-          src={pdfUrl}
-          style={{ width: "100%", height: "500px" }}
-        ></iframe>
-      )}
+      </Grid2>
     </div>
   );
 }
