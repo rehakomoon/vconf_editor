@@ -247,11 +247,13 @@ export function FiguresForm({
 function SectionForm({
   section,
   index,
+  removable,
   onChangeSection,
   onClickRemoveButton,
 }: {
   section: Section;
   index: number;
+  removable: boolean;
   onChangeSection: (value: Section) => void;
   onClickRemoveButton: React.MouseEventHandler<HTMLButtonElement>;
 }): JSX.Element {
@@ -263,10 +265,14 @@ function SectionForm({
         </FormLabel>
         <Button
           variant="contained"
-          onClick={onClickRemoveButton}>削除</Button>
+          onClick={onClickRemoveButton}
+          disabled={!removable}
+        >
+          削除
+        </Button>
       </Grid2>
       <Grid2 size={12}>
-        <FormLabel className="label" htmlFor="section" style={{ fontSize: "1.0rem" }}>
+        <FormLabel className="label" htmlFor="section" required style={{ fontSize: "1.0rem" }}>
           タイトル
         </FormLabel>
         <OutlinedInput
@@ -283,7 +289,7 @@ function SectionForm({
             } as Section);
           }}
         />
-        <FormLabel className="label" htmlFor="section" style={{ fontSize: "1.0rem" }}>
+        <FormLabel className="label" htmlFor="section" required style={{ fontSize: "1.0rem" }}>
           本文
         </FormLabel>
         <OutlinedInput
@@ -293,6 +299,7 @@ function SectionForm({
           multiline
           size="small"
           fullWidth
+          required
           value={section?.text ?? ""}
           onChange={(e) => {
             onChangeSection({
@@ -337,6 +344,7 @@ export function SectionsForm({
           <SectionForm
             section={section}
             index={index}
+            removable={sections.length > 1}
             onChangeSection={(value) => {
               const newSections = [...sections];
               newSections[index] = value;
