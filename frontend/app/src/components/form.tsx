@@ -74,7 +74,6 @@ export function TeaserForm({
         id="teaser_caption"
         value={teaser?.caption ?? ""}
         size="small"
-        required
         fullWidth
         onChange={(e) => {
           onChangeTeaser({ caption: e.target.value } as Teaser);
