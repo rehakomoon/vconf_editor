@@ -1,4 +1,4 @@
-import { Button, FormLabel, Grid2, OutlinedInput } from "@mui/material";
+import { Button, FormLabel, Grid2, OutlinedInput, Typography } from "@mui/material";
 import React from "react";
 
 export function TitleForm({
@@ -10,8 +10,8 @@ export function TitleForm({
 }): JSX.Element {
   return (
     <Grid2 size={12}>
-      <FormLabel className="label" htmlFor="title" required>
-        title
+      <FormLabel className="label" htmlFor="title" required style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+        タイトル
       </FormLabel>
       <OutlinedInput
         type="text"
@@ -39,9 +39,12 @@ export function AuthorForm({
 }): JSX.Element {
   return (
     <Grid2 size={12}>
-      <FormLabel className="label" htmlFor="author" required>
-        author
+      <FormLabel className="label" htmlFor="author" required style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+        著者
       </FormLabel>
+      <Typography color="gray" fontSize="0.8rem">
+        筆頭著者には 名前の後にアスタリクス(*) をつけてください
+      </Typography>
       <OutlinedInput
         type="text"
         id="author"
@@ -66,8 +69,8 @@ export function TeaserForm({
 }): JSX.Element {
   return (
     <Grid2 size={12}>
-      <FormLabel className="label" htmlFor="teaser">
-        teaser
+      <FormLabel className="label" htmlFor="teaser" style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+        ティザー画像
       </FormLabel>
       <OutlinedInput
         type="text"
@@ -103,8 +106,8 @@ export function AbstractForm({
 }): JSX.Element {
   return (
     <Grid2 size={12}>
-      <FormLabel className="label" htmlFor="abstract" required>
-        abstract
+      <FormLabel className="label" htmlFor="abstract" required style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+        要約
       </FormLabel>
       <OutlinedInput
         id="abstract"
@@ -137,15 +140,14 @@ function FigureForm({
   return (
     <Grid2 container size={12}>
       <Grid2 size={12}>
-        <FormLabel className="label" htmlFor="figure">
-          {`figure${index + 1}`}
+        <FormLabel className="label" htmlFor="figure" style={{ fontSize: "1.0rem" }}>
+          {`図${index + 1}`}
         </FormLabel>
         <Button variant="contained" onClick={onClickRemoveButton}>削除</Button>
       </Grid2>
       <Grid2 size={12}>
-
-        <FormLabel className="label" htmlFor="figure">
-          caption
+        <FormLabel className="label" htmlFor="figure" required style={{ fontSize: "1.0rem" }}>
+          キャプション
         </FormLabel>
         <OutlinedInput
           id={`figure${index}_text`}
@@ -153,6 +155,7 @@ function FigureForm({
           multiline
           size="small"
           fullWidth
+          required
           value={figure?.caption ?? ""}
           onChange={(e) => {
             onChangeFigure({
@@ -163,10 +166,14 @@ function FigureForm({
             } as Figure);
           }}
         />
+        <FormLabel className="label" htmlFor="figure" required style={{ fontSize: "1.0rem" }}>
+          画像ファイル
+        </FormLabel>
         <br />
         <input
           id={`figure${index}_image`}
           type="file"
+          required
           accept="image/*,.png,.jpg,.jpeg,.gif"
           onChange={(e) => {
             if (!e.target.files) return;
@@ -192,8 +199,8 @@ export function FiguresForm({
 }): JSX.Element {
   return (
     <Grid2 container size={12}>
-      <FormLabel className="label" htmlFor="figures">
-        images
+      <FormLabel className="label" htmlFor="figures" style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+        添付図
       </FormLabel>
       <Button
         variant="contained"
@@ -210,7 +217,7 @@ export function FiguresForm({
           onChangeFigures(newFigures);
         }}
       >
-        追加
+        画像を追加する
       </Button>
       {figures.map((figure, index) => {
         return (
@@ -251,15 +258,15 @@ function SectionForm({
   return (
     <Grid2 container size={12}>
       <Grid2 size={12}>
-        <FormLabel className="label" htmlFor="section">
-          {`section${index + 1}`}
+        <FormLabel className="label" htmlFor="section" style={{ fontSize: "1.0rem" }}>
+          {`セクション${index + 1}`}
         </FormLabel>
         <Button
           variant="contained"
           onClick={onClickRemoveButton}>削除</Button>
       </Grid2>
       <Grid2 size={12}>
-        <FormLabel>
+        <FormLabel className="label" htmlFor="section" style={{ fontSize: "1.0rem" }}>
           タイトル
         </FormLabel>
         <OutlinedInput
@@ -276,7 +283,7 @@ function SectionForm({
             } as Section);
           }}
         />
-        <FormLabel>
+        <FormLabel className="label" htmlFor="section" style={{ fontSize: "1.0rem" }}>
           本文
         </FormLabel>
         <OutlinedInput
@@ -308,8 +315,8 @@ export function SectionsForm({
 }): JSX.Element {
   return (
     <Grid2 container size={12}>
-      <FormLabel className="label" htmlFor="sections">
-        sections
+      <FormLabel className="label" htmlFor="section" required style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+        本文
       </FormLabel>
       <Button
         variant="contained"
@@ -323,7 +330,7 @@ export function SectionsForm({
           onChangeSections(newSections);
         }}
       >
-        追加
+        セクションを追加する
       </Button>
       {sections.map((section, index) => {
         return (
@@ -359,8 +366,8 @@ export function ReferenceFrom({
 }): JSX.Element {
   return (
     <Grid2 size={12}>
-      <FormLabel className="label" htmlFor="reference">
-        reference
+      <FormLabel className="label" htmlFor="reference" style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+        引用文献
       </FormLabel>
       <OutlinedInput
         id="reference"
