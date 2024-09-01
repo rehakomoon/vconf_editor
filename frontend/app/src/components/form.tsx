@@ -107,7 +107,7 @@ export function AbstractForm({
   return (
     <Grid2 size={12}>
       <FormLabel className="label" htmlFor="abstract" required style={{ fontSize: "1.5rem", fontWeight: 700 }}>
-        要約
+        概要
       </FormLabel>
       <OutlinedInput
         id="abstract"
@@ -375,7 +375,7 @@ export function ReferenceFrom({
   return (
     <Grid2 size={12}>
       <FormLabel className="label" htmlFor="reference" style={{ fontSize: "1.5rem", fontWeight: 700 }}>
-        引用文献
+        参考文献
       </FormLabel>
       <OutlinedInput
         id="reference"
