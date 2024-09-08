@@ -149,27 +149,49 @@ function App() {
   return (
     <div>
       <Grid2 container spacing={4} display="flex" flexDirection="row">
-        <Grid2 display="flex" flexDirection="column" container size={{ xs: 12, md: 6 }}>
+        <Grid2
+          display="flex"
+          flexDirection="column"
+          container
+          size={{ xs: 12, md: 6 }}
+        >
           <Box component="form" className="box" onSubmit={handleSubmit}>
             <Grid2 container spacing={2}>
               <TitleForm title={title} onChangeTitle={setTitle} />
               <AuthorForm author={author} onChangeAuthor={setAuthor} />
               <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
-              <AbstractForm abstract={abstract} onChangeAbstract={setAbstract} />
-              <SectionsForm sections={sections} onChangeSections={setSections} />
+              <AbstractForm
+                abstract={abstract}
+                onChangeAbstract={setAbstract}
+              />
+              <SectionsForm
+                sections={sections}
+                onChangeSections={setSections}
+              />
               <FiguresForm figures={figures} onChangeFigures={setFigures} />
-              <ReferenceFrom reference={reference} onChangeReference={setReference} />
-              <Button className="button is-primary" color="primary" variant="contained" type="submit">
+              <ReferenceFrom
+                reference={reference}
+                onChangeReference={setReference}
+              />
+              <Button
+                className="button is-primary"
+                color="primary"
+                variant="contained"
+                type="submit"
+              >
                 Submit
               </Button>
             </Grid2>
           </Box>
         </Grid2>
-        <Grid2 container size={{ xs: 12, md: 6 }} display="flex" flexDirection="column">
+        <Grid2
+          container
+          size={{ xs: 12, md: 6 }}
+          display="flex"
+          flexDirection="column"
+        >
           <Grid2 size={12}>
-            <Typography>
-              pdf出力結果
-            </Typography>
+            <Typography>pdf出力結果</Typography>
           </Grid2>
           <Grid2 size={12}>
             {pdfUrl ? (
@@ -177,7 +199,9 @@ function App() {
                 src={pdfUrl}
                 style={{ width: "100%", height: "500px" }}
               ></iframe>
-            ) : <Typography color="info">出力結果がありません</Typography>}
+            ) : (
+              <Typography color="info">出力結果がありません</Typography>
+            )}
           </Grid2>
         </Grid2>
       </Grid2>
