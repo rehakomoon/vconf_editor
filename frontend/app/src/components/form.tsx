@@ -1,11 +1,12 @@
 import {
-  Box,
   Button,
   FormLabel,
   Grid2,
+  IconButton,
   OutlinedInput,
   Typography,
 } from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import React from "react";
 
 export function TitleForm({
@@ -256,44 +257,54 @@ export function FiguresForm({
       >
         添付図
       </FormLabel>
-      <Button
-        variant="contained"
-        disabled={
-          /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
-          figures.length >= 20
-        }
-        onClick={(e) => {
-          e.preventDefault();
-          const newFigures = [
-            ...figures,
-            { caption: "", section_index: 0 } as Figure,
-          ];
-          onChangeFigures(newFigures);
-        }}
-      >
-        画像を追加する
-      </Button>
       {figures.map((figure, index) => {
         return (
-          <FigureForm
-            figure={figure}
-            index={index}
-            onChangeFigure={(value) => {
-              const newFigures = [...figures];
-              newFigures[index] = value;
-              onChangeFigures(newFigures);
-            }}
-            onClickRemoveButton={(e) => {
-              e.preventDefault();
-              const newFigures = [
-                ...figures.slice(0, index),
-                ...figures.slice(index + 1),
-              ];
-              onChangeFigures(newFigures);
-            }}
-          />
+          <Grid2 container size={12} sx={{ p: 1, border: "1px dashed grey" }}>
+            <FigureForm
+              figure={figure}
+              index={index}
+              onChangeFigure={(value) => {
+                const newFigures = [...figures];
+                newFigures[index] = value;
+                onChangeFigures(newFigures);
+              }}
+              onClickRemoveButton={(e) => {
+                e.preventDefault();
+                const newFigures = [
+                  ...figures.slice(0, index),
+                  ...figures.slice(index + 1),
+                ];
+                onChangeFigures(newFigures);
+              }}
+            />
+          </Grid2>
         );
       })}
+      <Grid2
+        container
+        size={12}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        sx={{ border: "1px dashed grey" }}
+      >
+        <IconButton
+          disabled={
+            /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
+            figures.length >= 20
+          }
+          onClick={(e) => {
+            e.preventDefault();
+            const newFigures = [
+              ...figures,
+              { caption: "", section_index: 0 } as Figure,
+            ];
+            onChangeFigures(newFigures);
+          }}
+        >
+          <AddCircleOutlineIcon color="primary" />
+        </IconButton>
+      </Grid2>
     </Grid2>
   );
 }
@@ -398,42 +409,55 @@ export function SectionsForm({
       >
         本文
       </FormLabel>
-      <Button
-        variant="contained"
-        disabled={
-          /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
-          sections.length >= 20
-        }
-        onClick={(e) => {
-          e.preventDefault();
-          const newSections = [...sections, { title: "", text: "" } as Section];
-          onChangeSections(newSections);
-        }}
-      >
-        セクションを追加する
-      </Button>
       {sections.map((section, index) => {
         return (
-          <SectionForm
-            section={section}
-            index={index}
-            removable={sections.length > 1}
-            onChangeSection={(value) => {
-              const newSections = [...sections];
-              newSections[index] = value;
-              onChangeSections(newSections);
-            }}
-            onClickRemoveButton={(e) => {
-              e.preventDefault();
-              const newSections = [
-                ...sections.slice(0, index),
-                ...sections.slice(index + 1),
-              ];
-              onChangeSections(newSections);
-            }}
-          />
+          <Grid2 container size={12} sx={{ p: 1, border: "1px dashed grey" }}>
+            <SectionForm
+              section={section}
+              index={index}
+              removable={sections.length > 1}
+              onChangeSection={(value) => {
+                const newSections = [...sections];
+                newSections[index] = value;
+                onChangeSections(newSections);
+              }}
+              onClickRemoveButton={(e) => {
+                e.preventDefault();
+                const newSections = [
+                  ...sections.slice(0, index),
+                  ...sections.slice(index + 1),
+                ];
+                onChangeSections(newSections);
+              }}
+            />
+          </Grid2>
         );
       })}
+      <Grid2
+        container
+        size={12}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        sx={{ border: "1px dashed grey" }}
+      >
+        <IconButton
+          disabled={
+            /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
+            sections.length >= 20
+          }
+          onClick={(e) => {
+            e.preventDefault();
+            const newSections = [
+              ...sections,
+              { title: "", text: "" } as Section,
+            ];
+            onChangeSections(newSections);
+          }}
+        >
+          <AddCircleOutlineIcon color="primary" />
+        </IconButton>
+      </Grid2>
     </Grid2>
   );
 }
