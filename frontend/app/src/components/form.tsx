@@ -1,5 +1,4 @@
 import {
-  Button,
   FormLabel,
   Grid2,
   IconButton,
@@ -31,8 +30,6 @@ export function TitleForm({
         type="text"
         id="title"
         value={title?.text ?? ""}
-        autoComplete="title"
-        placeholder="title"
         size="small"
         required
         fullWidth
