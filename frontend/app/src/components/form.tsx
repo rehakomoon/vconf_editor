@@ -262,6 +262,9 @@ export function FiguresForm({
   figures: Figure[];
   onChangeFigures: (value: Figure[]) => void;
 }): JSX.Element {
+  /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
+  const enableAddColumnButton = figures.length < 20;
+
   return (
     <Grid2 container size={12} spacing={2}>
       <FormLabel
@@ -303,10 +306,7 @@ export function FiguresForm({
         sx={{ border: "1px dashed grey" }}
       >
         <IconButton
-          disabled={
-            /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
-            figures.length >= 20
-          }
+          disabled={!enableAddColumnButton}
           onClick={(e) => {
             e.preventDefault();
             const newFigures = [
@@ -316,7 +316,9 @@ export function FiguresForm({
             onChangeFigures(newFigures);
           }}
         >
-          <AddCircleOutlineIcon color="primary" />
+          <AddCircleOutlineIcon
+            color={enableAddColumnButton ? "primary" : "disabled"}
+          />
         </IconButton>
       </Grid2>
     </Grid2>
@@ -425,6 +427,9 @@ export function SectionsForm({
   sections: Section[];
   onChangeSections: (value: Section[]) => void;
 }): JSX.Element {
+  /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
+  const enableAddColumnButton = sections.length < 20;
+
   return (
     <Grid2 container size={12} spacing={2}>
       <FormLabel
@@ -468,10 +473,7 @@ export function SectionsForm({
         sx={{ border: "1px dashed grey" }}
       >
         <IconButton
-          disabled={
-            /* HACK: 上限値をパラメータで制御できるようにしたほうがいい？ */
-            sections.length >= 20
-          }
+          disabled={!enableAddColumnButton}
           onClick={(e) => {
             e.preventDefault();
             const newSections = [
@@ -481,7 +483,9 @@ export function SectionsForm({
             onChangeSections(newSections);
           }}
         >
-          <AddCircleOutlineIcon color="primary" />
+          <AddCircleOutlineIcon
+            color={enableAddColumnButton ? "primary" : "disabled"}
+          />
         </IconButton>
       </Grid2>
     </Grid2>
