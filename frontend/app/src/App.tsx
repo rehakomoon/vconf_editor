@@ -156,7 +156,7 @@ function App() {
           size={{ xs: 12, md: 6 }}
         >
           <Box component="form" className="box" onSubmit={handleSubmit}>
-            <Grid2 container spacing={2}>
+            <Grid2 container spacing={4}>
               <TitleForm title={title} onChangeTitle={setTitle} />
               <AuthorForm author={author} onChangeAuthor={setAuthor} />
               <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />

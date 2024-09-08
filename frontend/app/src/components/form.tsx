@@ -1,4 +1,11 @@
-import { Button, FormLabel, Grid2, OutlinedInput, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormLabel,
+  Grid2,
+  OutlinedInput,
+  Typography,
+} from "@mui/material";
 import React from "react";
 
 export function TitleForm({
@@ -10,7 +17,12 @@ export function TitleForm({
 }): JSX.Element {
   return (
     <Grid2 size={12}>
-      <FormLabel className="label" htmlFor="title" required style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+      <FormLabel
+        className="label"
+        htmlFor="title"
+        required
+        style={{ fontSize: "1.5rem", fontWeight: 700 }}
+      >
         タイトル
       </FormLabel>
       <OutlinedInput
@@ -39,7 +51,12 @@ export function AuthorForm({
 }): JSX.Element {
   return (
     <Grid2 size={12}>
-      <FormLabel className="label" htmlFor="author" required style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+      <FormLabel
+        className="label"
+        htmlFor="author"
+        required
+        style={{ fontSize: "1.5rem", fontWeight: 700 }}
+      >
         著者
       </FormLabel>
       <Typography color="gray" fontSize="0.8rem">
@@ -68,31 +85,40 @@ export function TeaserForm({
   onChangeTeaser: (value: Teaser) => void;
 }): JSX.Element {
   return (
-    <Grid2 size={12}>
-      <FormLabel className="label" htmlFor="teaser" style={{ fontSize: "1.5rem", fontWeight: 700 }}>
-        ティザー画像
-      </FormLabel>
-      <OutlinedInput
-        type="text"
-        id="teaser_caption"
-        value={teaser?.caption ?? ""}
-        size="small"
-        fullWidth
-        onChange={(e) => {
-          onChangeTeaser({ caption: e.target.value } as Teaser);
-        }}
-      />
-      <br />
-      <input
-        id="teaser_image"
-        type="file"
-        accept="image/*,.png,.jpg,.jpeg,.gif"
-        onChange={(e) => {
-          if (!e.target.files) return;
-          const img = e.target.files[0];
-          onChangeTeaser({ caption: teaser?.caption ?? "", image: img });
-        }}
-      />
+    <Grid2 container size={12} spacing={2}>
+      <Grid2 size={12}>
+        <FormLabel
+          className="label"
+          htmlFor="teaser"
+          style={{ fontSize: "1.5rem", fontWeight: 700 }}
+        >
+          ティザー画像
+        </FormLabel>
+      </Grid2>
+      <Grid2 size={12}>
+        <OutlinedInput
+          type="text"
+          id="teaser_caption"
+          value={teaser?.caption ?? ""}
+          size="small"
+          fullWidth
+          onChange={(e) => {
+            onChangeTeaser({ caption: e.target.value } as Teaser);
+          }}
+        />
+      </Grid2>
+      <Grid2 size={12}>
+        <input
+          id="teaser_image"
+          type="file"
+          accept="image/*,.png,.jpg,.jpeg,.gif"
+          onChange={(e) => {
+            if (!e.target.files) return;
+            const img = e.target.files[0];
+            onChangeTeaser({ caption: teaser?.caption ?? "", image: img });
+          }}
+        />
+      </Grid2>
     </Grid2>
   );
 }
@@ -106,7 +132,12 @@ export function AbstractForm({
 }): JSX.Element {
   return (
     <Grid2 size={12}>
-      <FormLabel className="label" htmlFor="abstract" required style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+      <FormLabel
+        className="label"
+        htmlFor="abstract"
+        required
+        style={{ fontSize: "1.5rem", fontWeight: 700 }}
+      >
         概要
       </FormLabel>
       <OutlinedInput
@@ -138,15 +169,26 @@ function FigureForm({
   onClickRemoveButton: React.MouseEventHandler<HTMLButtonElement>;
 }): JSX.Element {
   return (
-    <Grid2 container size={12}>
-      <Grid2 size={12}>
-        <FormLabel className="label" htmlFor="figure" style={{ fontSize: "1.0rem", fontWeight: 700 }}>
+    <Grid2 container size={12} spacing={2} display="flex" alignItems="center">
+      <Grid2 container size={12} spacing={2} display="flex" alignItems="center">
+        <FormLabel
+          className="label"
+          htmlFor="figure"
+          style={{ fontSize: "1.0rem", fontWeight: 700 }}
+        >
           {`図${index + 1}`}
         </FormLabel>
-        <Button variant="contained" onClick={onClickRemoveButton}>削除</Button>
+        <Button variant="contained" onClick={onClickRemoveButton}>
+          削除
+        </Button>
       </Grid2>
-      <Grid2 size={12}>
-        <FormLabel className="label" htmlFor="figure" required style={{ fontSize: "1.0rem" }}>
+      <Grid2 container size={12} spacing={2}>
+        <FormLabel
+          className="label"
+          htmlFor="figure"
+          required
+          style={{ fontSize: "1.0rem" }}
+        >
           キャプション
         </FormLabel>
         <OutlinedInput
@@ -166,25 +208,33 @@ function FigureForm({
             } as Figure);
           }}
         />
-        <FormLabel className="label" htmlFor="figure" required style={{ fontSize: "1.0rem" }}>
-          画像ファイル
-        </FormLabel>
-        <br />
-        <input
-          id={`figure${index}_image`}
-          type="file"
-          required
-          accept="image/*,.png,.jpg,.jpeg,.gif"
-          onChange={(e) => {
-            if (!e.target.files) return;
-            onChangeFigure({
-              section_index: figure.section_index,
-              caption: figure.caption,
-              position: figure.position,
-              image: e.target.files[0],
-            } as Figure);
-          }}
-        />
+        <Grid2 size={12}>
+          <FormLabel
+            className="label"
+            htmlFor="figure"
+            required
+            style={{ fontSize: "1.0rem" }}
+          >
+            画像ファイル
+          </FormLabel>
+        </Grid2>
+        <Grid2 size={12}>
+          <input
+            id={`figure${index}_image`}
+            type="file"
+            required
+            accept="image/*,.png,.jpg,.jpeg,.gif"
+            onChange={(e) => {
+              if (!e.target.files) return;
+              onChangeFigure({
+                section_index: figure.section_index,
+                caption: figure.caption,
+                position: figure.position,
+                image: e.target.files[0],
+              } as Figure);
+            }}
+          />
+        </Grid2>
       </Grid2>
     </Grid2>
   );
@@ -198,8 +248,12 @@ export function FiguresForm({
   onChangeFigures: (value: Figure[]) => void;
 }): JSX.Element {
   return (
-    <Grid2 container size={12}>
-      <FormLabel className="label" htmlFor="figures" style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+    <Grid2 container size={12} spacing={2}>
+      <FormLabel
+        className="label"
+        htmlFor="figures"
+        style={{ fontSize: "1.5rem", fontWeight: 700 }}
+      >
         添付図
       </FormLabel>
       <Button
@@ -258,9 +312,13 @@ function SectionForm({
   onClickRemoveButton: React.MouseEventHandler<HTMLButtonElement>;
 }): JSX.Element {
   return (
-    <Grid2 container size={12}>
-      <Grid2 size={12}>
-        <FormLabel className="label" htmlFor="section" style={{ fontSize: "1.0rem", fontWeight: 700 }}>
+    <Grid2 container size={12} spacing={2} display="flex" alignItems="center">
+      <Grid2 container size={12} spacing={2} display="flex" alignItems="center">
+        <FormLabel
+          className="label"
+          htmlFor="section"
+          style={{ fontSize: "1.0rem", fontWeight: 700 }}
+        >
           {`セクション${index + 1}`}
         </FormLabel>
         <Button
@@ -272,7 +330,12 @@ function SectionForm({
         </Button>
       </Grid2>
       <Grid2 size={12}>
-        <FormLabel className="label" htmlFor="section" required style={{ fontSize: "1.0rem" }}>
+        <FormLabel
+          className="label"
+          htmlFor="section"
+          required
+          style={{ fontSize: "1.0rem" }}
+        >
           タイトル
         </FormLabel>
         <OutlinedInput
@@ -289,7 +352,12 @@ function SectionForm({
             } as Section);
           }}
         />
-        <FormLabel className="label" htmlFor="section" required style={{ fontSize: "1.0rem" }}>
+        <FormLabel
+          className="label"
+          htmlFor="section"
+          required
+          style={{ fontSize: "1.0rem" }}
+        >
           本文
         </FormLabel>
         <OutlinedInput
@@ -321,8 +389,13 @@ export function SectionsForm({
   onChangeSections: (value: Section[]) => void;
 }): JSX.Element {
   return (
-    <Grid2 container size={12}>
-      <FormLabel className="label" htmlFor="section" required style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+    <Grid2 container size={12} spacing={2}>
+      <FormLabel
+        className="label"
+        htmlFor="section"
+        required
+        style={{ fontSize: "1.5rem", fontWeight: 700 }}
+      >
         本文
       </FormLabel>
       <Button
@@ -374,7 +447,11 @@ export function ReferenceFrom({
 }): JSX.Element {
   return (
     <Grid2 size={12}>
-      <FormLabel className="label" htmlFor="reference" style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+      <FormLabel
+        className="label"
+        htmlFor="reference"
+        style={{ fontSize: "1.5rem", fontWeight: 700 }}
+      >
         参考文献
       </FormLabel>
       <OutlinedInput
