@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import React from "react";
 
 export function TitleForm({
@@ -172,16 +173,32 @@ function FigureForm({
   return (
     <Grid2 container size={12} spacing={2} display="flex" alignItems="center">
       <Grid2 container size={12} spacing={2} display="flex" alignItems="center">
-        <FormLabel
-          className="label"
-          htmlFor="figure"
-          style={{ fontSize: "1.0rem", fontWeight: 700 }}
+        <Grid2
+          container
+          size={6}
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-start"
         >
-          {`図${index + 1}`}
-        </FormLabel>
-        <Button variant="contained" onClick={onClickRemoveButton}>
-          削除
-        </Button>
+          <FormLabel
+            className="label"
+            htmlFor="figure"
+            style={{ fontSize: "1.0rem", fontWeight: 700 }}
+          >
+            {`図${index + 1}`}
+          </FormLabel>
+        </Grid2>
+        <Grid2
+          container
+          size={6}
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
+        >
+          <IconButton onClick={onClickRemoveButton}>
+            <RemoveCircleOutlineIcon color="error" />
+          </IconButton>
+        </Grid2>
       </Grid2>
       <Grid2 container size={12} spacing={2}>
         <FormLabel
@@ -325,20 +342,32 @@ function SectionForm({
   return (
     <Grid2 container size={12} spacing={2} display="flex" alignItems="center">
       <Grid2 container size={12} spacing={2} display="flex" alignItems="center">
-        <FormLabel
-          className="label"
-          htmlFor="section"
-          style={{ fontSize: "1.0rem", fontWeight: 700 }}
+        <Grid2
+          container
+          size={6}
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-start"
         >
-          {`セクション${index + 1}`}
-        </FormLabel>
-        <Button
-          variant="contained"
-          onClick={onClickRemoveButton}
-          disabled={!removable}
+          <FormLabel
+            className="label"
+            htmlFor="section"
+            style={{ fontSize: "1.0rem", fontWeight: 700 }}
+          >
+            {`セクション${index + 1}`}
+          </FormLabel>
+        </Grid2>
+        <Grid2
+          container
+          size={6}
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
         >
-          削除
-        </Button>
+          <IconButton onClick={onClickRemoveButton} disabled={!removable}>
+            <RemoveCircleOutlineIcon color={removable ? "error" : "disabled"} />
+          </IconButton>
+        </Grid2>
       </Grid2>
       <Grid2 size={12}>
         <FormLabel
