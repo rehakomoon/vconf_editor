@@ -8,7 +8,13 @@ import {
   TeaserForm,
   TitleForm,
 } from "./components/form";
-import { Box, Button, Grid2, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid2,
+  Typography,
+} from "@mui/material";
 
 const ConvertReference = (
   reference: Reference | undefined
@@ -110,9 +116,15 @@ function App() {
   const [reference, setReference] = useState<Reference | undefined>(undefined);
 
   // output
+  const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState("");
 
   const Submit = async () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+
     const formdata = CreateFormData({
       title,
       author,
@@ -130,6 +142,7 @@ function App() {
       `http://` + import.meta.env.VITE_HOSTNAME + `:8000/v1/pdf/create`,
       requestOptions
     );
+    setLoading(false);
 
     if (response.ok) {
       const blob = await response.blob();
@@ -178,7 +191,16 @@ function App() {
                 color="primary"
                 variant="contained"
                 type="submit"
+                disabled={loading}
               >
+                {loading && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      position: "absolute",
+                    }}
+                  />
+                )}
                 Submit
               </Button>
             </Grid2>
