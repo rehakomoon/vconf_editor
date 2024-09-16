@@ -215,11 +215,11 @@ function App() {
           <Grid2 size={12}>
             <Typography>pdf出力結果</Typography>
           </Grid2>
-          <Grid2 size={12}>
+          <Grid2 size={12} minHeight={"800px"}>
             {pdfUrl ? (
               <iframe
                 src={pdfUrl}
-                style={{ width: "100%", height: "500px" }}
+                style={{ width: "100%", height: "100%" }}
               ></iframe>
             ) : (
               <Typography color="info">出力結果がありません</Typography>
