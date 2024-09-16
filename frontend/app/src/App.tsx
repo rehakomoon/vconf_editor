@@ -201,7 +201,7 @@ function App() {
                     }}
                   />
                 )}
-                Submit
+                pdf出力
               </Button>
             </Grid2>
           </Box>
