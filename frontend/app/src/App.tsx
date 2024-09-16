@@ -192,6 +192,7 @@ function App() {
                 variant="contained"
                 type="submit"
                 disabled={loading}
+                fullWidth
               >
                 {loading && (
                   <CircularProgress
