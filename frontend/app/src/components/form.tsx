@@ -102,7 +102,10 @@ export function TeaserForm({
           size="small"
           fullWidth
           onChange={(e) => {
-            onChangeTeaser({ caption: e.target.value } as Teaser);
+            onChangeTeaser({
+              caption: e.target.value,
+              image: teaser?.image,
+            } as Teaser);
           }}
         />
       </Grid2>
