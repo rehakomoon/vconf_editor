@@ -1,4 +1,5 @@
 import {
+  Button,
   FormLabel,
   Grid2,
   IconButton,
@@ -308,7 +309,8 @@ export function FiguresForm({
         justifyContent="center"
         sx={{ border: "1px dashed grey" }}
       >
-        <IconButton
+        <Button
+          fullWidth
           disabled={!enableAddColumnButton}
           onClick={(e) => {
             e.preventDefault();
@@ -322,7 +324,7 @@ export function FiguresForm({
           <AddCircleOutlineIcon
             color={enableAddColumnButton ? "primary" : "disabled"}
           />
-        </IconButton>
+        </Button>
       </Grid2>
     </Grid2>
   );
@@ -475,7 +477,8 @@ export function SectionsForm({
         justifyContent="center"
         sx={{ border: "1px dashed grey" }}
       >
-        <IconButton
+        <Button
+          fullWidth
           disabled={!enableAddColumnButton}
           onClick={(e) => {
             e.preventDefault();
@@ -489,7 +492,7 @@ export function SectionsForm({
           <AddCircleOutlineIcon
             color={enableAddColumnButton ? "primary" : "disabled"}
           />
-        </IconButton>
+        </Button>
       </Grid2>
     </Grid2>
   );
