@@ -8,7 +8,7 @@ from fastapi import UploadFile
 from starlette.background import BackgroundTasks
 
 from app.schemas.paper import Paper
-from app.latex.text_utils import escape_underscore
+from app.latex.text_utils import escape_underscores
 
 logger = getLogger(__name__)
 
@@ -147,6 +147,6 @@ def create_latex_text(template_text: str, paper: Paper, has_teaser: bool):
     )
 
     text = text.replace("<<<reference>>>", reference_text)
-    text = escape_underscore(text)
+    text = escape_underscores(text)
 
     return text

@@ -1,9 +1,16 @@
 from app.latex import text_utils
 
 def test_escape_underscore():
-    test_text = "Hello_world! This__is_a_sample_text."
+    test_text = "This is a _test_ text with some _underscores_ and some \\_already\_ escaped ones."
 
-    expect = "Hello\_world! This\_\_is\_a\_sample\_text."
+    expect = "This is a \_test\_ text with some \_underscores\_ and some \\_already\_ escaped ones."
 
-    actual = text_utils.escape_underscore(test_text)
+    actual = text_utils.escape_underscores(text=test_text)
+    assert actual == expect
+
+    test_text = "Mixed scenarios: _single_ and __double__ and *___triple___* underscores."
+
+    expect = "Mixed scenarios: \_single\_ and \_\_double\_\_ and *\_\_\_triple\_\_\_* underscores."
+
+    actual = text_utils.escape_underscores(text=test_text)
     assert actual == expect
