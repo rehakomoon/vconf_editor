@@ -9,12 +9,35 @@ import {
   TitleForm,
 } from "./components/form";
 import {
+  AppBar,
   Box,
   Button,
   CircularProgress,
+  Divider,
+  GlobalStyles,
   Grid2,
+  Toolbar,
   Typography,
 } from "@mui/material";
+
+const Bar = ({
+  onClick,
+}: {
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+}): JSX.Element => {
+  return (
+    <AppBar position="sticky">
+      <Toolbar>
+        <Typography variant="h4" component="div" mr={2} fontWeight={700}>
+          バーチャル学会向け 要旨作成フォーム
+        </Typography>
+        <Button color="inherit" onClick={onClick}>
+          about
+        </Button>
+      </Toolbar>
+    </AppBar>
+  );
+};
 
 const ConvertReference = (
   reference: Reference | undefined
@@ -104,6 +127,8 @@ const CreateFormData = ({
 };
 
 function App() {
+  const [open, setOpen] = useState<boolean>(false);
+
   // input
   const [title, setTitle] = useState<Title | undefined>(undefined);
   const [author, setAuthor] = useState<Author | undefined>(undefined);
@@ -161,73 +186,108 @@ function App() {
 
   return (
     <div>
-      <Grid2 container spacing={4} display="flex" flexDirection="row">
-        <Grid2
-          display="flex"
-          flexDirection="column"
-          container
-          size={{ xs: 12, md: 6 }}
-        >
-          <Box component="form" className="box" onSubmit={handleSubmit}>
-            <Grid2 container spacing={4}>
-              <TitleForm title={title} onChangeTitle={setTitle} />
-              <AuthorForm author={author} onChangeAuthor={setAuthor} />
-              <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
-              <AbstractForm
-                abstract={abstract}
-                onChangeAbstract={setAbstract}
-              />
-              <SectionsForm
-                sections={sections}
-                onChangeSections={setSections}
-              />
-              <FiguresForm figures={figures} onChangeFigures={setFigures} />
-              <ReferenceFrom
-                reference={reference}
-                onChangeReference={setReference}
-              />
-              <Button
-                className="button is-primary"
-                color="primary"
-                variant="contained"
-                type="submit"
-                disabled={loading}
-                fullWidth
-              >
-                {loading && (
-                  <CircularProgress
-                    size={24}
-                    sx={{
-                      position: "absolute",
-                    }}
-                  />
-                )}
-                pdf出力
-              </Button>
+      <GlobalStyles styles={{ body: { margin: 0, padding: 0 } }} />
+      <Bar
+        onClick={() => {
+          setOpen(!open);
+        }}
+      />
+      <Box mt={2} style={{ padding: 8, margin: 8 }}>
+        <Grid2 container spacing={4} display="flex" flexDirection="row">
+          {open && (
+            <Grid2 size={12}>
+              <Typography variant="h5">このサイトは何？</Typography>
+              <Typography>
+                このサイトは、有志が作成したバーチャル学会向けの要旨PDF作成フォームです。
+                <br />
+                必要な内容を入力したあと、「PDF作成」ボタンを押すと要旨の形式に沿ったPDFが作成されます。
+                作成後したPDFを保存して提出してください。
+              </Typography>
+              <br />
+              <Typography variant="h5">注意事項</Typography>
+              <Typography>
+                ・<b>入力した内容は保存されません！</b>
+                手元で編集してから貼り付けてください。
+                <br />
+                ・図は 指定した順番どおりに、 図1, 図2
+                と表示されます。本文中では 直接 「図1」「図2」と書いてください。
+                <br />
+                ・図の細かい位置は指定できません。
+                <br />
+                ・表はこのフォームでは作成できません。
+                代わりに図を使うようにしてください。
+                <br />
+              </Typography>
+              <Divider style={{ padding: 8 }} />
             </Grid2>
-          </Box>
-        </Grid2>
-        <Grid2
-          container
-          size={{ xs: 12, md: 6 }}
-          display="flex"
-          flexDirection="column"
-        >
-          <Grid2 size={12}>
-            <Typography>pdf出力結果</Typography>
+          )}
+          <Grid2
+            display="flex"
+            flexDirection="column"
+            container
+            size={{ xs: 12, md: 6 }}
+          >
+            <Box component="form" className="box" onSubmit={handleSubmit}>
+              <Grid2 container spacing={4}>
+                <TitleForm title={title} onChangeTitle={setTitle} />
+                <AuthorForm author={author} onChangeAuthor={setAuthor} />
+                <TeaserForm teaser={teaser} onChangeTeaser={setTeaser} />
+                <AbstractForm
+                  abstract={abstract}
+                  onChangeAbstract={setAbstract}
+                />
+                <SectionsForm
+                  sections={sections}
+                  onChangeSections={setSections}
+                />
+                <FiguresForm figures={figures} onChangeFigures={setFigures} />
+                <ReferenceFrom
+                  reference={reference}
+                  onChangeReference={setReference}
+                />
+                <Button
+                  className="button is-primary"
+                  color="primary"
+                  variant="contained"
+                  type="submit"
+                  disabled={loading}
+                  fullWidth
+                >
+                  {loading && (
+                    <CircularProgress
+                      size={24}
+                      sx={{
+                        position: "absolute",
+                      }}
+                    />
+                  )}
+                  pdf出力
+                </Button>
+              </Grid2>
+            </Box>
           </Grid2>
-          <Grid2 size={12} minHeight={"800px"}>
-            {pdfUrl ? (
-              <iframe
-                src={pdfUrl}
-                style={{ width: "100%", height: "100%" }}
-              ></iframe>
-            ) : (
-              <Typography color="info">出力結果がありません</Typography>
-            )}
+          <Grid2
+            container
+            size={{ xs: 12, md: 6 }}
+            display="flex"
+            flexDirection="column"
+          >
+            <Grid2 size={12}>
+              <Typography>pdf出力結果</Typography>
+            </Grid2>
+            <Grid2 size={12} minHeight={"800px"}>
+              {pdfUrl ? (
+                <iframe
+                  src={pdfUrl}
+                  style={{ width: "100%", height: "100%" }}
+                ></iframe>
+              ) : (
+                <Typography color="info">出力結果がありません</Typography>
+              )}
+            </Grid2>
           </Grid2>
         </Grid2>
-      </Grid2>
+      </Box>
     </div>
   );
 }
