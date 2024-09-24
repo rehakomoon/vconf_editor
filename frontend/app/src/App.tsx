@@ -163,20 +163,25 @@ function App() {
       method: "POST",
       body: formdata,
     };
-    const response = await fetch(
+    await fetch(
       `http://` + import.meta.env.VITE_HOSTNAME + `:8000/v1/pdf/create`,
       requestOptions
-    );
-    setLoading(false);
-
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      setPdfUrl(url);
-      console.log(url);
-    } else {
-      throw new Error("response was not ok");
-    }
+    )
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("response was not ok");
+        }
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        setPdfUrl(url);
+        console.log(url);
+      })
+      .catch((error) => {
+        throw new Error(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
