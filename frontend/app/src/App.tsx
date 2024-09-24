@@ -9,6 +9,8 @@ import {
   TitleForm,
 } from "./components/form";
 import {
+  Alert,
+  AlertTitle,
   AppBar,
   Box,
   Button,
@@ -16,6 +18,7 @@ import {
   Divider,
   GlobalStyles,
   Grid2,
+  Snackbar,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -143,6 +146,9 @@ function App() {
   // output
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState("");
+  const [errorContext, setErrorContext] = useState<string | undefined>(
+    undefined
+  );
 
   const Submit = async () => {
     if (loading) {
@@ -169,6 +175,7 @@ function App() {
     )
       .then(async (response) => {
         if (!response.ok) {
+          setErrorContext(`${response.status}-${Date.now()}: response was not ok`)
           throw new Error("response was not ok");
         }
         const blob = await response.blob();
@@ -177,6 +184,7 @@ function App() {
         console.log(url);
       })
       .catch((error) => {
+        setErrorContext(`000-${Date.now()}: ${error.message}`)
         throw new Error(error);
       })
       .finally(() => {
@@ -197,6 +205,24 @@ function App() {
           setOpen(!open);
         }}
       />
+
+      <Snackbar
+        open={errorContext !== undefined}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          severity="error"
+          onClose={() => {
+            setErrorContext(undefined);
+          }}
+        >
+          <AlertTitle>Error</AlertTitle>
+          PDF作成に失敗しました。 以下のメッセージをDiscordでお知らせください。
+          <br />
+          [{errorContext}]
+        </Alert>
+      </Snackbar>
+
       <Box mt={2} style={{ padding: 8, margin: 8 }}>
         <Grid2 container spacing={4} display="flex" flexDirection="row">
           {open && (
