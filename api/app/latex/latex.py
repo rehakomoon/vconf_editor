@@ -101,7 +101,7 @@ def create_latex_text(template_text: str, paper: Paper, has_teaser: bool):
     for fig_idx, fig in enumerate(paper.figure):
         section_idx = fig.section_index - 1  # 1-indexed -> 0-indexed
         fig_filename = f"fig{fig_idx}.png"
-        figure_text = r"\begin{figurehere}]" + "\n"
+        figure_text = r"\begin{figurehere}" + "\n"
         figure_text += r"\centering" + "\n"
         figure_text += (
             r"\includegraphics[width=0.8\linewidth]{" + fig_filename + "}\n"
