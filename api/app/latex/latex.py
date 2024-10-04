@@ -8,7 +8,7 @@ from fastapi import UploadFile
 from starlette.background import BackgroundTasks
 
 from app.schemas.paper import Paper
-from app.latex.text_utils import escape_underscores
+from app.latex.text_utils import escape_spacial_characters
 
 logger = getLogger(__name__)
 
@@ -93,9 +93,9 @@ def save_files(working_dir: Path, teaser: UploadFile, files: list[UploadFile]) -
 def create_latex_text(template_text: str, paper: Paper, has_teaser: bool):
     num_sections = len(paper.body)
     text = template_text
-    text = text.replace("<<<title>>>", paper.title)
-    text = text.replace("<<<author>>>", paper.author)
-    text = text.replace("<<<abstract>>>", paper.abstract)
+    text = text.replace("<<<title>>>", escape_spacial_characters(paper.title))
+    text = text.replace("<<<author>>>", escape_spacial_characters(paper.author))
+    text = text.replace("<<<abstract>>>", escape_spacial_characters(paper.abstract))
 
     figure_head_texts = ["" for _ in range(num_sections)]
     figure_tail_texts = ["" for _ in range(num_sections)]
@@ -107,7 +107,7 @@ def create_latex_text(template_text: str, paper: Paper, has_teaser: bool):
         figure_text += (
             r"\includegraphics[width=0.8\linewidth]{" + fig_filename + "}\n"
         )  # E501
-        figure_text += r"\caption{" + fig.caption + "}\n"
+        figure_text += r"\caption{" + escape_spacial_characters(fig.caption) + "}\n"
         figure_text += r"\end{figurehere}" + "\n"
         if fig.position == "t":
             figure_head_texts[section_idx] += figure_text
@@ -129,7 +129,7 @@ def create_latex_text(template_text: str, paper: Paper, has_teaser: bool):
 \label{{fig:topfigure}}
 \end{{figure}}
 """
-        ).format(teaser_file_name, teaser_caption)
+        ).format(teaser_file_name, escape_spacial_characters(teaser_caption))
 
     text = text.replace("<<<teaser>>>", teaser_text)
 
@@ -137,16 +137,15 @@ def create_latex_text(template_text: str, paper: Paper, has_teaser: bool):
     for section_idx, section in enumerate(paper.body):
         body_text += r"\section{" + section.title + "}\n"
         body_text += figure_head_texts[section_idx] + "\n"
-        body_text += section.text + "\n"
+        body_text += escape_spacial_characters(section.text) + "\n"
         body_text += figure_tail_texts[section_idx] + "\n\n"
     text = text.replace("<<<body>>>", body_text)
 
-    references = [ref.value for ref in paper.reference]
+    references = [escape_spacial_characters(ref.value) for ref in paper.reference]
     reference_text = "".join(
         f"\\bibitem{{ref{i}}} {ref}\n" for i, ref in enumerate(references)
     )
 
     text = text.replace("<<<reference>>>", reference_text)
-    text = escape_underscores(text)
 
     return text

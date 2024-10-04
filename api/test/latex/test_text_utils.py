@@ -1,3 +1,5 @@
+import pytest
+
 from app.latex import text_utils
 
 def test_escape_underscore():
@@ -13,4 +15,22 @@ def test_escape_underscore():
     expect = "Mixed scenarios: \_single\_ and \_\_double\_\_ and *\_\_\_triple\_\_\_* underscores."
 
     actual = text_utils.escape_underscores(text=test_text)
+    assert actual == expect
+
+
+@pytest.mark.parametrize("text,expect", [
+    (r"a#b", r"a\#b"),
+    (r"a$b", r"a\$b"),
+    (r"a%b", r"a\%b"),
+    (r"a&b", r"a\&b"),
+    (r"a~b", r"a\textasciitilde b"),
+    (r"a_b", r"a\_b"),
+    (r"a^b", r"a\textasciicircum b"),
+    (r"a\b", r"a\textbackslash b"),
+    (r"a{b", r"a\{b"),
+    (r"a}b", r"a\}b"),
+])
+
+def test_escape_spacial_characters(text, expect):
+    actual = text_utils.escape_spacial_characters(text=text)
     assert actual == expect
