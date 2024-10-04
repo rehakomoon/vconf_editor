@@ -9,6 +9,8 @@ import {
   TitleForm,
 } from "./components/form";
 import {
+  Alert,
+  AlertTitle,
   AppBar,
   Box,
   Button,
@@ -16,6 +18,8 @@ import {
   Divider,
   GlobalStyles,
   Grid2,
+  Link,
+  Snackbar,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -32,7 +36,7 @@ const Bar = ({
           バーチャル学会向け 要旨作成フォーム
         </Typography>
         <Button color="inherit" onClick={onClick}>
-          about
+          このページについて・問い合わせ先
         </Button>
       </Toolbar>
     </AppBar>
@@ -143,6 +147,9 @@ function App() {
   // output
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState("");
+  const [errorContext, setErrorContext] = useState<string | undefined>(
+    undefined
+  );
 
   const Submit = async () => {
     if (loading) {
@@ -169,6 +176,9 @@ function App() {
     )
       .then(async (response) => {
         if (!response.ok) {
+          setErrorContext(
+            `${response.status}-${Date.now()}: response was not ok`
+          );
           throw new Error("response was not ok");
         }
         const blob = await response.blob();
@@ -177,6 +187,7 @@ function App() {
         console.log(url);
       })
       .catch((error) => {
+        setErrorContext(`000-${Date.now()}: ${error.message}`);
         throw new Error(error);
       })
       .finally(() => {
@@ -197,6 +208,24 @@ function App() {
           setOpen(!open);
         }}
       />
+
+      <Snackbar
+        open={errorContext !== undefined}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          severity="error"
+          onClose={() => {
+            setErrorContext(undefined);
+          }}
+        >
+          <AlertTitle>Error</AlertTitle>
+          PDF作成に失敗しました。 以下のメッセージを 問い合わせ先
+          に記載の連絡先にお知らせください。
+          <br />[{errorContext}]
+        </Alert>
+      </Snackbar>
+
       <Box mt={2} style={{ padding: 8, margin: 8 }}>
         <Grid2 container spacing={4} display="flex" flexDirection="row">
           {open && (
@@ -222,6 +251,16 @@ function App() {
                 ・表はこのフォームでは作成できません。
                 代わりに図を使うようにしてください。
                 <br />
+              </Typography>
+              <br />
+              <Typography variant="h5">問い合わせ先</Typography>
+              <Typography
+                component={Link}
+                href="https://forms.gle/jQKnBL49thCK9pqF6"
+                target="_blank"
+                rel="noopener"
+              >
+                問い合わせフォーム
               </Typography>
               <Divider style={{ padding: 8 }} />
             </Grid2>
