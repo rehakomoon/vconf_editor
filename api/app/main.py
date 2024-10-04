@@ -133,7 +133,7 @@ async def typeset(
         section_idx = fig.section_index - 1  # 1-indexed -> 0-indexed
         fig_filename = f"fig{fig_idx}.png"
         # figure_text = r"\begin{figure}[" + fig.position + "]\n"
-        figure_text = r"\begin{figurehere}]" + "\n"
+        figure_text = r"\begin{figurehere}" + "\n"
         figure_text += r"\centering" + "\n"
         figure_text += (
             r"\includegraphics[width=0.8\linewidth]{" + fig_filename + "}\n"
