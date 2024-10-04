@@ -82,7 +82,7 @@ export function TeaserForm({
   onChangeTeaser,
 }: {
   teaser?: Teaser;
-  onChangeTeaser: (value: Teaser) => void;
+  onChangeTeaser: (value?: Teaser) => void;
 }): JSX.Element {
   return (
     <Grid2 container size={12} spacing={2}>
@@ -95,33 +95,113 @@ export function TeaserForm({
           ティザー画像
         </FormLabel>
       </Grid2>
-      <Grid2 size={12}>
-        <OutlinedInput
-          type="text"
-          id="teaser_caption"
-          value={teaser?.caption ?? ""}
-          size="small"
-          fullWidth
-          onChange={(e) => {
-            onChangeTeaser({
-              caption: e.target.value,
-              image: teaser?.image,
-            } as Teaser);
-          }}
-        />
-      </Grid2>
-      <Grid2 size={12}>
-        <input
-          id="teaser_image"
-          type="file"
-          accept="image/*,.png,.jpg,.jpeg,.gif"
-          onChange={(e) => {
-            if (!e.target.files) return;
-            const img = e.target.files[0];
-            onChangeTeaser({ caption: teaser?.caption ?? "", image: img });
-          }}
-        />
-      </Grid2>
+      {teaser ? (
+        <Grid2 container size={12} sx={{ p: 1, border: "1px dashed grey" }}>
+          <Grid2
+            container
+            size={12}
+            spacing={2}
+            display="flex"
+            alignItems="center"
+          >
+            <Grid2
+              container
+              size={6}
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
+            >
+              <FormLabel
+                className="label"
+                htmlFor="figure"
+                style={{ fontSize: "1.0rem", fontWeight: 700 }}
+              >
+                ティザー画像
+              </FormLabel>
+            </Grid2>
+            <Grid2
+              container
+              size={6}
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-end"
+            >
+              <IconButton
+                onClick={() => {
+                  onChangeTeaser(undefined);
+                }}
+              >
+                <RemoveCircleOutlineIcon color="error" />
+              </IconButton>
+            </Grid2>
+          </Grid2>
+          <Grid2 size={12}>
+            <FormLabel
+              className="label"
+              htmlFor="figure"
+              style={{ fontSize: "1.0rem" }}
+            >
+              キャプション
+            </FormLabel>
+            <OutlinedInput
+              type="text"
+              id="teaser_caption"
+              value={teaser?.caption ?? ""}
+              size="small"
+              fullWidth
+              onChange={(e) => {
+                onChangeTeaser({
+                  caption: e.target.value,
+                  image: teaser?.image,
+                } as Teaser);
+              }}
+            />
+          </Grid2>
+          <Grid2 size={12}>
+            <FormLabel
+              className="label"
+              htmlFor="figure"
+              required
+              style={{ fontSize: "1.0rem" }}
+            >
+              画像ファイル
+            </FormLabel>
+          </Grid2>
+          <Grid2 size={12}>
+            <input
+              id="teaser_image"
+              type="file"
+              accept="image/*,.png,.jpg,.jpeg,.gif"
+              required
+              onChange={(e) => {
+                if (!e.target.files) return;
+                const img = e.target.files[0];
+                onChangeTeaser({ caption: teaser?.caption ?? "", image: img });
+              }}
+            />
+          </Grid2>
+        </Grid2>
+      ) : (
+        <Grid2
+          container
+          size={12}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          sx={{ border: "1px dashed grey" }}
+        >
+          <Button
+            fullWidth
+            onClick={(e) => {
+              e.preventDefault();
+              const newTeaser = { caption: "" } as Teaser;
+              onChangeTeaser(newTeaser);
+            }}
+          >
+            <AddCircleOutlineIcon color="primary" />
+          </Button>
+        </Grid2>
+      )}
     </Grid2>
   );
 }
