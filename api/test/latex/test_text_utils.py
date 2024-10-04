@@ -17,6 +17,6 @@ from app.latex import text_utils
 ])
 
 
-def test_escape_spacial_characters(text, expect):
-    actual = text_utils.escape_spacial_characters(text=text)
+def test_escape_special_characters(text, expect):
+    actual = text_utils.escape_special_characters(text=text)
     assert actual == expect

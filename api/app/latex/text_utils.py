@@ -1,7 +1,7 @@
 import re
 
 
-def escape_spacial_characters(text: str) -> str:
+def escape_special_characters(text: str) -> str:
     escape_map = {
         '#': r'\#',
         '$': r'\$',
