@@ -38,6 +38,11 @@ const Bar = ({
         <Button color="inherit" onClick={onClick}>
           このページについて・問い合わせ先
         </Button>
+        <Box sx={{ ml: "auto" }}>
+          <Link href="https://vconf.org/2024/" color="inherit" target="_blank" rel="noopener" underline="hover"> 
+            バーチャル学会2024HP
+          </Link>
+        </Box>
       </Toolbar>
     </AppBar>
   );
@@ -236,6 +241,10 @@ function App() {
                 <br />
                 必要な内容を入力したあと、「PDF作成」ボタンを押すと要旨の形式に沿ったPDFが作成されます。
                 作成後したPDFを保存して提出してください。
+                <br />
+                <Link href="https://www.overleaf.com/read/ybyhrqmbyrxh#56281b" color="inherit" target="_blank" rel="noopener"> 
+                  参考: 要旨の要件(LaTeX版 Overleaf)
+                </Link>
               </Typography>
               <br />
               <Typography variant="h5">注意事項</Typography>
