@@ -33,10 +33,6 @@
 
 <<<body>>>
 
-\section*{謝辞}
-
-バーチャル学会2023 LaTeX版テンプレートの作成にあたり，きゅーしす様 (Twitter: @Queue\_sys) にご助言・ご助力いただきました．心より深く感謝申し上げます．
-
 \bibliographystyle{plain}
 \begin{thebibliography}{9}
 <<<reference>>>
