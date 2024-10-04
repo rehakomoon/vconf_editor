@@ -135,7 +135,7 @@ def create_latex_text(template_text: str, paper: Paper, has_teaser: bool):
 
     body_text = ""
     for section_idx, section in enumerate(paper.body):
-        body_text += r"\section{" + section.title + "}\n"
+        body_text += r"\section{" + escape_special_characters(section.title) + "}\n"
         body_text += figure_head_texts[section_idx] + "\n"
         body_text += escape_special_characters(section.text) + "\n"
         body_text += figure_tail_texts[section_idx] + "\n\n"
