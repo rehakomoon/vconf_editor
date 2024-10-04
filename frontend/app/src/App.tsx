@@ -36,7 +36,7 @@ const Bar = ({
           バーチャル学会向け 要旨作成フォーム
         </Typography>
         <Button color="inherit" onClick={onClick}>
-          about
+          このページについて・問い合わせ先
         </Button>
         <Box sx={{ ml: "auto" }}>
           <Link href="https://vconf.org/2024/" color="inherit" target="_blank" rel="noopener" underline="hover"> 
@@ -181,7 +181,9 @@ function App() {
     )
       .then(async (response) => {
         if (!response.ok) {
-          setErrorContext(`${response.status}-${Date.now()}: response was not ok`)
+          setErrorContext(
+            `${response.status}-${Date.now()}: response was not ok`
+          );
           throw new Error("response was not ok");
         }
         const blob = await response.blob();
@@ -190,7 +192,7 @@ function App() {
         console.log(url);
       })
       .catch((error) => {
-        setErrorContext(`000-${Date.now()}: ${error.message}`)
+        setErrorContext(`000-${Date.now()}: ${error.message}`);
         throw new Error(error);
       })
       .finally(() => {
@@ -223,9 +225,9 @@ function App() {
           }}
         >
           <AlertTitle>Error</AlertTitle>
-          PDF作成に失敗しました。 以下のメッセージをDiscordでお知らせください。
-          <br />
-          [{errorContext}]
+          PDF作成に失敗しました。 以下のメッセージを 問い合わせ先
+          に記載の連絡先にお知らせください。
+          <br />[{errorContext}]
         </Alert>
       </Snackbar>
 
@@ -258,6 +260,16 @@ function App() {
                 ・表はこのフォームでは作成できません。
                 代わりに図を使うようにしてください。
                 <br />
+              </Typography>
+              <br />
+              <Typography variant="h5">問い合わせ先</Typography>
+              <Typography
+                component={Link}
+                href="https://forms.gle/jQKnBL49thCK9pqF6"
+                target="_blank"
+                rel="noopener"
+              >
+                問い合わせフォーム
               </Typography>
               <Divider style={{ padding: 8 }} />
             </Grid2>
