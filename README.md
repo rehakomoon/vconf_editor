@@ -1,5 +1,7 @@
 # VCONF_EDITOR
 
+バーチャル学会の発表要旨を作成するためのオンラインエディターです
+
 ## How to run(WIP)
 
 1. Execute the following commands
